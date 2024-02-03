@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Basketball.Domain\Basketball.Domain.csproj" />
+    <Folder Include="Interfaces\" />
   </ItemGroup>
 
 </Project>
