@@ -8,5 +8,6 @@ namespace Basketball.Infrastructure.Database
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Complaint> Complaints { get; set; }
     }
 }

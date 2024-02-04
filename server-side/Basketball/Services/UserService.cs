@@ -19,9 +19,9 @@ namespace Basketball.Services
 
         public async Task<bool> IsUserCredentialsCorrect(LoginDto loginDto)
         {
-            var isUserExists =  await _userRepository.IsExistsByEmail(loginDto.Email);
+            var isUserExists = await _userRepository.IsExistsByEmail(loginDto.Email);
 
-            if(!isUserExists)
+            if (!isUserExists)
             {
                 return false;
             }
@@ -31,7 +31,12 @@ namespace Basketball.Services
             return BCrypt.Net.BCrypt.Verify(loginDto.Password, user.Password);
         }
 
-        public async Task<bool> IsUserExists(string email)
+        public async Task<bool> IsUserExistsById(Guid id)
+        {
+            return await _userRepository.IsExistsById(id);
+        }
+
+        public async Task<bool> IsUserExistsByEmail(string email)
         {
             return await _userRepository.IsExistsByEmail(email);
         }
@@ -40,7 +45,7 @@ namespace Basketball.Services
         {
             var user = await _userRepository.GetUserByEmail(loginDto.Email);
 
-            var token = _jwtTokenService.CreateAccessToken(loginDto.Email, user.Id.ToString());
+            var token = _jwtTokenService.CreateAccessToken(loginDto.Email, user.Id.ToString(), user.Role);
 
             return token.ToString();
         }
@@ -62,9 +67,13 @@ namespace Basketball.Services
                 Experience = user.Experience,
                 Role = user.Role,
                 Specialization = user.Specialization,
+                Height = user.Height,
+                Weight = user.Weight,
+                FootSize = user.FootSize,
+                MetabolicAge = user.MetabolicAge
             };
 
-            var createdUser =  await _userRepository.Create(newUser);
+            var createdUser = await _userRepository.Create(newUser);
 
             return createdUser.Email;
         }

@@ -19,7 +19,7 @@ namespace Basketball.Controllers
         [Route("register")]
         public async Task<IActionResult> Register(RegisterDto registerDto)
         {
-            var isUserExists = await _userService.IsUserExists(registerDto.Email);
+            var isUserExists = await _userService.IsUserExistsByEmail(registerDto.Email);
 
             if (isUserExists)
             {
@@ -37,7 +37,7 @@ namespace Basketball.Controllers
         {
             var isCredentialsCorrect = await _userService.IsUserCredentialsCorrect(loginDto);
 
-            if(!isCredentialsCorrect)
+            if (!isCredentialsCorrect)
             {
                 return BadRequest("Credentials invalid");
             }
