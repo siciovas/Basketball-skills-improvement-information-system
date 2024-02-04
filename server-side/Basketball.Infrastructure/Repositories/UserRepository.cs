@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Basketball.Infrastructure.Repositories
 {
-    public  class UserRepository : IUserRepository
+    public class UserRepository : IUserRepository
     {
         private readonly DatabaseContext _db;
 
@@ -30,6 +30,11 @@ namespace Basketball.Infrastructure.Repositories
         public Task<bool> IsExistsByEmail(string email)
         {
             return _db.Users.Where(x => x.Email == email).AnyAsync();
+        }
+
+        public Task<bool> IsExistsById(Guid id)
+        {
+            return _db.Users.Where(x => x.Id == id).AnyAsync();
         }
     }
 }

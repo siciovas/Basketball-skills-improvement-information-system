@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Basketball.Domain.Data.Entities.Enums;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -21,20 +23,22 @@ namespace Basketball.Infrastructure.Authentication
             _authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetSection("JwtSettings:Secret").Value!.ToString()));
         }
 
-        public string CreateAccessToken(string email, string userId)
+        public string CreateAccessToken(string email, string userId, Role role)
         {
-            var securityToken = CreateSecurityToken(email, userId);
+            var securityToken = CreateSecurityToken(email, userId, role);
 
             return _jwtSecurityTokenHandler.WriteToken(securityToken);
         }
 
-        private JwtSecurityToken CreateSecurityToken(string email, string userId)
+        private JwtSecurityToken CreateSecurityToken(string email, string userId, Role role)
         {
             var claims = new List<Claim>
         {
             new(ClaimTypes.Name, email),
+            new(ClaimTypes.Sid, userId),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new(JwtRegisteredClaimNames.Sub, value: userId),
+            new(ClaimTypes.Role, role.ToString())
         };
 
             var accessSecurityToken = new JwtSecurityToken
