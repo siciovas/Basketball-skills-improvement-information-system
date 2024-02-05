@@ -25,6 +25,7 @@ namespace Basketball.Infrastructure.Repositories
             _db.Entry(createdComplaint.Entity)
                 .Reference(t => t.Student)
                 .Load();
+
             await _db.SaveChangesAsync();
 
             return createdComplaint.Entity;
