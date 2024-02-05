@@ -9,6 +9,7 @@ namespace Basketball.Core.Dtos
         public required string PhoneNumber { get; set; }
         public required string Email { get; set; }
         public DateOnly BirthDate { get; set; }
+        public Role Role { get; set; }
         public required string Password { get; set; }
 
         // Fields for student
@@ -19,7 +20,6 @@ namespace Basketball.Core.Dtos
 
         // Fields for coach
         public Education? Education { get; set; }
-        public Role Role { get; set; }
         public int? Experience { get; set; }
         public string? Specialization { get; set; }
     }

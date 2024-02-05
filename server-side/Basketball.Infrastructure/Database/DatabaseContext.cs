@@ -9,5 +9,6 @@ namespace Basketball.Infrastructure.Database
 
         public DbSet<User> Users { get; set; }
         public DbSet<Complaint> Complaints { get; set; }
+        public DbSet<Exercise> Exercises { get; set; }
     }
 }

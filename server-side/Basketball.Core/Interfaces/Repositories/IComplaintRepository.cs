@@ -1,5 +1,4 @@
-﻿using Basketball.Core.Dtos;
-using Basketball.Domain.Data.Entities;
+﻿using Basketball.Domain.Data.Entities;
 
 namespace Basketball.Core.Interfaces.Repositories
 {

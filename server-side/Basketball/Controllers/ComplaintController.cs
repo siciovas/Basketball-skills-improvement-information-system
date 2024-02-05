@@ -14,12 +14,10 @@ namespace Basketball.Controllers
     public class ComplaintController : ControllerBase
     {
         private readonly IComplaintService _complaintService;
-        private readonly IUserService _userService;
 
-        public ComplaintController(IComplaintService complaintService, IUserService userService)
+        public ComplaintController(IComplaintService complaintService)
         {
             _complaintService = complaintService;
-            _userService = userService;
         }
 
         [HttpPost]
@@ -54,11 +52,7 @@ namespace Basketball.Controllers
         public async Task<IActionResult> GetUserComplaints()
         {
             var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
-
-            var isCoachExists = await _userService.IsUserExistsById(userId);
             var complaints = new List<ComplaintDto>();
-
-            if (!isCoachExists) return NotFound();
 
             if (User.IsInRole("Coach"))
             {
