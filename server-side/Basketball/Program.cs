@@ -19,6 +19,7 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
 {
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+    options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 });
 
 
@@ -65,16 +66,22 @@ builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IComplaintService, ComplaintService>();
 builder.Services.AddScoped<IExerciseService, ExerciseService>();
+builder.Services.AddScoped<ITrainingPlanService, TrainingPlanService>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IComplaintRepository, ComplaintRepository>();
 builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
+builder.Services.AddScoped<ITrainingPlanRepository, TrainingPlanRepository>();
 
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
 app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("../swagger/v1/swagger.json", "Swagger");
+    c.RoutePrefix = string.Empty;
+});
 
 app.UseRouting();
 app.MapControllers();

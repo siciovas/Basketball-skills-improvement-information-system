@@ -1,10 +1,8 @@
 ﻿using Basketball.Core.Dtos;
 using Basketball.Core.Dtos.Post;
 using Basketball.Core.Interfaces.Services;
-using Basketball.Domain.Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Win32;
 using System.Security.Claims;
 
 namespace Basketball.Controllers

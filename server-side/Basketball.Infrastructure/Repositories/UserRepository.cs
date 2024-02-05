@@ -27,6 +27,11 @@ namespace Basketball.Infrastructure.Repositories
             return await _db.Users.Where(x => x.Email == email).FirstAsync();
         }
 
+        public async Task<User> GetUserById(Guid id)
+        {
+            return await _db.Users.FirstAsync(x => x.Id == id);
+        }
+
         public Task<bool> IsExistsByEmail(string email)
         {
             return _db.Users.Where(x => x.Email == email).AnyAsync();

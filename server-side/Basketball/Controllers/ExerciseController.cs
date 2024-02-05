@@ -1,7 +1,5 @@
-﻿using Basketball.Core.Dtos;
-using Basketball.Core.Dtos.Post;
+﻿using Basketball.Core.Dtos.Post;
 using Basketball.Core.Interfaces.Services;
-using Basketball.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -65,6 +63,23 @@ namespace Basketball.Controllers
             var exercise = await _exerciseService.GetById(id);
 
             return Ok(exercise);
+        }
+
+        [HttpPut("{id}")]
+        [Authorize(Roles = "Coach")]
+        public async Task<IActionResult> Update(ExercisePostDto exercise, Guid id)
+        {
+            var coachId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
+            var isCoachOwner = await _exerciseService.IsCoachExerciseOwner(id, coachId);
+
+            if (!isCoachOwner)
+            {
+                return Forbid();
+            }
+
+            var updatedTrainingPlan = await _exerciseService.Update(exercise, id, coachId);
+
+            return Ok(updatedTrainingPlan);
         }
     }
 }
