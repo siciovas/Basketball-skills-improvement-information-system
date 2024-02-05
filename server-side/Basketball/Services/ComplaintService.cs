@@ -25,14 +25,12 @@ namespace Basketball.Services
 
             var createdComplaint = await _complaintRepository.Create(newComplaint);
 
-            var complaint = await _complaintRepository.GetComplaintById(createdComplaint.Id);
-
             return new ComplaintDto
             {
-                Id = complaint!.Id,
-                Text = complaint!.Text,
-                StudentFullName = string.Format("{0} {1}", complaint.Student.Name, complaint.Student.Surname),
-                CoachFullName = string.Format("{0} {1}", complaint.Coach.Name, complaint.Coach.Surname),
+                Id = createdComplaint!.Id,
+                Text = createdComplaint!.Text,
+                StudentFullName = string.Format("{0} {1}", createdComplaint.Student.Name, createdComplaint.Student.Surname),
+                CoachFullName = string.Format("{0} {1}", createdComplaint.Coach.Name, createdComplaint.Coach.Surname),
             };
         }
 

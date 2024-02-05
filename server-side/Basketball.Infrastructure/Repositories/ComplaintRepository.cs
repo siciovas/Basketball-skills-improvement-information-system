@@ -1,5 +1,4 @@
-﻿using Basketball.Core.Dtos;
-using Basketball.Core.Interfaces.Repositories;
+﻿using Basketball.Core.Interfaces.Repositories;
 using Basketball.Domain.Data.Entities;
 using Basketball.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +17,14 @@ namespace Basketball.Infrastructure.Repositories
         public async Task<Complaint> Create(Complaint complaint)
         {
             var createdComplaint = _db.Add(complaint);
+
+            _db.Entry(createdComplaint.Entity)
+                .Reference(t => t.Coach)
+                .Load();
+
+            _db.Entry(createdComplaint.Entity)
+                .Reference(t => t.Student)
+                .Load();
             await _db.SaveChangesAsync();
 
             return createdComplaint.Entity;

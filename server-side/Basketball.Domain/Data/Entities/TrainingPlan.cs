@@ -1,0 +1,14 @@
+﻿namespace Basketball.Domain.Data.Entities
+{
+    public class TrainingPlan
+    {
+        public Guid Id { get; set; }
+        public required string Title { get; set; }
+        public required string Description { get; set; }
+        public double Price { get; set; }
+        public bool IsActive { get; set; }
+        public int Version { get; set; }
+        public Guid CoachId { get; set; }
+        public User Coach { get; set; } = null!;
+    }
+}

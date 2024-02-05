@@ -1,6 +1,5 @@
 ﻿using Basketball.Core.Dtos;
 using Basketball.Core.Dtos.Post;
-using Basketball.Domain.Data.Entities;
 
 namespace Basketball.Core.Interfaces.Services
 {
@@ -9,7 +8,7 @@ namespace Basketball.Core.Interfaces.Services
         Task<List<ExerciseDto>> GetAll(Guid coachId);
         Task<ExerciseDto> GetById(Guid id);
         Task<ExerciseDto> Create(ExercisePostDto exercise, Guid coachId);
-        Task<ExerciseDto> Update(ExercisePostDto exercise, Guid id);
+        Task<ExerciseDto> Update(ExercisePostDto exercise, Guid id, Guid coachId);
         Task Delete(Guid id);
         Task<bool> IsCoachExerciseOwner(Guid id, Guid coachId);
     }

@@ -75,7 +75,7 @@ namespace Basketball.Services
             return exercise!.CoachId == coachId;
         }
 
-        public async Task<ExerciseDto> Update(ExercisePostDto exercise, Guid id)
+        public async Task<ExerciseDto> Update(ExercisePostDto exercise, Guid id, Guid coachId)
         {
             var updatedExercise = await _exerciseRepository.Update(new Exercise
             {
