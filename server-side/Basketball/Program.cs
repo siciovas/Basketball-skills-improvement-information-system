@@ -64,9 +64,11 @@ builder.Services.AddAuthentication(x =>
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IComplaintService, ComplaintService>();
+builder.Services.AddScoped<IExerciseService, ExerciseService>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IComplaintRepository, ComplaintRepository>();
+builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
 
 builder.Services.AddAuthorization();
 

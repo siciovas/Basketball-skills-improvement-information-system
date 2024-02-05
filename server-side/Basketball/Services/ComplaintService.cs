@@ -19,8 +19,8 @@ namespace Basketball.Services
             var newComplaint = new Complaint
             {
                 Text = complaintDto.Text,
-                StudentId = complaintDto.studentId,
-                CoachId = complaintDto.coachId
+                StudentId = complaintDto.StudentId,
+                CoachId = complaintDto.CoachId
             };
 
             var createdComplaint = await _complaintRepository.Create(newComplaint);
