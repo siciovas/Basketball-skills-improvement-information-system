@@ -11,5 +11,6 @@ namespace Basketball.Infrastructure.Database
         public DbSet<Complaint> Complaints { get; set; }
         public DbSet<Exercise> Exercises { get; set; }
         public DbSet<TrainingPlan> TrainingPlans { get; set; }
+        public DbSet<Feedback> Feedbacks { get; set; }
     }
 }
