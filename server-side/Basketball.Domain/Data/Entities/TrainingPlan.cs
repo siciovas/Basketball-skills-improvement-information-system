@@ -10,5 +10,6 @@
         public int Version { get; set; }
         public Guid CoachId { get; set; }
         public User Coach { get; set; } = null!;
+        public ICollection<Skill> Skills { get; set; } = [];
     }
 }

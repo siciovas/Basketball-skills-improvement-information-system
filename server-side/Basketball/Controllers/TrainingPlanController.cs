@@ -79,7 +79,7 @@ namespace Basketball.Controllers
                 return Forbid();
             }
 
-            var updatedTrainingPlan = await _trainingPlanService.Update(trainingPlan, id, userId);
+            var updatedTrainingPlan = await _trainingPlanService.Update(trainingPlan, id);
 
             return Ok(updatedTrainingPlan);
         }

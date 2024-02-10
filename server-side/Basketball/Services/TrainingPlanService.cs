@@ -9,14 +9,25 @@ namespace Basketball.Services
     public class TrainingPlanService : ITrainingPlanService
     {
         private readonly ITrainingPlanRepository _trainingPlanRepository;
+        private readonly ISkillRepository _skillRepository;
 
-        public TrainingPlanService(ITrainingPlanRepository trainingPlanRepository)
+        public TrainingPlanService(ITrainingPlanRepository trainingPlanRepository, ISkillRepository skillRepository)
         {
             _trainingPlanRepository = trainingPlanRepository;
+            _skillRepository = skillRepository;
         }
 
         public async Task<TrainingPlanDto> Create(TrainingPlanPostDto trainingPlan, Guid coachId)
         {
+            var skillsTasks = new List<Task<Skill>>();
+
+            foreach (var skillId in trainingPlan.Skills)
+            {
+                skillsTasks.Add(_skillRepository.GetById(skillId)!);
+            }
+
+            var skills = await Task.WhenAll(skillsTasks);
+
             var newTrainingPlan = new TrainingPlan
             {
                 Title = trainingPlan.Title,
@@ -25,6 +36,7 @@ namespace Basketball.Services
                 IsActive = trainingPlan.IsActive,
                 Version = trainingPlan.Version,
                 CoachId = coachId,
+                Skills = skills
             };
 
             var createdTrainingPlan = await _trainingPlanRepository.Create(newTrainingPlan);
@@ -103,20 +115,26 @@ namespace Basketball.Services
             return trainingPlan!.CoachId == coachId;
         }
 
-        public async Task<TrainingPlanDto> Update(TrainingPlanPostDto trainingPlan, Guid id, Guid coachId)
+        public async Task<TrainingPlanDto> Update(TrainingPlanPostDto trainingPlanDto, Guid id)
         {
-            var trainingPlanToUpdate = new TrainingPlan
-            {
-                Id = id,
-                Title = trainingPlan.Title,
-                Description = trainingPlan.Description,
-                Price = trainingPlan.Price,
-                IsActive = trainingPlan.IsActive,
-                Version = trainingPlan.Version,
-                CoachId = coachId,
-            };
+            var skillsTasks = new List<Task<Skill>>();
 
-            var updatedTrainingPlan = await _trainingPlanRepository.Update(trainingPlanToUpdate);
+            foreach (var skillId in trainingPlanDto.Skills)
+            {
+                skillsTasks.Add(_skillRepository.GetById(skillId)!);
+            }
+
+            var skills = await Task.WhenAll(skillsTasks);
+
+            var trainingPlan = await _trainingPlanRepository.GetById(id);
+            trainingPlan!.Title = trainingPlanDto.Title;
+            trainingPlan.Description = trainingPlanDto.Description;
+            trainingPlan.Price = trainingPlanDto.Price;
+            trainingPlan.IsActive = trainingPlanDto.IsActive;
+            trainingPlan.Version = trainingPlanDto.Version;
+            trainingPlan.Skills = skills;
+
+            var updatedTrainingPlan = await _trainingPlanRepository.Update(trainingPlan);
 
             return new TrainingPlanDto
             {

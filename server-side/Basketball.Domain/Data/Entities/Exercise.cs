@@ -10,5 +10,6 @@ namespace Basketball.Domain.Data.Entities
         public Difficulty Difficulty { get; set; }
         public Guid CoachId { get; set; }
         public User Coach { get; set; } = null!;
+        public List<Skill> Skills { get; set; } = [];
     }
 }
