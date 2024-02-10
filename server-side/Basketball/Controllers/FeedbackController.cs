@@ -1,7 +1,6 @@
 ﻿using Basketball.Core.Dtos.Post;
 using Basketball.Core.Dtos.Update;
 using Basketball.Core.Interfaces.Services;
-using Basketball.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -75,9 +74,9 @@ namespace Basketball.Controllers
             return CreatedAtAction(nameof(Create), createdFeedback);
         }
 
-        [HttpPut("{id}/{trainingPlanId}")]
+        [HttpPut("{id}")]
         [Authorize(Roles = "Student")]
-        public async Task<IActionResult> Update(FeedbackUpdateDto feedback, Guid id, Guid trainingPlanId)
+        public async Task<IActionResult> Update(FeedbackUpdateDto feedback, Guid id)
         {
             var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
 
@@ -88,7 +87,7 @@ namespace Basketball.Controllers
                 return Forbid();
             }
 
-            var updatedFeedback = await _feedbackService.Update(feedback, userId, id, trainingPlanId);
+            var updatedFeedback = await _feedbackService.Update(feedback, id);
 
             return Ok(updatedFeedback);
         }

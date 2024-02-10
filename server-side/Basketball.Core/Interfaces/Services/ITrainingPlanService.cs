@@ -10,7 +10,7 @@ namespace Basketball.Core.Interfaces.Services
         Task<TrainingPlanDto> GetById(Guid id);
         Task<List<TrainingPlanDto>> GetAllByCoachId(Guid coachId);
         Task Delete(Guid id);
-        Task<TrainingPlanDto> Update(TrainingPlanPostDto trainingPlan, Guid id, Guid coachId);
+        Task<TrainingPlanDto> Update(TrainingPlanPostDto trainingPlan, Guid id);
         Task<bool> IsTrainingPlanOwnedByCoachId(Guid id, Guid coachId);
     }
 }

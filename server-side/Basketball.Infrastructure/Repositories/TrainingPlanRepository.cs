@@ -47,6 +47,8 @@ namespace Basketball.Infrastructure.Repositories
 
         public async Task<TrainingPlan> Update(TrainingPlan trainingPlan)
         {
+            _db.TrainingPlanSkill.Where(x => x.TrainingPlanId == trainingPlan.Id).ExecuteDelete();
+
             var updatedPlan = _db.Update(trainingPlan);
 
             _db.Entry(updatedPlan.Entity).Reference(t => t.Coach).Load();

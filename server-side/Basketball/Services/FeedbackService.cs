@@ -4,7 +4,6 @@ using Basketball.Core.Dtos.Update;
 using Basketball.Core.Interfaces.Repositories;
 using Basketball.Core.Interfaces.Services;
 using Basketball.Domain.Data.Entities;
-using Basketball.Infrastructure.Repositories;
 
 namespace Basketball.Services
 {
@@ -89,18 +88,13 @@ namespace Basketball.Services
             return feedback!.StudentId == studentId;
         }
 
-        public async Task<FeedbackDto> Update(FeedbackUpdateDto feedback, Guid studentId, Guid id, Guid trainingPlanId)
+        public async Task<FeedbackDto> Update(FeedbackUpdateDto feedbackDto, Guid id)
         {
-            var feedbackToUpdate = new Feedback
-            {
-                Id = id,
-                FeedbackText = feedback.FeedbackText,
-                Date = DateOnly.FromDateTime(DateTime.Now),
-                StudentId = studentId,
-                TrainingPlanId = trainingPlanId,
-            };
+            var feedback = await _feedbackRepository.GetById(id);
+            feedback!.FeedbackText = feedbackDto.FeedbackText;
+            feedback.Date = DateOnly.FromDateTime(DateTime.Now);
 
-            var updatedFeedback = await _feedbackRepository.Update(feedbackToUpdate);
+            var updatedFeedback = await _feedbackRepository.Update(feedback);
 
             return new FeedbackDto
             {
