@@ -7,8 +7,6 @@ import {
   FormLabel,
   Input,
   Button,
-  Divider,
-  Box,
 } from "@chakra-ui/react";
 
 const NewPassword = () => {

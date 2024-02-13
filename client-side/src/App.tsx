@@ -1,11 +1,9 @@
-import React from "react";
-import "./App.css";
-import { Box } from "@chakra-ui/react";
-import Login from "./pages/Login";
-import PasswordRecovery from "./pages/PasswordRecovery";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import NewPassword from "./pages/NewPassword";
-import Register from "./pages/Register";
+import './App.css'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Login from './pages/Login'
+import NewPassword from './pages/NewPassword'
+import PasswordRecovery from './pages/PasswordRecovery'
+import Register from './pages/Register'
 
 function App() {
   return (
@@ -20,4 +18,4 @@ function App() {
   );
 }
 
-export default App;
+export default App
