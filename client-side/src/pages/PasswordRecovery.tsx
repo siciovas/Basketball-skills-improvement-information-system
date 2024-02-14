@@ -1,4 +1,3 @@
-import React from "react";
 import Container from "../components/Container";
 import {
   Flex,
@@ -29,6 +28,7 @@ const PasswordRecovery = () => {
             my={5}
             textTransform="uppercase"
             background="blue.500"
+            textColor="white"
           >
             Atstatyti slaptažodį
           </Button>

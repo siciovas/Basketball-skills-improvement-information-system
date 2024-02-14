@@ -1,0 +1,1 @@
+export const url_address = "https://localhost:7160/api/"

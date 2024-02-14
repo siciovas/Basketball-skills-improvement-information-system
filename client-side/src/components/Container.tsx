@@ -1,4 +1,3 @@
-import React from "react";
 import { BoxProps, Container as ChakraContainer } from "@chakra-ui/react";
 
 const Container = ({ children, ...rest }: BoxProps) => {

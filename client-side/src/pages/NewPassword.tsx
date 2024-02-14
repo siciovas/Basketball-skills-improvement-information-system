@@ -1,4 +1,3 @@
-import React from "react";
 import Container from "../components/Container";
 import {
   Flex,
@@ -27,6 +26,7 @@ const NewPassword = () => {
             mt={5}
             textTransform="uppercase"
             background="blue.500"
+            textColor="white"
           >
             Nustatyti naują slaptažodį
           </Button>
