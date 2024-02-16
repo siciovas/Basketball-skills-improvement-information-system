@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import Container from "../components/Container";
 import {
   Flex,
@@ -11,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 
 const PasswordRecovery = () => {
+  const navigate = useNavigate();
   return (
     <Container>
       <Flex p={5} border="solid" flexDir="column" alignItems="center">
@@ -34,7 +36,13 @@ const PasswordRecovery = () => {
           </Button>
         </FormControl>
         <Divider />
-        <Button type="submit" w="100%" mt={5} textTransform="uppercase">
+        <Button
+          type="submit"
+          w="100%"
+          mt={5}
+          textTransform="uppercase"
+          onClick={() => navigate("/login")}
+        >
           Grįžti atgal
         </Button>
       </Flex>

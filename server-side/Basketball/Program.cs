@@ -9,11 +9,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using Newtonsoft.Json.Converters;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson(opts => opts.SerializerSettings.Converters.Add(new StringEnumConverter()));
 
 builder.Services.AddDbContext<DatabaseContext>(options =>
 {
@@ -61,6 +62,15 @@ builder.Services.AddAuthentication(x =>
     options.TokenValidationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("JwtSettings:Secret").Value!.ToString()));
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "Cors",
+        builder =>
+        {
+            builder.AllowAnyOrigin().AllowAnyHeader();
+        });
+});
+
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IComplaintService, ComplaintService>();
@@ -88,6 +98,7 @@ app.UseSwaggerUI(c =>
 
 app.UseRouting();
 app.MapControllers();
+app.UseCors("Cors");
 app.UseAuthentication();
 app.UseAuthorization();
 

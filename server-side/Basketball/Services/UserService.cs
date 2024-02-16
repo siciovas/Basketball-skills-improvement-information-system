@@ -41,13 +41,13 @@ namespace Basketball.Services
             return await _userRepository.IsExistsByEmail(email);
         }
 
-        public async Task<string> Login(LoginDto loginDto)
+        public async Task<(string, string)> Login(LoginDto loginDto)
         {
             var user = await _userRepository.GetUserByEmail(loginDto.Email);
 
             var token = _jwtTokenService.CreateAccessToken(loginDto.Email, user.Id.ToString(), user.Role);
 
-            return token.ToString();
+            return (token.ToString(), user.Role.ToString());
         }
 
         public async Task<string> Register(RegisterDto user)

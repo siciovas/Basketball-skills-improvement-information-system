@@ -1,15 +1,17 @@
-import './App.css'
-import { Routes, Route, BrowserRouter } from 'react-router-dom'
-import Login from './pages/Login'
-import NewPassword from './pages/NewPassword'
-import PasswordRecovery from './pages/PasswordRecovery'
-import Register from './pages/Register'
-import { Navbar } from './pages/Navbars/Navbar'
+import "./App.css";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
+import Login from "./pages/Login";
+import NewPassword from "./pages/NewPassword";
+import PasswordRecovery from "./pages/PasswordRecovery";
+import Register from "./pages/Register";
+import { Navbar } from "./pages/Navbars/Navbar";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
     <>
-      <Navbar/>
+      <Toaster />
+      <Navbar />
       <BrowserRouter>
         <Routes>
           <Route path="login" element={<Login />} />
@@ -22,4 +24,4 @@ function App() {
   );
 }
 
-export default App
+export default App;

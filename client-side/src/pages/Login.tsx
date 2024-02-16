@@ -10,7 +10,7 @@ import {
 import Container from "../components/Container";
 import { ChangeEvent, FormEvent, useState } from "react";
 import toast from "react-hot-toast";
-import { url_address } from "../Helpers/constants";
+import { URL_ADDRESS } from "../Helpers/constants";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
@@ -27,7 +27,7 @@ const Login = () => {
 
   const Login = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    const response = await fetch(url_address + 'user/login', {
+    const response = await fetch(URL_ADDRESS + 'user/login', {
       headers: {
         "Content-Type": "application/json",
       },
@@ -55,7 +55,7 @@ const Login = () => {
         <Heading>Prisijungti</Heading>
         <Flex>
           Dar neturite paskyros?&nbsp;
-          <Box cursor="pointer" color="blue.400">
+          <Box cursor="pointer" color="blue.400" onClick={() => navigate(("/register"))}>
             Registruokitės!
           </Box>
         </Flex>
@@ -65,7 +65,7 @@ const Login = () => {
             <Input type="email" onChange={(e) => {onEmailChange(e)}}/>
             <FormLabel>Slaptažodis</FormLabel>
             <Input type="password" onChange={(e) => {onPasswordChange(e)}}/>
-            <Box cursor="pointer" color="blue.400" textAlign="right" my={5}>
+            <Box cursor="pointer" color="blue.400" textAlign="right" my={5} onClick={() => navigate(("/recover"))}>
               Pamiršote slaptažodį?
             </Box>
             <Button type="submit" w="100%" background="blue.500" textColor="white">
