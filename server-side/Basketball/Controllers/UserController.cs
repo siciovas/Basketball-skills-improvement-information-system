@@ -46,5 +46,20 @@ namespace Basketball.Controllers
 
             return Ok(new { accessToken = result.Item1, role = result.Item2 });
         }
+
+        [HttpGet]
+        [Route("getCoaches")]
+        public async Task<IActionResult> GetCoaches()
+        {
+            if (User.IsInRole("Admin"))
+            {
+                return Ok(await _userService.GetAllCoaches());
+            }
+
+            else
+            {
+                return Ok(await _userService.GetApprovedCoaches());
+            }
+        }
     }
 }

@@ -8,5 +8,7 @@ namespace Basketball.Core.Interfaces.Repositories
         Task<bool> IsExistsById(Guid id);
         Task<User> Create(User user);
         Task<User> GetUserByEmail(string email);
+        Task<List<User>> GetAllCoaches();
+        Task<List<User>> GetApprovedCoaches();
     }
 }

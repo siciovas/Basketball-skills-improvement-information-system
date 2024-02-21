@@ -77,5 +77,39 @@ namespace Basketball.Services
 
             return createdUser.Email;
         }
+
+        public async Task<List<UserCoachDto>> GetAllCoaches()
+        {
+            var coaches = await _userRepository.GetAllCoaches();
+
+            return coaches.Select(x => new UserCoachDto
+            {
+                Id = x.Id,
+                FullName = string.Format("{0} {1}", x.Name, x.Surname),
+                Email = x.Email,
+                BirthDate = x.BirthDate,
+                Education = x.Education,
+                Specialization = x.Specialization!,
+                Rating = x.Rating,
+                CoachStatus = x.CoachStatus,
+            }).ToList();
+        }
+
+        public async Task<List<UserCoachDto>> GetApprovedCoaches()
+        {
+            var coaches = await _userRepository.GetApprovedCoaches();
+
+            return coaches.Select(x => new UserCoachDto
+            {
+                Id = x.Id,
+                FullName = string.Format("{0} {1}", x.Name, x.Surname),
+                Email = x.Email,
+                BirthDate = x.BirthDate,
+                Education = x.Education!,
+                Specialization = x.Specialization!,
+                Rating = x.Rating!,
+                CoachStatus = x.CoachStatus!,
+            }).ToList();
+        }
     }
 }

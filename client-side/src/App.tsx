@@ -6,6 +6,7 @@ import PasswordRecovery from "./pages/PasswordRecovery";
 import Register from "./pages/Register";
 import { Navbar } from "./pages/Navbars/Navbar";
 import { Toaster } from "react-hot-toast";
+import CoachesList from "./pages/CoachesList";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="recover" element={<PasswordRecovery />} />
           <Route path="newPassword" element={<NewPassword />} />
           <Route path="register" element={<Register />} />
+          <Route path="allCoaches" element={<CoachesList />} />
         </Routes>
       </BrowserRouter>
     </>
