@@ -42,9 +42,9 @@ namespace Basketball.Controllers
                 return BadRequest("Credentials invalid");
             }
 
-            var accessToken = await _userService.Login(loginDto);
+            var result = await _userService.Login(loginDto);
 
-            return Ok(accessToken);
+            return Ok(new { accessToken = result.Item1, role = result.Item2 });
         }
     }
 }
