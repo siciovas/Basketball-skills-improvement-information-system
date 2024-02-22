@@ -18,9 +18,9 @@ const GuestNavbar = () => {
         <Box cursor="pointer">TRENERIAI</Box>
         <Box cursor="pointer">APIE</Box>
       </Flex>
-      <Flex mr={10} alignItems="center" gap={10} >
-        <i className="fa-solid fa-user"></i>
-        <i className="fa-solid fa-cart-shopping"></i>
+      <Flex mr={5} alignItems="center" gap={5}>
+        <Box className="fa-solid fa-user fa-xl"></Box>
+        <Box className="fa-solid fa-cart-shopping fa-xl"></Box>
       </Flex>
     </Flex>
   );

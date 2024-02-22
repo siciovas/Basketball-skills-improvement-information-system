@@ -4,9 +4,10 @@ import Login from "./pages/Login";
 import NewPassword from "./pages/NewPassword";
 import PasswordRecovery from "./pages/PasswordRecovery";
 import Register from "./pages/Register";
-import { Navbar } from "./pages/Navbars/Navbar";
+import { Navbar } from "./components/Navbars/Navbar";
 import { Toaster } from "react-hot-toast";
 import CoachesList from "./pages/CoachesList";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="allCoaches" element={<CoachesList />} />
         </Routes>
       </BrowserRouter>
+      <Footer />
     </>
   );
 }
