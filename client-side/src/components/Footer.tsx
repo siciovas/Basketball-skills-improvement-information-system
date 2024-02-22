@@ -7,10 +7,8 @@ const Footer = () => {
       py={2}
       backgroundColor="black"
       flexDir="column"
-      position="absolute"
-      bottom={0}
-      left={0}
-      right={0}
+      position="relative"
+      mt={20}
     >
       <Flex justify="space-between" align="center">
         <Image ml={9} mt={5} h={40} src="/logo.ico" />

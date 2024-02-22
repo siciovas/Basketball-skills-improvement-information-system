@@ -92,6 +92,7 @@ namespace Basketball.Services
                 Specialization = x.Specialization!,
                 Rating = x.Rating,
                 CoachStatus = x.CoachStatus,
+                RegisterDate = x.RegisterDate
             }).ToList();
         }
 
@@ -109,6 +110,7 @@ namespace Basketball.Services
                 Specialization = x.Specialization!,
                 Rating = x.Rating!,
                 CoachStatus = x.CoachStatus!,
+                RegisterDate = x.RegisterDate
             }).ToList();
         }
     }

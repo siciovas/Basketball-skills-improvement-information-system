@@ -17,6 +17,7 @@ namespace Basketball.Core.Dtos
         public required string Specialization { get; set; }
         public double? Rating { get; set; }
         public CoachStatus? CoachStatus { get; set; }
+        public DateOnly RegisterDate { get; set; }
 
     }
 }
