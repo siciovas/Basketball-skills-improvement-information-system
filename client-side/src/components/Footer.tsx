@@ -2,14 +2,7 @@ import { Flex, Divider, Image, Text, Box } from "@chakra-ui/react";
 
 const Footer = () => {
   return (
-    <Flex
-      w="100%"
-      py={2}
-      backgroundColor="black"
-      flexDir="column"
-      position="relative"
-      mt={20}
-    >
+    <Flex w="100%" py={2} backgroundColor="black" flexDir="column" mt="auto">
       <Flex justify="space-between" align="center">
         <Image ml={9} mt={5} h={40} src="/logo.ico" />
         <Flex flexDir="column" mr={40}>
