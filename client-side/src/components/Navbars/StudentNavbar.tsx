@@ -1,7 +1,8 @@
 import { Box, Flex } from "@chakra-ui/react";
+import React from "react";
 import MainNavBar from "./MainNavbar";
 
-const GuestNavbar = () => {
+const StudentNavbar = () => {
   return (
     <Flex
       w="100%"
@@ -12,6 +13,7 @@ const GuestNavbar = () => {
     >
       <MainNavBar />
       <Flex mr={5} alignItems="center" gap={5}>
+        <Box>Mano treniruotės</Box>
         <Box className="fa-solid fa-user fa-xl"></Box>
         <Box className="fa-solid fa-cart-shopping fa-xl"></Box>
       </Flex>
@@ -19,4 +21,4 @@ const GuestNavbar = () => {
   );
 };
 
-export { GuestNavbar };
+export default StudentNavbar;
