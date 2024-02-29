@@ -53,19 +53,19 @@ const Login = () => {
     <Container>
       <Flex p={5} border="solid" flexDir="column" alignItems="center">
         <Heading>Prisijungti</Heading>
-        <Flex>
+        <Flex mt={5}>
           Dar neturite paskyros?&nbsp;
           <Box cursor="pointer" color="blue.400" onClick={() => navigate(("/register"))}>
             Registruokitės!
           </Box>
         </Flex>
         <form onSubmit={(e) => Login(e)}>
-          <FormControl>
+          <FormControl mt={5}>
             <FormLabel>El. Paštas</FormLabel>
             <Input type="email" onChange={(e) => {onEmailChange(e)}}/>
-            <FormLabel>Slaptažodis</FormLabel>
+            <FormLabel mt={5}>Slaptažodis</FormLabel>
             <Input type="password" onChange={(e) => {onPasswordChange(e)}}/>
-            <Box cursor="pointer" color="blue.400" textAlign="right" my={5} onClick={() => navigate(("/recover"))}>
+            <Box cursor="pointer" color="blue.400" textAlign="center" my={5} onClick={() => navigate(("/recover"))}>
               Pamiršote slaptažodį?
             </Box>
             <Button type="submit" w="100%" background="blue.500" textColor="white">

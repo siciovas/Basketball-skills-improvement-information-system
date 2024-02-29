@@ -12,16 +12,16 @@ function App() {
   return (
     <>
       <Toaster />
-      <Navbar />
       <BrowserRouter>
+      <Navbar />
         <Routes>
           <Route path="login" element={<Login />} />
           <Route path="recover" element={<PasswordRecovery />} />
           <Route path="newPassword" element={<NewPassword />} />
           <Route path="register" element={<Register />} />
         </Routes>
-      </BrowserRouter>
       <Footer />
+      </BrowserRouter>
     </>
   );
 }

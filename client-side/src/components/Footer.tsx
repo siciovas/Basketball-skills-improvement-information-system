@@ -7,7 +7,6 @@ const Footer = () => {
       py={2}
       backgroundColor="black"
       flexDir="column"
-      position="absolute"
       bottom={0}
       left={0}
       right={0}

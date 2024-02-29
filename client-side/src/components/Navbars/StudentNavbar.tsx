@@ -1,5 +1,4 @@
 import { Box, Flex } from "@chakra-ui/react";
-import React from "react";
 import MainNavBar from "./MainNavbar";
 
 const StudentNavbar = () => {
@@ -14,8 +13,8 @@ const StudentNavbar = () => {
       <MainNavBar />
       <Flex mr={5} alignItems="center" gap={5}>
         <Box>Mano treniruotės</Box>
-        <Box className="fa-solid fa-user fa-xl"></Box>
-        <Box className="fa-solid fa-cart-shopping fa-xl"></Box>
+        <Box cursor="pointer" className="fa-solid fa-user fa-xl"></Box>
+        <Box cursor="pointer" className="fa-solid fa-cart-shopping fa-xl"></Box>
       </Flex>
     </Flex>
   );
