@@ -1,10 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import MainNavBar from "./MainNavbar";
-import { useNavigate } from "react-router-dom";
 
-const GuestNavbar = () => {
-  const navigate = useNavigate();
-
+const StudentNavbar = () => {
   return (
     <Flex
       w="100%"
@@ -15,11 +12,12 @@ const GuestNavbar = () => {
     >
       <MainNavBar />
       <Flex mr={5} alignItems="center" gap={5}>
-        <Box cursor="pointer" className="fa-solid fa-user fa-xl" onClick={() => navigate('/login')}></Box>
+        <Box>Mano treniruotės</Box>
+        <Box cursor="pointer" className="fa-solid fa-user fa-xl"></Box>
         <Box cursor="pointer" className="fa-solid fa-cart-shopping fa-xl"></Box>
       </Flex>
     </Flex>
   );
 };
 
-export default GuestNavbar;
+export default StudentNavbar;
