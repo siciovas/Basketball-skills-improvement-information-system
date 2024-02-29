@@ -12,6 +12,7 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import toast from "react-hot-toast";
 import { URL_ADDRESS } from "../Helpers/constants";
 import { useNavigate } from "react-router-dom";
+import eventBus from "../Helpers/eventBus";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ const Login = () => {
 
   const Login = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    const response = await fetch(URL_ADDRESS + 'user/login', {
+    const response = await fetch(URL_ADDRESS + "user/login", {
       headers: {
         "Content-Type": "application/json",
       },
@@ -43,6 +44,7 @@ const Login = () => {
       const data = await response.json();
       localStorage.setItem("accessToken", data.accessToken);
       localStorage.setItem("role", data.role);
+      eventBus.dispatch("storage", "");
       navigate("/");
     } else {
       toast.error("Prisijungimas nepavyko!");
@@ -55,20 +57,45 @@ const Login = () => {
         <Heading>Prisijungti</Heading>
         <Flex mt={5}>
           Dar neturite paskyros?&nbsp;
-          <Box cursor="pointer" color="blue.400" onClick={() => navigate(("/register"))}>
+          <Box
+            cursor="pointer"
+            color="blue.400"
+            onClick={() => navigate("/register")}
+          >
             Registruokitės!
           </Box>
         </Flex>
         <form onSubmit={(e) => Login(e)}>
           <FormControl mt={5}>
             <FormLabel>El. Paštas</FormLabel>
-            <Input type="email" onChange={(e) => {onEmailChange(e)}}/>
+            <Input
+              type="email"
+              onChange={(e) => {
+                onEmailChange(e);
+              }}
+            />
             <FormLabel mt={5}>Slaptažodis</FormLabel>
-            <Input type="password" onChange={(e) => {onPasswordChange(e)}}/>
-            <Box cursor="pointer" color="blue.400" textAlign="center" my={5} onClick={() => navigate(("/recover"))}>
+            <Input
+              type="password"
+              onChange={(e) => {
+                onPasswordChange(e);
+              }}
+            />
+            <Box
+              cursor="pointer"
+              color="blue.400"
+              textAlign="center"
+              my={5}
+              onClick={() => navigate("/recover")}
+            >
               Pamiršote slaptažodį?
             </Box>
-            <Button type="submit" w="100%" background="blue.500" textColor="white">
+            <Button
+              type="submit"
+              w="100%"
+              background="blue.500"
+              textColor="white"
+            >
               <Box pos="absolute" w="100%" textAlign="left" ml={5}>
                 <i className="fa fa-solid fa-lock" />
               </Box>
