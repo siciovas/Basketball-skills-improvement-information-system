@@ -14,8 +14,8 @@ function App() {
   return (
     <>
       <Toaster />
-      <Navbar />
       <BrowserRouter>
+      <Navbar />
         <Routes>
           <Route path="login" element={<Login />} />
           <Route path="recover" element={<PasswordRecovery />} />
@@ -24,8 +24,8 @@ function App() {
           <Route path="allCoaches" element={<MainCoachesList />} />
           <Route path="coachDetails" element={<CoachDetails />} />
         </Routes>
-      </BrowserRouter>
       <Footer />
+      </BrowserRouter>
     </>
   );
 }
