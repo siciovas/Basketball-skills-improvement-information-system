@@ -32,6 +32,7 @@ namespace Basketball.Services
             {
                 Title = trainingPlan.Title,
                 Description = trainingPlan.Description,
+                ShortDescription = trainingPlan.ShortDescription,
                 Price = trainingPlan.Price,
                 IsActive = trainingPlan.IsActive,
                 Version = trainingPlan.Version,

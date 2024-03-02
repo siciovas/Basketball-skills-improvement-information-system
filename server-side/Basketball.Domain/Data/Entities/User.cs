@@ -12,6 +12,7 @@ namespace Basketball.Domain.Data.Entities
         public DateOnly BirthDate { get; set; }
         public Role Role { get; set; }
         public required string Password { get; set; }
+        public DateOnly RegisterDate { get; set; }
 
         // Fields for student
         public int? Height { get; set; }
@@ -25,5 +26,6 @@ namespace Basketball.Domain.Data.Entities
         public string? Specialization { get; set; }
         public double? Rating { get; set; }
         public CoachStatus? CoachStatus { get; set; }
+        public string? Description { get; set; }
     }
 }

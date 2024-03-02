@@ -1,5 +1,6 @@
 ﻿using Basketball.Core.Interfaces.Repositories;
 using Basketball.Domain.Data.Entities;
+using Basketball.Domain.Data.Entities.Enums;
 using Basketball.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 
@@ -40,6 +41,16 @@ namespace Basketball.Infrastructure.Repositories
         public Task<bool> IsExistsById(Guid id)
         {
             return _db.Users.Where(x => x.Id == id).AnyAsync();
+        }
+
+        public async Task<List<User>> GetAllCoaches()
+        {
+            return await _db.Users.Where(x => x.Role == Role.Coach).ToListAsync();
+        }
+
+        public async Task<List<User>> GetApprovedCoaches()
+        {
+            return await _db.Users.Where(x => x.Role == Role.Coach && x.CoachStatus == CoachStatus.Approved).ToListAsync();
         }
     }
 }

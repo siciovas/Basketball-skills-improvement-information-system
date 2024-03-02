@@ -1,4 +1,5 @@
 ﻿using Basketball.Core.Dtos;
+using Basketball.Domain.Data.Entities;
 
 namespace Basketball.Core.Interfaces.Services
 {
@@ -9,5 +10,8 @@ namespace Basketball.Core.Interfaces.Services
         Task<bool> IsUserExistsByEmail(string email);
         Task<bool> IsUserCredentialsCorrect(LoginDto loginDto);
         Task<bool> IsUserExistsById(Guid id);
+        Task<List<UserCoachDto>> GetAllCoaches();
+        Task<List<UserCoachDto>> GetApprovedCoaches();
+        Task<UserCoachDto> GetCoachById(Guid id);
     }
 }

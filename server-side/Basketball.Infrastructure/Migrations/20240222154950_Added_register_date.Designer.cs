@@ -3,6 +3,7 @@ using System;
 using Basketball.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Basketball.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20240222154950_Added_register_date")]
+    partial class Added_register_date
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -157,11 +160,6 @@ namespace Basketball.Infrastructure.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("double");
 
-                    b.Property<string>("ShortDescription")
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("varchar(40)");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -202,9 +200,6 @@ namespace Basketball.Infrastructure.Migrations
 
                     b.Property<int?>("CoachStatus")
                         .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("longtext");
 
                     b.Property<int?>("Education")
                         .HasColumnType("int");

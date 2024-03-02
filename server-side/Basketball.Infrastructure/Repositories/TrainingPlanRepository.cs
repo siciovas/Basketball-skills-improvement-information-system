@@ -45,6 +45,13 @@ namespace Basketball.Infrastructure.Repositories
             return await _db.TrainingPlans.Include(x => x.Coach).FirstOrDefaultAsync(x => x.Id == id);
         }
 
+        public async Task<Dictionary<Guid, int>> GetTrainingPlansCountByCoachId(List<Guid> ids)
+        {
+            return await _db.TrainingPlans.Where(x => ids.Contains(x.CoachId))
+                .Select(x => x.CoachId).GroupBy(x => x).Select(x => new { x.Key, Count = x.Count() })
+                .ToDictionaryAsync(kvp => kvp.Key, kvp => kvp.Count);
+        }
+
         public async Task<TrainingPlan> Update(TrainingPlan trainingPlan)
         {
             _db.TrainingPlanSkill.Where(x => x.TrainingPlanId == trainingPlan.Id).ExecuteDelete();

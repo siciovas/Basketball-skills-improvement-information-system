@@ -46,5 +46,34 @@ namespace Basketball.Controllers
 
             return Ok(new { accessToken = result.Item1, role = result.Item2 });
         }
+
+        [HttpGet]
+        [Route("getCoaches")]
+        public async Task<IActionResult> GetCoaches()
+        {
+            if (User.IsInRole("Admin"))
+            {
+                return Ok(await _userService.GetAllCoaches());
+            }
+
+            else
+            {
+                return Ok(await _userService.GetApprovedCoaches());
+            }
+        }
+
+        [HttpGet]
+        [Route("coachDetails/{id}")]
+        public async Task<IActionResult> GetCoachDetails(Guid id)
+        {
+            var isExists = await _userService.IsUserExistsById(id);
+
+            if (!isExists)
+            {
+                return NotFound();
+            }
+
+            return Ok(await _userService.GetCoachById(id));
+        }
     }
 }
