@@ -10,11 +10,13 @@ namespace Basketball.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IJwtTokenService _jwtTokenService;
+        private readonly ITrainingPlanRepository _trainingPlanRepository;
 
-        public UserService(IJwtTokenService jwtTokenService, IUserRepository userRepository)
+        public UserService(IJwtTokenService jwtTokenService, IUserRepository userRepository, ITrainingPlanRepository trainingPlanRepository)
         {
             _jwtTokenService = jwtTokenService;
             _userRepository = userRepository;
+            _trainingPlanRepository = trainingPlanRepository;
         }
 
         public async Task<bool> IsUserCredentialsCorrect(LoginDto loginDto)
@@ -100,7 +102,9 @@ namespace Basketball.Services
         {
             var coaches = await _userRepository.GetApprovedCoaches();
 
-            return coaches.Select(x => new UserCoachDto
+            var trainingPlansCount = await _trainingPlanRepository.GetTrainingPlansCountByCoachId(coaches.Select(x => x.Id).ToList());
+
+            var allCoaches = coaches.Select(x => new UserCoachDto
             {
                 Id = x.Id,
                 FullName = string.Format("{0} {1}", x.Name, x.Surname),
@@ -110,8 +114,43 @@ namespace Basketball.Services
                 Specialization = x.Specialization!,
                 Rating = x.Rating!,
                 CoachStatus = x.CoachStatus!,
-                RegisterDate = x.RegisterDate
-            }).ToList();
+                RegisterDate = x.RegisterDate,
+                Description = x.Description,
+                TrainingPlansCount = trainingPlansCount.TryGetValue(x.Id, out int value) ? value : 0
+            });
+
+            return allCoaches.ToList();
+        }
+
+        public async Task<UserCoachDto> GetCoachById(Guid id)
+        {
+            var coach = await _userRepository.GetUserById(id);
+
+            var trainingPlans = await _trainingPlanRepository.GetAllByCoachId(id);
+
+            return new UserCoachDto
+            {
+                Id = coach.Id,
+                FullName = string.Format("{0} {1}", coach.Name, coach.Surname),
+                Email = coach.Email,
+                BirthDate = coach.BirthDate,
+                Education = coach.Education!,
+                Specialization = coach.Specialization!,
+                Rating = coach.Rating!,
+                CoachStatus = coach.CoachStatus!,
+                RegisterDate = coach.RegisterDate,
+                Description = coach.Description,
+                Experience = coach.Experience,
+                PhoneNumber = coach.PhoneNumber,
+                TrainingPlansCount = trainingPlans.Count,
+                TrainingPlans = trainingPlans.Select(x => new TrainingPlanSummaryDto
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    Price = x.Price,
+                    ShortDescription = x.ShortDescription
+                }).ToList()
+            };
         }
     }
 }

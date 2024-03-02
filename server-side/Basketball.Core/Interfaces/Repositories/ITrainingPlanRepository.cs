@@ -10,5 +10,6 @@ namespace Basketball.Core.Interfaces.Repositories
         Task<List<TrainingPlan>> GetAllByCoachId(Guid coachId);
         Task Delete(TrainingPlan trainingPlan);
         Task<TrainingPlan> Update(TrainingPlan trainingPlan);
+        Task<Dictionary<Guid, int>> GetTrainingPlansCountByCoachId(List<Guid> ids);
     }
 }

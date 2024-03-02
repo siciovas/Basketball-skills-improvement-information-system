@@ -1,10 +1,14 @@
-﻿namespace Basketball.Domain.Data.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Basketball.Domain.Data.Entities
 {
     public class TrainingPlan
     {
         public Guid Id { get; set; }
         public required string Title { get; set; }
         public required string Description { get; set; }
+        [MaxLength(40)]
+        public required string ShortDescription { get; set; }
         public double Price { get; set; }
         public bool IsActive { get; set; }
         public int Version { get; set; }

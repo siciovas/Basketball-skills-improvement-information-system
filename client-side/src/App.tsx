@@ -22,7 +22,7 @@ function App() {
           <Route path="newPassword" element={<NewPassword />} />
           <Route path="register" element={<Register />} />
           <Route path="allCoaches" element={<MainCoachesList />} />
-          <Route path="coachDetails" element={<CoachDetails />} />
+          <Route path="coachDetails/:id" element={<CoachDetails />} />
         </Routes>
       <Footer />
       </BrowserRouter>

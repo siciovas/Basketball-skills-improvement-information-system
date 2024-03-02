@@ -26,5 +26,6 @@ namespace Basketball.Domain.Data.Entities
         public string? Specialization { get; set; }
         public double? Rating { get; set; }
         public CoachStatus? CoachStatus { get; set; }
+        public string? Description { get; set; }
     }
 }

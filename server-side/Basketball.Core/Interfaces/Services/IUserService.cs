@@ -12,5 +12,6 @@ namespace Basketball.Core.Interfaces.Services
         Task<bool> IsUserExistsById(Guid id);
         Task<List<UserCoachDto>> GetAllCoaches();
         Task<List<UserCoachDto>> GetApprovedCoaches();
+        Task<UserCoachDto> GetCoachById(Guid id);
     }
 }

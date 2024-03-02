@@ -18,6 +18,11 @@ namespace Basketball.Core.Dtos
         public double? Rating { get; set; }
         public CoachStatus? CoachStatus { get; set; }
         public DateOnly RegisterDate { get; set; }
+        public string? Description { get; set; }
+        public int? Experience { get; set; }
+        public string? PhoneNumber { get; set; }
+        public int TrainingPlansCount { get; set; }
+        public List<TrainingPlanSummaryDto> TrainingPlans { get; set; } = [];
 
     }
 }

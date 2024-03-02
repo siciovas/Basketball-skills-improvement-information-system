@@ -14,7 +14,7 @@ import {
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { URL_ADDRESS, Unauthorized } from "../Helpers/constants";
 import toast from "react-hot-toast";
-import { CoachesTypes } from "../Types/CoachesTypes";
+import { CoachesTypes } from "../Types/types";
 import eventBus from "../Helpers/eventBus";
 import CoachFilter from "../components/CoachFilter";
 
