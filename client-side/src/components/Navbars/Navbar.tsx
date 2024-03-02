@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import {
   ADMIN_ROLE,
   STUDENT_ROLE,
-  TEACHER_ROLE,
+  COACH_ROLE,
 } from "../../Helpers/constants";
 import AdminNavbar from "./AdminNavbar";
 import GuestNavbar from "./GuestNavbar";
 import StudentNavbar from "./StudentNavbar";
-import TeacherNavbar from "./TeacherNavbar";
+import TeacherNavbar from "./CoachNavbar";
 import eventBus from "../../Helpers/eventBus";
 
 const Navbar = () => {
@@ -21,6 +21,11 @@ const Navbar = () => {
     });
   }, []);
 
+  const logout = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+    e.preventDefault();
+    eventBus.dispatch("logOut", "");
+  };
+
   return (
     <>
       {!token ? (
@@ -31,17 +36,17 @@ const Navbar = () => {
         <>
           {(role === STUDENT_ROLE && (
             <>
-              <StudentNavbar />
+              <StudentNavbar logOut={logout} />
             </>
           )) ||
             (role === ADMIN_ROLE && (
               <>
-                <AdminNavbar />
+                <AdminNavbar logOut={logout} />
               </>
             )) ||
-            (role === TEACHER_ROLE && (
+            (role === COACH_ROLE && (
               <>
-                <TeacherNavbar />
+                <TeacherNavbar logOut={logout} />
               </>
             ))}
         </>

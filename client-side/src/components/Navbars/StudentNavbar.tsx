@@ -1,7 +1,16 @@
-import { Box, Flex } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+} from "@chakra-ui/react";
 import MainNavBar from "./MainNavbar";
+import { NavbarProps } from "./types";
 
-const StudentNavbar = () => {
+const StudentNavbar = ({ logOut }: NavbarProps) => {
   return (
     <Flex
       w="100%"
@@ -12,9 +21,17 @@ const StudentNavbar = () => {
     >
       <MainNavBar />
       <Flex mr={5} alignItems="center" gap={5}>
-        <Box>Mano treniruotės</Box>
-        <Box cursor="pointer" className="fa-solid fa-user fa-xl"></Box>
-        <Box cursor="pointer" className="fa-solid fa-cart-shopping fa-xl"></Box>
+        <Menu>
+          <MenuButton as={Button} rounded="full">
+            <Box className="fa-solid fa-user fa-xl"></Box>
+          </MenuButton>
+          <MenuList>
+            <MenuItem>Profilis</MenuItem>
+            <MenuItem>Mano treniruotės</MenuItem>
+            <MenuItem>Krepšelis</MenuItem>
+            <MenuItem onClick={(e) =>logOut(e)}>Atsijungti</MenuItem>
+          </MenuList>
+        </Menu>
       </Flex>
     </Flex>
   );
