@@ -22,5 +22,6 @@ namespace Basketball.Core.Dtos
         public Education? Education { get; set; }
         public int? Experience { get; set; }
         public string? Specialization { get; set; }
+        public string? Description { get; set; }
     }
 }

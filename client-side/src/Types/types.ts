@@ -24,3 +24,20 @@ export interface TrainingPlanSummary {
   price: number;
   shortDescription: string;
 }
+
+export interface User {
+  name?: string | undefined;
+  surname?: string | undefined;
+  email?: string | undefined;
+  phoneNumber?: string | undefined;
+  birthDate?: string | undefined;
+  password?: string | undefined;
+  height?: number | undefined;
+  weight?: number | undefined;
+  footSize?: number | undefined;
+  metabolicAge?: number | undefined;
+  education?: string | undefined;
+  experience?: number | undefined;
+  specialization?: number | undefined;
+  description?: string | undefined;
+}

@@ -15,8 +15,11 @@ const GuestNavbar = () => {
     >
       <MainNavBar />
       <Flex mr={5} alignItems="center" gap={5}>
-        <Box cursor="pointer" className="fa-solid fa-user fa-xl" onClick={() => navigate('/login')}></Box>
-        <Box cursor="pointer" className="fa-solid fa-cart-shopping fa-xl"></Box>
+        <Box
+          cursor="pointer"
+          className="fa-solid fa-user fa-xl"
+          onClick={() => navigate("/login")}
+        ></Box>
       </Flex>
     </Flex>
   );

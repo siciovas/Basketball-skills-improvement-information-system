@@ -100,7 +100,7 @@ const MainCoachesList = () => {
                         src="https://m.basketnews.lt/paveikslelis-25361-crop700x700.jpg"
                       ></Image>
                     </Box>
-                    <Flex flexDir="column" gap={2}>
+                    <Flex flexDir="column" gap={2} w="100%">
                       <Heading size="sm">{coach.fullName}</Heading>
                       <Box>{coach.specialization}</Box>
                       <Box minH={12} wordBreak="break-word">

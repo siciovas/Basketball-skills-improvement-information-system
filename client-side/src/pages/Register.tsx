@@ -9,77 +9,36 @@ import {
   Heading,
   Input,
   Select,
+  Textarea,
 } from "@chakra-ui/react";
 import toast from "react-hot-toast";
-import { STUDENT_ROLE, TEACHER_ROLE, URL_ADDRESS } from "../Helpers/constants";
+import { STUDENT_ROLE, COACH_ROLE, URL_ADDRESS } from "../Helpers/constants";
 import { useNavigate } from "react-router-dom";
+import { User } from "../Types/types";
+
+type eventHandleChange<T extends HTMLElement> = ChangeEvent<T>;
 
 const Register = () => {
   const navigate = useNavigate();
-  const [isTeacher, setIsTeacher] = useState(false);
+  const [isCoach, setIsCoach] = useState(false);
+  const [formState, setFormState] = useState<User>();
   const [isInitWindow, setIsInitWindow] = useState(true);
 
-  const [name, setName] = useState<string>();
-  const [surname, setSurname] = useState<string>();
-  const [email, setEmail] = useState<string>();
-  const [phoneNumber, setPhoneNumber] = useState<string>();
-  const [birthDate, setBirthDate] = useState<string>();
-  const [password, setPassword] = useState<string>();
-
-  //For student
-  const [height, setHeight] = useState<number>();
-  const [weight, setWeight] = useState<number>();
-  const [footSize, setFootSize] = useState<number>();
-  const [metabolicAge, setMetabolicAge] = useState<number>();
-
-  //For coach
-  const [education, setEducation] = useState<string>();
-  const [experience, setExperience] = useState<number>();
-  const [specialization, setSpecialization] = useState<string>();
-
-  const onNameChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setName(e.target.value as string);
-  };
-  const onSurnameChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setSurname(e.target.value as string);
-  };
-  const onEmailChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setEmail(e.target.value as string);
-  };
-  const onPhoneNumberChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setPhoneNumber(e.target.value as string);
-  };
-  const onBirthdayChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setBirthDate(e.target.value);
-  };
-  const onPasswordChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setPassword(e.target.value as string);
-  };
-  const onHeightChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setHeight(e.target.valueAsNumber as number);
-  };
-  const onWeightChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setWeight(e.target.valueAsNumber as number);
-  };
-  const onFootSizeChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setFootSize(e.target.valueAsNumber as number);
-  };
-  const onMetabolicAgeChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setMetabolicAge(e.target.valueAsNumber as number);
-  };
-  const onEducationChange = (e: ChangeEvent<HTMLSelectElement>): void => {
-    setEducation(e.target.value as string);
-  };
-  const onExperienceChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setExperience(e.target.valueAsNumber as number);
-  };
-  const onSpecializationChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setSpecialization(e.target.value as string);
+  const handleFormInputChange = (
+    e: eventHandleChange<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+    isNumber: boolean
+  ) => {
+    const value = isNumber
+      ? (e.target.value as unknown as number)
+      : e.target.value;
+    setFormState({ ...formState, [e.target.name]: value });
   };
 
   const handleStateChange = (value: boolean) => {
     setIsInitWindow(false);
-    setIsTeacher(value);
+    setIsCoach(value);
   };
 
   const Registration = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
@@ -90,20 +49,21 @@ const Register = () => {
       },
       method: "POST",
       body: JSON.stringify({
-        name,
-        surname,
-        email,
-        role: isTeacher ? TEACHER_ROLE : STUDENT_ROLE,
-        phoneNumber,
-        birthDate,
-        password,
-        height,
-        weight,
-        footSize,
-        metabolicAge,
-        education,
-        experience,
-        specialization,
+        name: formState?.name,
+        surname: formState?.surname,
+        email: formState?.email,
+        role: isCoach ? COACH_ROLE : STUDENT_ROLE,
+        phoneNumber: formState?.phoneNumber,
+        birthDate: formState?.birthDate,
+        password: formState?.password,
+        height: formState?.height,
+        weight: formState?.weight,
+        footSize: formState?.footSize,
+        metabolicAge: formState?.metabolicAge,
+        education: formState?.education,
+        experience: formState?.experience,
+        specialization: formState?.specialization,
+        description: formState?.description
       }),
     });
     if (response.status === 201) {
@@ -119,7 +79,7 @@ const Register = () => {
       <Flex p={5} gap={5} border="solid" flexDir="column" alignItems="center">
         <Heading>Registruotis</Heading>
         <Box>
-          Užpildykite {isTeacher ? "trenerio" : "krepšininko"} registracijos
+          Užpildykite {isCoach ? "trenerio" : "krepšininko"} registracijos
           duomenis
         </Box>
         <Flex>
@@ -162,8 +122,9 @@ const Register = () => {
                 <Input
                   type="text"
                   mb={5}
+                  name="name"
                   onChange={(e) => {
-                    onNameChange(e);
+                    handleFormInputChange(e, false);
                   }}
                   isRequired
                 />
@@ -171,8 +132,9 @@ const Register = () => {
                 <Input
                   type="text"
                   mb={5}
+                  name="surname"
                   onChange={(e) => {
-                    onSurnameChange(e);
+                    handleFormInputChange(e, false);
                   }}
                   isRequired
                 />
@@ -180,8 +142,9 @@ const Register = () => {
                 <Input
                   type="email"
                   mb={5}
+                  name="email"
                   onChange={(e) => {
-                    onEmailChange(e);
+                    handleFormInputChange(e, false);
                   }}
                   isRequired
                 />
@@ -189,8 +152,9 @@ const Register = () => {
                 <Input
                   type="date"
                   mb={5}
+                  name="birthDate"
                   onChange={(e) => {
-                    onBirthdayChange(e);
+                    handleFormInputChange(e, false);
                   }}
                   isRequired
                 />
@@ -198,18 +162,27 @@ const Register = () => {
                 <Input
                   type="text"
                   mb={5}
+                  name="phoneNumber"
                   onChange={(e) => {
-                    onPhoneNumberChange(e);
+                    handleFormInputChange(e, false);
                   }}
                   isRequired
                 />
-                {isTeacher ? (
+                {isCoach ? (
                   <>
+                    <FormLabel>Aprašymas</FormLabel>
+                    <Textarea
+                      name="description"
+                      onChange={(e) => {
+                        handleFormInputChange(e, false);
+                      }}
+                    ></Textarea>
                     <FormLabel>Išsilavinimas</FormLabel>
                     <Select
                       mb={5}
+                      name="education"
                       onChange={(e) => {
-                        onEducationChange(e);
+                        handleFormInputChange(e, false);
                       }}
                       isRequired
                       defaultValue=""
@@ -230,8 +203,9 @@ const Register = () => {
                     <Input
                       type="number"
                       mb={5}
+                      name="experience"
                       onChange={(e) => {
-                        onExperienceChange(e);
+                        handleFormInputChange(e, true);
                       }}
                       isRequired
                     />
@@ -239,8 +213,9 @@ const Register = () => {
                     <Input
                       type="text"
                       mb={5}
+                      name="specialization"
                       onChange={(e) => {
-                        onSpecializationChange(e);
+                        handleFormInputChange(e, false);
                       }}
                       isRequired
                     />
@@ -248,17 +223,9 @@ const Register = () => {
                     <Input
                       type="password"
                       mb={5}
+                      name="password"
                       onChange={(e) => {
-                        onPasswordChange(e);
-                      }}
-                      isRequired
-                    />
-                    <FormLabel>Pakartoti slaptažodį</FormLabel>
-                    <Input
-                      type="password"
-                      mb={5}
-                      onChange={(e) => {
-                        onPasswordChange(e);
+                        handleFormInputChange(e, false);
                       }}
                       isRequired
                     />
@@ -277,8 +244,9 @@ const Register = () => {
                     <Input
                       type="number"
                       mb={5}
+                      name="height"
                       onChange={(e) => {
-                        onHeightChange(e);
+                        handleFormInputChange(e, true);
                       }}
                       isRequired
                     />
@@ -286,8 +254,9 @@ const Register = () => {
                     <Input
                       type="number"
                       mb={5}
+                      name="weight"
                       onChange={(e) => {
-                        onWeightChange(e);
+                        handleFormInputChange(e, true);
                       }}
                       isRequired
                     />
@@ -295,8 +264,9 @@ const Register = () => {
                     <Input
                       type="number"
                       mb={5}
+                      name="footSize"
                       onChange={(e) => {
-                        onFootSizeChange(e);
+                        handleFormInputChange(e, true);
                       }}
                       isRequired
                     />
@@ -304,8 +274,9 @@ const Register = () => {
                     <Input
                       type="text"
                       mb={5}
+                      name="metabolicAge"
                       onChange={(e) => {
-                        onMetabolicAgeChange(e);
+                        handleFormInputChange(e, true);
                       }}
                       isRequired
                     />
@@ -313,17 +284,9 @@ const Register = () => {
                     <Input
                       type="password"
                       mb={5}
+                      name="password"
                       onChange={(e) => {
-                        onPasswordChange(e);
-                      }}
-                      isRequired
-                    />
-                    <FormLabel>Pakartoti slaptažodį</FormLabel>
-                    <Input
-                      type="password"
-                      mb={5}
-                      onChange={(e) => {
-                        onPasswordChange(e);
+                        handleFormInputChange(e, false);
                       }}
                       isRequired
                     />

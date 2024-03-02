@@ -72,7 +72,8 @@ namespace Basketball.Services
                 Height = user.Height,
                 Weight = user.Weight,
                 FootSize = user.FootSize,
-                MetabolicAge = user.MetabolicAge
+                MetabolicAge = user.MetabolicAge,
+                Description = user.Description,
             };
 
             var createdUser = await _userRepository.Create(newUser);
