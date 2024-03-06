@@ -6,32 +6,44 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  Image,
 } from "@chakra-ui/react";
-import MainNavBar from "./MainNavbar";
 import { NavbarProps } from "./types";
+import { useNavigate } from "react-router-dom";
 
 const AdminNavbar = ({ logOut }: NavbarProps) => {
+  const navigate = useNavigate();
+
   return (
-    <Flex
-      w="100%"
-      py={2}
-      justifyContent="space-between"
-      borderBottom="1px"
-      borderBottomColor="black"
-    >
-      <MainNavBar />
-      <Flex mr={5} alignItems="center" gap={5}>
-        <Menu>
-          <MenuButton as={Button} rounded="full">
-            <Box className="fa-solid fa-user fa-xl"></Box>
-          </MenuButton>
-          <MenuList>
-            <MenuItem>Profilis</MenuItem>
-            <MenuItem onClick={(e) => logOut(e)}>Atsijungti</MenuItem>
-          </MenuList>
-        </Menu>
+    <>
+      <Flex
+        w="100%"
+        py={2}
+        justifyContent="space-between"
+        borderBottom="1px"
+        borderBottomColor="black"
+      >
+        <Flex>
+          <Image ml={5} h={45} src="/logo.ico" cursor="pointer" onClick={() => navigate('/')} />
+        </Flex>
+        <Flex gap={10} mr={5} alignItems="center">
+        <Box cursor="pointer" onClick={() => navigate("/allCoaches")}>TRENERIAI</Box>
+          <Box cursor="pointer" >FINANSAI</Box>
+          <Box cursor="pointer">ŽINUTĖS</Box>
+        </Flex>
+        <Flex mr={5} alignItems="center" gap={5}>
+          <Menu>
+            <MenuButton as={Button} rounded="full">
+              <Box className="fa-solid fa-user fa-xl"></Box>
+            </MenuButton>
+            <MenuList>
+              <MenuItem>Profilis</MenuItem>
+              <MenuItem onClick={(e) => logOut(e)}>Atsijungti</MenuItem>
+            </MenuList>
+          </Menu>
+        </Flex>
       </Flex>
-    </Flex>
+    </>
   );
 };
 
