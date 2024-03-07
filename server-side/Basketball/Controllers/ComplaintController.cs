@@ -22,6 +22,9 @@ namespace Basketball.Controllers
         [Authorize(Roles = "Student")]
         public async Task<IActionResult> Post(ComplaintPostDto complaintDto)
         {
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
+            complaintDto.StudentId = userId;
+
             var complaint = await _complaintService.Create(complaintDto);
 
             return CreatedAtAction(nameof(Post), complaint);
@@ -61,6 +64,15 @@ namespace Basketball.Controllers
             {
                 complaints = await _complaintService.GetAllComplaintsByStudentId(userId);
             }
+
+            return Ok(complaints);
+        }
+
+        [HttpGet("coachComplaints/{id}")]
+        [Authorize]
+        public async Task<IActionResult> GetUserComplaints(Guid id)
+        {
+            var complaints = await _complaintService.GetAllComplaintsByCoachId(id);
 
             return Ok(complaints);
         }

@@ -1,5 +1,5 @@
 import "./App.css";
-import { Routes, Route, BrowserRouter } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Login from "./pages/Login";
 import NewPassword from "./pages/NewPassword";
 import PasswordRecovery from "./pages/PasswordRecovery";
@@ -14,15 +14,17 @@ import { Unauthorized } from "./Helpers/constants";
 import eventBus from "./Helpers/eventBus";
 import CoachesList from "./pages/CoachesList";
 import ManageCoach from "./pages/coaches/details/ManageCoach";
+import Complaint from "./pages/Complaint";
 
 function App() {
+  const navigate = useNavigate();
   const logOut = useCallback((data: string) => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("role");
-    window.location.assign("/");
     if (data === Unauthorized) {
       toast.error("Baigėsi sesijos laikas. Prisijunkite");
     }
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("role");
+    navigate("/login");
   }, []);
 
   useEffect(() => {
@@ -40,20 +42,19 @@ function App() {
   return (
     <>
       <Toaster />
-      <BrowserRouter>
-        <Navbar />
-        <Routes>
-          <Route path="login" element={<Login />} />
-          <Route path="recover" element={<PasswordRecovery />} />
-          <Route path="newPassword" element={<NewPassword />} />
-          <Route path="register" element={<Register />} />
-          <Route path="allCoaches" element={<MainCoachesList />} />
-          <Route path="coachDetails/:id" element={<CoachDetails />} />
-          <Route path="manageCoaches" element={<CoachesList />} />
-          <Route path="manageCoach/:id" element={<ManageCoach />} />
-        </Routes>
-        <Footer />
-      </BrowserRouter>
+      <Navbar />
+      <Routes>
+        <Route path="login" element={<Login />} />
+        <Route path="recover" element={<PasswordRecovery />} />
+        <Route path="newPassword" element={<NewPassword />} />
+        <Route path="register" element={<Register />} />
+        <Route path="allCoaches" element={<MainCoachesList />} />
+        <Route path="coachDetails/:id" element={<CoachDetails />} />
+        <Route path="manageCoaches" element={<CoachesList />} />
+        <Route path="manageCoach/:id" element={<ManageCoach />} />
+        <Route path="complaint/:id" element={<Complaint />} />
+      </Routes>
+      <Footer />
     </>
   );
 }
