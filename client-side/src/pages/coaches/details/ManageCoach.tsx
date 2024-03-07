@@ -24,20 +24,21 @@ import {
   Unauthorized,
 } from "../../../Helpers/constants";
 import eventBus from "../../../Helpers/eventBus";
-import { CoachProfile } from "../../../Types/types";
-
-const array = ["", "", ""];
+import { CoachProfile, Complaint } from "../../../Types/types";
 
 const ManageCoach = () => {
   const [coach, setCoach] = useState<CoachProfile>();
+  const [complaints, setComplaints] = useState<Complaint[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const { id } = useParams();
+  const token = localStorage.getItem("accessToken");
 
   const getCoachDetails = useCallback(async () => {
     const response = await fetch(URL_ADDRESS + `user/coachDetails/${id}`, {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       method: "GET",
     });
@@ -45,6 +46,7 @@ const ManageCoach = () => {
       eventBus.dispatch("logOut", Unauthorized);
     } else if (response.status === 200) {
       const coach = await response.json();
+      await getCoachComplaints();
       console.log(coach);
       setCoach(coach);
       setIsLoading(false);
@@ -53,9 +55,28 @@ const ManageCoach = () => {
     }
   }, []);
 
+  const getCoachComplaints = async () => {
+    const response = await fetch(
+      URL_ADDRESS + `complaint/coachComplaints/${id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        method: "GET",
+      }
+    );
+    if (response.status === 200) {
+      const complaints = await response.json();
+      setComplaints(complaints);
+    } else {
+      toast.error("Netikėta klaida!");
+    }
+  };
+
   useEffect(() => {
     getCoachDetails();
-  }, [getCoachDetails]);
+  }, []);
 
   return (
     <Container minW={1400}>
@@ -70,7 +91,14 @@ const ManageCoach = () => {
             Grįžti į trenerių sąrašą
           </Box>
           <Box w={1000} m="auto" mt={5}>
-            <Box boxShadow="dark-lg" w={600} m="auto" borderRadius="xl" border="solid" borderColor="#9e9d9d">
+            <Box
+              boxShadow="dark-lg"
+              w={600}
+              m="auto"
+              borderRadius="xl"
+              border="solid"
+              borderColor="#9e9d9d"
+            >
               <Flex gap={5} mt={2}>
                 <Box alignSelf="center" h={60} w={60} ml={5}>
                   <Image
@@ -168,7 +196,7 @@ const ManageCoach = () => {
             <Box mt={5}>
               <Heading size="sm">Trenerio gauti skundai</Heading>
               <Accordion allowToggle mt={5}>
-                {array.map((_, index) => {
+                {complaints.map((complaint, index) => {
                   return (
                     <AccordionItem>
                       <AccordionButton
@@ -186,31 +214,29 @@ const ManageCoach = () => {
                               <Box flexBasis="50%" fontWeight="bold">
                                 Data:
                               </Box>
-                              <Box flexBasis="50%">2023-01-01</Box>
+                              <Box flexBasis="50%">{complaint.date}</Box>
                             </Flex>
                             <Flex>
                               <Box flexBasis="50%" fontWeight="bold">
                                 Skundo autorius:
                               </Box>
-                              <Box flexBasis="50%">IGNAS ILINČIUS</Box>
+                              <Box flexBasis="50%">
+                                {complaint.studentFullName}
+                              </Box>
                             </Flex>
                             <Flex>
                               <Box flexBasis="50%" fontWeight="bold">
                                 Treneris:
                               </Box>
-                              <Box flexBasis="50%">Sarunas Jasikevicius</Box>
+                              <Box flexBasis="50%">
+                                {complaint.coachFullName}
+                              </Box>
                             </Flex>
                           </Flex>
                           <Heading mt={10} size="sm">
                             Skundo tekstas
                           </Heading>
-                          <Box mt={3}>
-                            Lorem Ipsum is simply dummy text of the printing and
-                            typesetting industry. Lorem Ipsum has been the
-                            industry's standard dummy text ever since the 1500s,
-                            when an unknown printer took a galley of type and
-                            scrambled it to make a type specimen book.{" "}
-                          </Box>
+                          <Box mt={3}>{complaint.text}</Box>
                         </Box>
                       </AccordionPanel>
                     </AccordionItem>

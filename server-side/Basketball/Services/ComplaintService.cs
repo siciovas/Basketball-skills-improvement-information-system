@@ -20,7 +20,8 @@ namespace Basketball.Services
             {
                 Text = complaintDto.Text,
                 StudentId = complaintDto.StudentId,
-                CoachId = complaintDto.CoachId
+                CoachId = complaintDto.CoachId,
+                Date = DateOnly.FromDateTime(DateTime.Now)
             };
 
             var createdComplaint = await _complaintRepository.Create(newComplaint);
@@ -62,6 +63,7 @@ namespace Basketball.Services
             {
                 Id = x.Id,
                 Text = x.Text,
+                Date = x.Date,
                 CoachFullName = string.Format("{0} {1}", x.Coach.Name, x.Coach.Surname),
                 StudentFullName = string.Format("{0} {1}", x.Student.Name, x.Student.Surname)
             }).ToList();

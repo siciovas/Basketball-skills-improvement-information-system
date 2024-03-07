@@ -41,3 +41,11 @@ export interface User {
   specialization?: number | undefined;
   description?: string | undefined;
 }
+
+export interface Complaint {
+  id: string;
+  text: string;
+  date: string;
+  studentFullName: string;
+  coachFullName: string;
+}
