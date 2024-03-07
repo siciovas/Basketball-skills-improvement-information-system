@@ -63,35 +63,57 @@ const MainCoachesList = () => {
           <HStack justifyContent="end" spacing={10}>
             <Flex>
               <Menu closeOnSelect={false}>
-                <MenuButton as={Button}>
+                <MenuButton as={Button} border="solid" borderColor="#9e9d9d" backgroundColor="#E2E2E2">
                   <Box className="fa-solid fa-filter"></Box>
                 </MenuButton>
-                <MenuList minWidth="240px">
+                <MenuList
+                  minWidth="240px"
+                  backgroundColor="#E2E2E2"
+                  border="solid"
+                  borderColor="#9e9d9d"
+                >
                   <MenuOptionGroup type="checkbox" onChange={() => {}}>
-                    <MenuItemOption value="rejected">
+                    <MenuItemOption value="rejected" backgroundColor="#E2E2E2">
                       Geriausiai įvertinti
                     </MenuItemOption>
-                    <MenuItemOption value="approved">
+                    <MenuItemOption value="approved" backgroundColor="#E2E2E2">
                       Populiariausi
                     </MenuItemOption>
-                    <MenuItemOption value="pending">
+                    <MenuItemOption value="pending" backgroundColor="#E2E2E2">
                       Daugiausiai planų
                     </MenuItemOption>
                   </MenuOptionGroup>
                 </MenuList>
               </Menu>
             </Flex>
-            <Select w={20} defaultValue={10}>
-              <option value="10">10</option>
-              <option value="20">20</option>
-              <option value="30">30</option>
+            <Select
+              w={20}
+              defaultValue={10}
+              border="solid"
+              borderColor="#9e9d9d"
+            >
+              <option value="10" style={{ backgroundColor: "#E2E2E2" }}>
+                10
+              </option>
+              <option value="20" style={{ backgroundColor: "#E2E2E2" }}>
+                20
+              </option>
+              <option value="30" style={{ backgroundColor: "#E2E2E2" }}>
+                30
+              </option>
             </Select>
           </HStack>
 
           <SimpleGrid columns={3} spacing={10} mt={10}>
             {coaches.map((coach) => {
               return (
-                <Box border="solid" minH={60} p={2}>
+                <Box
+                  border="solid"
+                  borderColor="#9e9d9d"
+                  boxShadow="dark-lg"
+                  minH={60}
+                  p={2}
+                >
                   <Flex dir="column" pos="relative" gap={3}>
                     <Box alignSelf="center" h={40} w={60}>
                       <Image
@@ -109,7 +131,9 @@ const MainCoachesList = () => {
                       <Flex backgroundColor="gray.200" gap={5} px={2}>
                         <Flex flexDir="column" alignItems="center">
                           <Box>Planai</Box>
-                          <Box fontWeight="bold">{coach.trainingPlansCount}</Box>
+                          <Box fontWeight="bold">
+                            {coach.trainingPlansCount}
+                          </Box>
                         </Flex>
                         <Flex flexDir="column" alignItems="center">
                           <Box>Klientai</Box>

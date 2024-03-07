@@ -12,6 +12,8 @@ import CoachDetails from "./pages/coaches/details/CoachDetails";
 import { useCallback, useEffect } from "react";
 import { Unauthorized } from "./Helpers/constants";
 import eventBus from "./Helpers/eventBus";
+import CoachesList from "./pages/CoachesList";
+import ManageCoach from "./pages/coaches/details/ManageCoach";
 
 function App() {
   const logOut = useCallback((data: string) => {
@@ -47,6 +49,8 @@ function App() {
           <Route path="register" element={<Register />} />
           <Route path="allCoaches" element={<MainCoachesList />} />
           <Route path="coachDetails/:id" element={<CoachDetails />} />
+          <Route path="manageCoaches" element={<CoachesList />} />
+          <Route path="manageCoach/:id" element={<ManageCoach />} />
         </Routes>
         <Footer />
       </BrowserRouter>
