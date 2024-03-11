@@ -27,7 +27,7 @@ const AdminNavbar = ({ logOut }: NavbarProps) => {
           <Image ml={5} h={45} src="/logo.ico" cursor="pointer" onClick={() => navigate('/')} />
         </Flex>
         <Flex gap={10} mr={5} alignItems="center">
-        <Box cursor="pointer" onClick={() => navigate("/allCoaches")}>TRENERIAI</Box>
+        <Box cursor="pointer" onClick={() => navigate("/manageCoaches")}>TRENERIAI</Box>
           <Box cursor="pointer" >FINANSAI</Box>
           <Box cursor="pointer">ŽINUTĖS</Box>
         </Flex>
