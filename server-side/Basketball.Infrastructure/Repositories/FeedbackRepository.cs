@@ -13,6 +13,7 @@ namespace Basketball.Infrastructure.Repositories
         {
             _db = db;
         }
+
         public async Task<Feedback> Create(Feedback feedback)
         {
             var createdFeedback = _db.Add(feedback);

@@ -15,6 +15,7 @@ namespace Basketball.Infrastructure.Database
         public DbSet<Skill> Skills { get; set; }
         public DbSet<ExerciseSkill> ExerciseSkill { get; set; }
         public DbSet<TrainingPlanSkill> TrainingPlanSkill { get; set; }
+        public DbSet<PasswordRecovery> PasswordRecovery { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Skill>()
