@@ -6,6 +6,10 @@ on:
     branches:
     - main
 
+env:
+  AZURE_WEBAPP_NAME: bsdis
+  AZURE-WEBAPP-PACKAGE-PATH: "./publish"
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -26,4 +30,11 @@ jobs:
 
       - name: Publish
         run: dotnet publish ./server-side/Basketball/Basketball.sln --configuration Release --no-build
+
+      - name: Deployment
+        uses: azure/webapps deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: '<publishData><publishProfile profileName="bsdis - Web Deploy" publishMethod="MSDeploy" publishUrl="bsdis.scm.azurewebsites.net:443" msdeploySite="bsdis" userName="$bsdis" userPWD="xDgDaaSnC4SH0tpd8wiCWqG4xSvzBEp5qGlzZDsuW1HAf3mf6RYg5KALHkLP" destinationAppUrl="https://bsdis.azurewebsites.net" SQLServerDBConnectionString="" mySQLDBConnectionString="server=bsdi.mysql.database.azure.com; port=3306; database=bsdi; uid=bsdiBakis; pwd=Xu5R4ZYzqyK7HfsTjnLEVr" hostingProviderForumLink="" controlPanelLink="https://portal.azure.com" webSystem="WebSites"><databases><add name="DefaultConnection" connectionString="server=bsdi.mysql.database.azure.com; port=3306; database=bsdi; uid=bsdiBakis; pwd=Xu5R4ZYzqyK7HfsTjnLEVr" providerName="MySql.Data.MySqlClient" type="MySql" /></databases></publishProfile><publishProfile profileName="bsdis - FTP" publishMethod="FTP" publishUrl="ftps://waws-prod-am2-393.ftp.azurewebsites.windows.net/site/wwwroot" ftpPassiveMode="True" userName="bsdis\$bsdis" userPWD="xDgDaaSnC4SH0tpd8wiCWqG4xSvzBEp5qGlzZDsuW1HAf3mf6RYg5KALHkLP" destinationAppUrl="https://bsdis.azurewebsites.net" SQLServerDBConnectionString="" mySQLDBConnectionString="server=bsdi.mysql.database.azure.com; port=3306; database=bsdi; uid=bsdiBakis; pwd=Xu5R4ZYzqyK7HfsTjnLEVr" hostingProviderForumLink="" controlPanelLink="https://portal.azure.com" webSystem="WebSites"><databases><add name="DefaultConnection" connectionString="server=bsdi.mysql.database.azure.com; port=3306; database=bsdi; uid=bsdiBakis; pwd=Xu5R4ZYzqyK7HfsTjnLEVr" providerName="MySql.Data.MySqlClient" type="MySql" /></databases></publishProfile><publishProfile profileName="bsdis - Zip Deploy" publishMethod="ZipDeploy" publishUrl="bsdis.scm.azurewebsites.net:443" userName="$bsdis" userPWD="xDgDaaSnC4SH0tpd8wiCWqG4xSvzBEp5qGlzZDsuW1HAf3mf6RYg5KALHkLP" destinationAppUrl="https://bsdis.azurewebsites.net" SQLServerDBConnectionString="" mySQLDBConnectionString="server=bsdi.mysql.database.azure.com; port=3306; database=bsdi; uid=bsdiBakis; pwd=Xu5R4ZYzqyK7HfsTjnLEVr" hostingProviderForumLink="" controlPanelLink="https://portal.azure.com" webSystem="WebSites"><databases><add name="DefaultConnection" connectionString="server=bsdi.mysql.database.azure.com; port=3306; database=bsdi; uid=bsdiBakis; pwd=Xu5R4ZYzqyK7HfsTjnLEVr" providerName="MySql.Data.MySqlClient" type="MySql" /></databases></publishProfile></publishData>'
+          package: "${{ env.AZURE_WEBAPP_NAME }}"
 
