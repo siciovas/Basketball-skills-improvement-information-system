@@ -1,0 +1,77 @@
+name: PublishApp
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+    - main
+
+env:
+  AZURE-WEBAPP-NAME: bsdis
+  AZURE-WEBAPP-PACKAGE-PATH: './publish'
+
+jobs:
+  publishBack:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore
+        run: dotnet restore ./server-side/Basketball/Basketball.sln
+
+      - name: Build
+        run: dotnet build ./server-side/Basketball/Basketball.sln --configuration Release --no-restore
+
+      - name: Publish
+        run: dotnet publish ./server-side/Basketball/Basketball.csproj --configuration Release --no-build -o './publish'
+
+      - name: Deployment
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE-WEBAPP-NAME }}
+          publish-profile: '<publishData><publishProfile profileName="bsdis - Web Deploy" publishMethod="MSDeploy" publishUrl="bsdis.scm.azurewebsites.net:443" msdeploySite="bsdis" userName="$bsdis" userPWD="xDgDaaSnC4SH0tpd8wiCWqG4xSvzBEp5qGlzZDsuW1HAf3mf6RYg5KALHkLP" destinationAppUrl="https://bsdis.azurewebsites.net" SQLServerDBConnectionString="" mySQLDBConnectionString="server=bsdi.mysql.database.azure.com; port=3306; database=bsdi; uid=bsdiBakis; pwd=Xu5R4ZYzqyK7HfsTjnLEVr" hostingProviderForumLink="" controlPanelLink="https://portal.azure.com" webSystem="WebSites"><databases><add name="DefaultConnection" connectionString="server=bsdi.mysql.database.azure.com; port=3306; database=bsdi; uid=bsdiBakis; pwd=Xu5R4ZYzqyK7HfsTjnLEVr" providerName="MySql.Data.MySqlClient" type="MySql" /></databases></publishProfile><publishProfile profileName="bsdis - FTP" publishMethod="FTP" publishUrl="ftps://waws-prod-am2-393.ftp.azurewebsites.windows.net/site/wwwroot" ftpPassiveMode="True" userName="bsdis\$bsdis" userPWD="xDgDaaSnC4SH0tpd8wiCWqG4xSvzBEp5qGlzZDsuW1HAf3mf6RYg5KALHkLP" destinationAppUrl="https://bsdis.azurewebsites.net" SQLServerDBConnectionString="" mySQLDBConnectionString="server=bsdi.mysql.database.azure.com; port=3306; database=bsdi; uid=bsdiBakis; pwd=Xu5R4ZYzqyK7HfsTjnLEVr" hostingProviderForumLink="" controlPanelLink="https://portal.azure.com" webSystem="WebSites"><databases><add name="DefaultConnection" connectionString="server=bsdi.mysql.database.azure.com; port=3306; database=bsdi; uid=bsdiBakis; pwd=Xu5R4ZYzqyK7HfsTjnLEVr" providerName="MySql.Data.MySqlClient" type="MySql" /></databases></publishProfile><publishProfile profileName="bsdis - Zip Deploy" publishMethod="ZipDeploy" publishUrl="bsdis.scm.azurewebsites.net:443" userName="$bsdis" userPWD="xDgDaaSnC4SH0tpd8wiCWqG4xSvzBEp5qGlzZDsuW1HAf3mf6RYg5KALHkLP" destinationAppUrl="https://bsdis.azurewebsites.net" SQLServerDBConnectionString="" mySQLDBConnectionString="server=bsdi.mysql.database.azure.com; port=3306; database=bsdi; uid=bsdiBakis; pwd=Xu5R4ZYzqyK7HfsTjnLEVr" hostingProviderForumLink="" controlPanelLink="https://portal.azure.com" webSystem="WebSites"><databases><add name="DefaultConnection" connectionString="server=bsdi.mysql.database.azure.com; port=3306; database=bsdi; uid=bsdiBakis; pwd=Xu5R4ZYzqyK7HfsTjnLEVr" providerName="MySql.Data.MySqlClient" type="MySql" /></databases></publishProfile></publishData>'
+          package: "${{ env.AZURE-WEBAPP-PACKAGE-PATH }}"
+
+  publishFront:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./client-side
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node.js version
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+
+      - name: Install dependencies, build, and test
+        run: |
+          npm install
+          npm run build --if-present
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v3
+        with:
+          name: node-app
+          path: ./client-side/dist # This should be your distribution path, not the root path
+
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v3
+        with:
+          name: node-app
+
+      - name: 'Deploy to Azure Web App'
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: bsdis-front
+          publish-profile: '<publishData><publishProfile profileName="bsdis-front - Web Deploy" publishMethod="MSDeploy" publishUrl="bsdis-front.scm.azurewebsites.net:443" msdeploySite="bsdis-front" userName="$bsdis-front" userPWD="gjcthr3uewojXS7FfxDZGykzeKcvPx2RgdpinKCxnF9gB4kFBSbThdrEHlqZ" destinationAppUrl="https://bsdis-front.azurewebsites.net" SQLServerDBConnectionString="" mySQLDBConnectionString="" hostingProviderForumLink="" controlPanelLink="https://portal.azure.com" webSystem="WebSites"><databases /></publishProfile><publishProfile profileName="bsdis-front - FTP" publishMethod="FTP" publishUrl="ftps://waws-prod-db3-283.ftp.azurewebsites.windows.net/site/wwwroot" ftpPassiveMode="True" userName="bsdis-front\$bsdis-front" userPWD="gjcthr3uewojXS7FfxDZGykzeKcvPx2RgdpinKCxnF9gB4kFBSbThdrEHlqZ" destinationAppUrl="https://bsdis-front.azurewebsites.net" SQLServerDBConnectionString="" mySQLDBConnectionString="" hostingProviderForumLink="" controlPanelLink="https://portal.azure.com" webSystem="WebSites"><databases /></publishProfile><publishProfile profileName="bsdis-front - Zip Deploy" publishMethod="ZipDeploy" publishUrl="bsdis-front.scm.azurewebsites.net:443" userName="$bsdis-front" userPWD="gjcthr3uewojXS7FfxDZGykzeKcvPx2RgdpinKCxnF9gB4kFBSbThdrEHlqZ" destinationAppUrl="https://bsdis-front.azurewebsites.net" SQLServerDBConnectionString="" mySQLDBConnectionString="" hostingProviderForumLink="" controlPanelLink="https://portal.azure.com" webSystem="WebSites"><databases /></publishProfile></publishData>'
+          package: './client-side/'
+
