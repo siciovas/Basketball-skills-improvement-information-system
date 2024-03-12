@@ -8,7 +8,7 @@ on:
 
 env:
   AZURE-WEBAPP-NAME: bsdis
-  AZURE-WEBAPP-PACKAGE-PATH: './server-side/Basketball'
+  AZURE-WEBAPP-PACKAGE-PATH: './publish'
 
 jobs:
   publish:
@@ -29,7 +29,7 @@ jobs:
         run: dotnet build ./server-side/Basketball/Basketball.sln --configuration Release --no-restore
 
       - name: Publish
-        run: dotnet publish ./server-side/Basketball/Basketball.csproj --configuration Release --no-build
+        run: dotnet publish ./server-side/Basketball/Basketball.csproj --configuration Release --no-build -o './publish'
 
       - name: Deployment
         uses: azure/webapps-deploy@v2
