@@ -8,7 +8,7 @@ on:
 
 env:
   AZURE-WEBAPP-NAME: bsdis
-  AZURE-WEBAPP-PACKAGE-PATH: "./server-side/Basketball/publish"
+  AZURE-WEBAPP-PACKAGE-PATH: './server-side/Basketball'
 
 jobs:
   publish:
