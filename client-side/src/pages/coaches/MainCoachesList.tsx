@@ -15,7 +15,7 @@ import {
   Spinner,
   Center,
 } from "@chakra-ui/react";
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Container from "../../components/Container";
 import { Coach } from "../../Types/types";
 import toast from "react-hot-toast";
