@@ -40,6 +40,7 @@ const Complaint = () => {
     const response = await fetch(URL_ADDRESS + `user/coachDetails/${id}`, {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       method: "GET",
     });

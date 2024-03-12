@@ -1,5 +1,6 @@
 ﻿using Basketball.Core.Dtos;
 using Basketball.Core.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Basketball.Controllers
@@ -48,9 +49,11 @@ namespace Basketball.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("getCoaches")]
         public async Task<IActionResult> GetCoaches()
         {
+
             if (User.IsInRole("Admin"))
             {
                 return Ok(await _userService.GetAllCoaches());
@@ -63,6 +66,7 @@ namespace Basketball.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("coachDetails/{id}")]
         public async Task<IActionResult> GetCoachDetails(Guid id)
         {

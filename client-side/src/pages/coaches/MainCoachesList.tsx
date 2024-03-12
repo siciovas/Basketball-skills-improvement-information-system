@@ -26,6 +26,7 @@ import { useNavigate } from "react-router-dom";
 const MainCoachesList = () => {
   const [coaches, setCoaches] = useState<Coach[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const token = localStorage.getItem("accessToken");
 
   const navigate = useNavigate();
 
@@ -33,6 +34,7 @@ const MainCoachesList = () => {
     const response = await fetch(URL_ADDRESS + "user/getCoaches", {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       method: "GET",
     });
@@ -63,7 +65,12 @@ const MainCoachesList = () => {
           <HStack justifyContent="end" spacing={10}>
             <Flex>
               <Menu closeOnSelect={false}>
-                <MenuButton as={Button} border="solid" borderColor="#9e9d9d" backgroundColor="#E2E2E2">
+                <MenuButton
+                  as={Button}
+                  border="solid"
+                  borderColor="#9e9d9d"
+                  backgroundColor="#E2E2E2"
+                >
                   <Box className="fa-solid fa-filter"></Box>
                 </MenuButton>
                 <MenuList

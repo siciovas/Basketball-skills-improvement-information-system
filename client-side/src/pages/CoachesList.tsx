@@ -31,6 +31,7 @@ interface FilterProps {
 const CoachesList = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [coaches, setCoaches] = useState<Coach[]>([]);
+  const token = localStorage.getItem("accessToken");
   const [filterData, setFilterData] = useState<FilterProps>({
     from: undefined,
     to: undefined,
@@ -43,6 +44,7 @@ const CoachesList = () => {
     const response = await fetch(URL_ADDRESS + "user/getCoaches", {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       method: "GET",
     });

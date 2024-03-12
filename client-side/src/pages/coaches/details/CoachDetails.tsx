@@ -21,11 +21,13 @@ const CoachDetails = () => {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const { id } = useParams();
+  const token = localStorage.getItem("accessToken");
 
   const getCoachDetails = useCallback(async () => {
     const response = await fetch(URL_ADDRESS + `user/coachDetails/${id}`, {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       method: "GET",
     });
