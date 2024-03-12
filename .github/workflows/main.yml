@@ -6,24 +6,24 @@ on:
     branches:
     - main
 
-  jobs:
-    publish:
-      runs-on: ubuntu-latest
+jobs:
+  publish:
+    runs-on: ubuntu-latest
 
-      steps:
-        - uses: actions/checkout@v3
+    steps:
+      - uses: actions/checkout@v3
 
-        - name: Setup .NET
-          uses: actions/setup-dotnet@v3
-          with:
-            dotnet-version: '8.0.x'
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
 
-        - name: Restore
-          run: dotnet restore ./server-side/Basketball/Basketball.sln
+      - name: Restore
+        run: dotnet restore ./server-side/Basketball/Basketball.sln
 
-        - name: Build
-          run: dotnet build ./server-side/Basketball/Basketball.sln --configuration Release --no-restore
+      - name: Build
+        run: dotnet build ./server-side/Basketball/Basketball.sln --configuration Release --no-restore
 
-        - name: Publish
-          run: dotnet publish ./server-side/Basketball/Basketball.sln --configuration Release --no-build
-  
+      - name: Publish
+        run: dotnet publish ./server-side/Basketball/Basketball.sln --configuration Release --no-build
+
