@@ -29,7 +29,7 @@ jobs:
         run: dotnet build ./server-side/Basketball/Basketball.sln --configuration Release --no-restore
 
       - name: Publish
-        run: dotnet publish ./server-side/Basketball/Basketball.sln --configuration Release --no-build
+        run: dotnet publish ./server-side/Basketball/Basketball.csproj --configuration Release --no-build
 
       - name: Deployment
         uses: azure/webapps-deploy@v2
