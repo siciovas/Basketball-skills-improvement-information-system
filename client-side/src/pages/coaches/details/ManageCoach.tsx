@@ -20,7 +20,6 @@ import {
   APPROVED,
   BLOCKED,
   PENDING,
-  URL_ADDRESS,
   Unauthorized,
 } from "../../../Helpers/constants";
 import eventBus from "../../../Helpers/eventBus";
@@ -35,7 +34,7 @@ const ManageCoach = () => {
   const token = localStorage.getItem("accessToken");
 
   const getCoachDetails = useCallback(async () => {
-    const response = await fetch(URL_ADDRESS + `user/coachDetails/${id}`, {
+    const response = await fetch(import.meta.env.VITE_API_URL + `user/coachDetails/${id}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -57,7 +56,7 @@ const ManageCoach = () => {
 
   const getCoachComplaints = async () => {
     const response = await fetch(
-      URL_ADDRESS + `complaint/coachComplaints/${id}`,
+      import.meta.env.VITE_API_URL + `complaint/coachComplaints/${id}`,
       {
         headers: {
           "Content-Type": "application/json",

@@ -19,7 +19,7 @@ import { useCallback, useEffect, useState } from "react";
 import Container from "../../components/Container";
 import { Coach } from "../../Types/types";
 import toast from "react-hot-toast";
-import { URL_ADDRESS, Unauthorized } from "../../Helpers/constants";
+import { Unauthorized } from "../../Helpers/constants";
 import eventBus from "../../Helpers/eventBus";
 import { useNavigate } from "react-router-dom";
 
@@ -31,7 +31,7 @@ const MainCoachesList = () => {
   const navigate = useNavigate();
 
   const getCoachesList = useCallback(async () => {
-    const response = await fetch(URL_ADDRESS + "user/getCoaches", {
+    const response = await fetch(import.meta.env.VITE_API_URL + "user/getCoaches", {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,

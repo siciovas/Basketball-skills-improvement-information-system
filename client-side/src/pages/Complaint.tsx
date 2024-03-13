@@ -23,7 +23,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
-import { URL_ADDRESS, Unauthorized } from "../Helpers/constants";
+import { Unauthorized } from "../Helpers/constants";
 import toast from "react-hot-toast";
 import eventBus from "../Helpers/eventBus";
 
@@ -37,7 +37,7 @@ const Complaint = () => {
   const token = localStorage.getItem("accessToken");
 
   const getCoachDetails = useCallback(async () => {
-    const response = await fetch(URL_ADDRESS + `user/coachDetails/${id}`, {
+    const response = await fetch(import.meta.env.VITE_API_URL + `user/coachDetails/${id}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -65,7 +65,7 @@ const Complaint = () => {
 
   const submitComplaint = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const response = await fetch(URL_ADDRESS + "complaint", {
+    const response = await fetch(import.meta.env.VITE_API_URL + "complaint", {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,

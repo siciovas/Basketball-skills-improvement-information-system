@@ -14,7 +14,7 @@ import {
   Center,
 } from "@chakra-ui/react";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
-import { URL_ADDRESS, Unauthorized } from "../Helpers/constants";
+import { Unauthorized } from "../Helpers/constants";
 import toast from "react-hot-toast";
 import { Coach } from "../Types/types";
 import eventBus from "../Helpers/eventBus";
@@ -41,7 +41,7 @@ const CoachesList = () => {
   const navigate = useNavigate();
 
   const getCoachesList = useCallback(async () => {
-    const response = await fetch(URL_ADDRESS + "user/getCoaches", {
+    const response = await fetch(import.meta.env.VITE_API_URL + "user/getCoaches", {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,

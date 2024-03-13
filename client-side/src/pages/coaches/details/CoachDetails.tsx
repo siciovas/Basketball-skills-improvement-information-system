@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
-import { URL_ADDRESS, Unauthorized } from "../../../Helpers/constants";
+import { Unauthorized } from "../../../Helpers/constants";
 import eventBus from "../../../Helpers/eventBus";
 import { CoachProfile } from "../../../Types/types";
 
@@ -24,7 +24,7 @@ const CoachDetails = () => {
   const token = localStorage.getItem("accessToken");
 
   const getCoachDetails = useCallback(async () => {
-    const response = await fetch(URL_ADDRESS + `user/coachDetails/${id}`, {
+    const response = await fetch(import.meta.env.VITE_API_URL + `user/coachDetails/${id}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,

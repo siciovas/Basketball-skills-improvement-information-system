@@ -12,7 +12,7 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import toast from "react-hot-toast";
-import { STUDENT_ROLE, COACH_ROLE, URL_ADDRESS } from "../Helpers/constants";
+import { STUDENT_ROLE, COACH_ROLE } from "../Helpers/constants";
 import { useNavigate } from "react-router-dom";
 import { User } from "../Types/types";
 
@@ -43,7 +43,7 @@ const Register = () => {
 
   const Registration = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    const response = await fetch(URL_ADDRESS + "user/register", {
+    const response = await fetch(import.meta.env.VITE_API_URL + "user/register", {
       headers: {
         "Content-Type": "application/json",
       },
