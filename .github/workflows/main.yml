@@ -9,6 +9,7 @@ on:
 env:
   AZURE-WEBAPP-NAME: bsdis
   AZURE-WEBAPP-PACKAGE-PATH: './publish'
+  VITE_API_URL: "https://test.com/"
 
 jobs:
   publishBack:
