@@ -8,15 +8,11 @@ const Footer = () => {
       </Flex>
       <Flex mt={5} justify="center" alignItems="center">
         <i className="fa-solid fa-phone"></i>
-        <Text color="white">
-          +37060000000
-        </Text>
+        <Text color="white">+37060000000</Text>
       </Flex>
       <Flex justify="center" alignItems="center">
         <i className="fa-regular fa-envelope"></i>
-        <Text color="white">
-          ktu@ktu.lt
-        </Text>
+        <Text color="white">ktu@ktu.lt</Text>
       </Flex>
       <Flex justify="center">
         <Text color="white" mt={14}>

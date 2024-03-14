@@ -11,13 +11,6 @@ import {
   Center,
   Flex,
   Heading,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   Spinner,
   Textarea,
   useDisclosure,
@@ -26,6 +19,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Unauthorized } from "../Helpers/constants";
 import toast from "react-hot-toast";
 import eventBus from "../Helpers/eventBus";
+import ModalWindow from "../components/ModalWindow";
 
 const Complaint = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -124,27 +118,7 @@ const Complaint = () => {
         )}
       </Container>
 
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Skundo pateikimas</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>Ar tikrai norite pateikti skundą?</ModalBody>
-
-          <ModalFooter>
-            <Button mr={3} onClick={onClose}>
-              Ne
-            </Button>
-            <Button
-              onClick={submitComplaint}
-              backgroundColor="#1E99D6"
-              color="white"
-            >
-              Taip
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <ModalWindow title="Skundo pateikimas" text="Ar tikrai norite pateikti skundą?" isOpen={isOpen} onClose={onClose} onClick={submitComplaint} />
     </>
   );
 };

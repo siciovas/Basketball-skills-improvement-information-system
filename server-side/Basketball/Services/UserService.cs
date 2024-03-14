@@ -2,6 +2,7 @@
 using Basketball.Core.Interfaces.Repositories;
 using Basketball.Core.Interfaces.Services;
 using Basketball.Domain.Data.Entities;
+using Basketball.Domain.Data.Entities.Enums;
 using Basketball.Infrastructure.Authentication;
 
 namespace Basketball.Services
@@ -152,6 +153,17 @@ namespace Basketball.Services
                     ShortDescription = x.ShortDescription
                 }).ToList()
             };
+        }
+
+        public async Task<User> ChangeCoachStatus(Guid id, CoachStatus status)
+        {
+            var coach = await _userRepository.GetUserById(id);
+
+            coach.CoachStatus = status;
+
+            var updatedCoach = await _userRepository.Update(coach);
+
+            return updatedCoach;
         }
     }
 }

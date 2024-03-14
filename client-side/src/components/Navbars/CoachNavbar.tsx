@@ -1,4 +1,12 @@
-import { Box, Button, Flex, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+} from "@chakra-ui/react";
 import MainNavBar from "./MainNavbar";
 import { NavbarProps } from "./types";
 
@@ -20,7 +28,7 @@ const TeacherNavbar = ({ logOut }: NavbarProps) => {
           <MenuList>
             <MenuItem>Profilis</MenuItem>
             <MenuItem>Mano planai</MenuItem>
-            <MenuItem onClick={(e) =>logOut(e)}>Atsijungti</MenuItem>
+            <MenuItem onClick={(e) => logOut(e)}>Atsijungti</MenuItem>
           </MenuList>
         </Menu>
       </Flex>

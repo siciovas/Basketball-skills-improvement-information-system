@@ -43,29 +43,32 @@ const Register = () => {
 
   const Registration = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    const response = await fetch(import.meta.env.VITE_API_URL + "user/register", {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify({
-        name: formState?.name,
-        surname: formState?.surname,
-        email: formState?.email,
-        role: isCoach ? COACH_ROLE : STUDENT_ROLE,
-        phoneNumber: formState?.phoneNumber,
-        birthDate: formState?.birthDate,
-        password: formState?.password,
-        height: formState?.height,
-        weight: formState?.weight,
-        footSize: formState?.footSize,
-        metabolicAge: formState?.metabolicAge,
-        education: formState?.education,
-        experience: formState?.experience,
-        specialization: formState?.specialization,
-        description: formState?.description
-      }),
-    });
+    const response = await fetch(
+      import.meta.env.VITE_API_URL + "user/register",
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({
+          name: formState?.name,
+          surname: formState?.surname,
+          email: formState?.email,
+          role: isCoach ? COACH_ROLE : STUDENT_ROLE,
+          phoneNumber: formState?.phoneNumber,
+          birthDate: formState?.birthDate,
+          password: formState?.password,
+          height: formState?.height,
+          weight: formState?.weight,
+          footSize: formState?.footSize,
+          metabolicAge: formState?.metabolicAge,
+          education: formState?.education,
+          experience: formState?.experience,
+          specialization: formState?.specialization,
+          description: formState?.description,
+        }),
+      }
+    );
     if (response.status === 201) {
       toast.success("Registracija sėkminga!");
       navigate("/login");
