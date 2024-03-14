@@ -1,5 +1,6 @@
 ﻿using Basketball.Core.Dtos;
 using Basketball.Core.Interfaces.Services;
+using Basketball.Domain.Data.Entities.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -78,6 +79,22 @@ namespace Basketball.Controllers
             }
 
             return Ok(await _userService.GetCoachById(id));
+        }
+
+        [HttpPut]
+        [Authorize(Roles = "Admin")]
+        [Route("status/{id}")]
+        public async Task<IActionResult> UpdateCoachStatus([FromQuery(Name = "status")] CoachStatus status, Guid id)
+        {
+            var isExists = await _userService.IsUserExistsById(id);
+
+            if (!isExists)
+            {
+                return NotFound();
+            }
+            var updatedStatus = await _userService.ChangeCoachStatus(id, status);
+
+            return Ok(updatedStatus);
         }
     }
 }

@@ -20,7 +20,12 @@ const CoachFilter = ({ onFilterStatusChange, onDateRangeChange }: Props) => {
   return (
     <Flex justifyContent="end" mr={5}>
       <Menu closeOnSelect={false}>
-        <MenuButton as={Button} border="solid" borderColor="#9e9d9d" backgroundColor="#E2E2E2">
+        <MenuButton
+          as={Button}
+          border="solid"
+          borderColor="#9e9d9d"
+          backgroundColor="#E2E2E2"
+        >
           <Box className="fa-solid fa-filter"></Box>
         </MenuButton>
         <MenuList minWidth="240px" backgroundColor="#E2E2E2">

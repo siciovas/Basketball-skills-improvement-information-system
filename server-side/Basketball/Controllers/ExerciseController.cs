@@ -30,13 +30,13 @@ namespace Basketball.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Coach")]
-        public async Task<IActionResult> Post(ExercisePostDto exerciseDto)
+        public async Task<IActionResult> Create(ExercisePostDto exerciseDto)
         {
             var coachId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
 
             var exercise = await _exerciseService.Create(exerciseDto, coachId);
 
-            return CreatedAtAction(nameof(Post), exercise);
+            return CreatedAtAction(nameof(Create), exercise);
         }
 
         [HttpDelete("{id}")]

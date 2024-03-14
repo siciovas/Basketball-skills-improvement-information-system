@@ -24,13 +24,16 @@ const CoachDetails = () => {
   const token = localStorage.getItem("accessToken");
 
   const getCoachDetails = useCallback(async () => {
-    const response = await fetch(import.meta.env.VITE_API_URL + `user/coachDetails/${id}`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      method: "GET",
-    });
+    const response = await fetch(
+      import.meta.env.VITE_API_URL + `user/coachDetails/${id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        method: "GET",
+      }
+    );
     if (response.status === 401) {
       eventBus.dispatch("logOut", Unauthorized);
     } else if (response.status === 200) {
