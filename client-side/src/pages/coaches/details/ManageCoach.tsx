@@ -138,7 +138,7 @@ const ManageCoach = () => {
                     <Image
                       w="100%"
                       h="100%"
-                      src="https://m.basketnews.lt/paveikslelis-25361-crop700x700.jpg"
+                      src={"data:image/jpeg;base64," + coach?.avatar}
                     ></Image>
                   </Box>
                   <Flex flexDir="column" justifyContent="space-between">

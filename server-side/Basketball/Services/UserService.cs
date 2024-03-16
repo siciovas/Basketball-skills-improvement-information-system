@@ -75,6 +75,8 @@ namespace Basketball.Services
                 FootSize = user.FootSize,
                 MetabolicAge = user.MetabolicAge,
                 Description = user.Description,
+                Gender = user.Gender,
+                Avatar = user.Avatar,
             };
 
             var createdUser = await _userRepository.Create(newUser);
@@ -96,7 +98,9 @@ namespace Basketball.Services
                 Specialization = x.Specialization!,
                 Rating = x.Rating,
                 CoachStatus = x.CoachStatus,
-                RegisterDate = x.RegisterDate
+                RegisterDate = x.RegisterDate,
+                Gender = x.Gender,
+                Avatar = x.Avatar,
             }).ToList();
         }
 
@@ -118,6 +122,8 @@ namespace Basketball.Services
                 CoachStatus = x.CoachStatus!,
                 RegisterDate = x.RegisterDate,
                 Description = x.Description,
+                Gender = x.Gender,
+                Avatar = x.Avatar,
                 TrainingPlansCount = trainingPlansCount.TryGetValue(x.Id, out int value) ? value : 0
             });
 
@@ -144,6 +150,8 @@ namespace Basketball.Services
                 Description = coach.Description,
                 Experience = coach.Experience,
                 PhoneNumber = coach.PhoneNumber,
+                Gender = coach.Gender,
+                Avatar = coach.Avatar,
                 TrainingPlansCount = trainingPlans.Count,
                 TrainingPlans = trainingPlans.Select(x => new TrainingPlanSummaryDto
                 {
