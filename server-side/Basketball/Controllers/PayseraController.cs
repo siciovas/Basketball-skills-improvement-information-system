@@ -11,8 +11,8 @@ namespace Basketball.Controllers
         [HttpPost]
         public ActionResult<string> CreatePayment([FromBody] PayseraDto payseraDto)
         {
-            int projectId = 236200;
-            string signPassword = "0afd133fdc22d2f091b7d43ad4c46eaa";
+            int projectId = 242693;
+            string signPassword = "d9689acb562ae01110130e49808d2e53";
 
             var client = new Client(projectId, signPassword);
 
@@ -24,9 +24,9 @@ namespace Basketball.Controllers
             request.Currency = "EUR";
             request.Country = "LT";
             request.Test = true;
-            request.AcceptUrl = $"http://localhost:3000/sekmingasuzsakymas?ordernumber={payseraDto.OrderNumber}";
-            request.CancelUrl = "http://localhost:3000/sekmingasuzsakymas";
-            request.CallbackUrl = "http://localhost:3000/sekmingasuzsakymas";
+            request.AcceptUrl = $"https://bsdis-front.azurewebsites.net/sekmingasuzsakymas?ordernumber={payseraDto.OrderNumber}";
+            request.CancelUrl = "https://bsdis-front.azurewebsites.net/sekmingasuzsakymas";
+            request.CallbackUrl = "https://bsdis-front.azurewebsites.net/sekmingasuzsakymas";
 
             string redirectUrl = client.BuildRequestUrl(request);
 
