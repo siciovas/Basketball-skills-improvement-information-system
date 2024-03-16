@@ -66,6 +66,8 @@ const Register = () => {
           experience: formState?.experience,
           specialization: formState?.specialization,
           description: formState?.description,
+          gender: formState?.gender,
+          avatar: formState?.avatar,
         }),
       }
     );
@@ -74,6 +76,31 @@ const Register = () => {
       navigate("/login");
     } else {
       toast.error("Registracija nesėkminga");
+    }
+  };
+
+  const onAvatarChange = async (
+    e: ChangeEvent<HTMLInputElement>
+  ): Promise<void> => {
+    if (e.target.files) {
+      const file = e.target.files[0];
+      const test = new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = (event) => {
+          if (event.target) {
+            resolve(event.target.result);
+          }
+        };
+
+        reader.onerror = (err) => {
+          reject(err);
+        };
+
+        reader.readAsDataURL(file);
+      });
+      const temp = (await test) as string;
+      setFormState({ ...formState, [e.target.name]: temp.split(",")[1] });
     }
   };
 
@@ -151,6 +178,34 @@ const Register = () => {
                   }}
                   isRequired
                 />
+                <FormLabel>Nuotrauka</FormLabel>
+                <Box mb={3}>
+                  <input
+                    onChange={(e) => {
+                      onAvatarChange(e);
+                    }}
+                    className="form-control"
+                    type="file"
+                    id="formFile"
+                    name="avatar"
+                  />
+                </Box>
+                <FormLabel>Lytis</FormLabel>
+                <Select
+                  mb={5}
+                  name="gender"
+                  onChange={(e) => {
+                    handleFormInputChange(e, false);
+                  }}
+                  isRequired
+                  defaultValue=""
+                >
+                  <option hidden disabled value="">
+                    Pasirinkite
+                  </option>
+                  <option value="Male">Vyras</option>
+                  <option value="Female">Moteris</option>
+                </Select>
                 <FormLabel>Gimimo data</FormLabel>
                 <Input
                   type="date"

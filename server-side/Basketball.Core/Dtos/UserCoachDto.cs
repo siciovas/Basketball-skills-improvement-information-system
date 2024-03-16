@@ -10,6 +10,8 @@ namespace Basketball.Core.Dtos
         public DateOnly BirthDate { get; set; }
         public Education? Education { get; set; }
         public required string Specialization { get; set; }
+        public Gender? Gender { get; set; }
+        public byte[]? Avatar { get; set; }
         public double? Rating { get; set; }
         public CoachStatus? CoachStatus { get; set; }
         public DateOnly RegisterDate { get; set; }

@@ -12,6 +12,8 @@ export interface Coach {
   experience: number;
   phoneNumber: string;
   trainingPlansCount: number;
+  gender: string;
+  avatar: Blob;
 }
 
 export interface CoachProfile extends Coach {
@@ -40,6 +42,8 @@ export interface User {
   experience?: number | undefined;
   specialization?: number | undefined;
   description?: string | undefined;
+  gender?: string | undefined;
+  avatar?: Blob | undefined;
 }
 
 export interface Complaint {

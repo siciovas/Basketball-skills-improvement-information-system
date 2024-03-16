@@ -11,6 +11,8 @@ namespace Basketball.Core.Dtos
         public DateOnly BirthDate { get; set; }
         public Role Role { get; set; }
         public required string Password { get; set; }
+        public Gender? Gender { get; set; }
+        public byte[]? Avatar { get; set; }
 
         // Fields for student
         public int? Height { get; set; }
