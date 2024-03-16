@@ -27,7 +27,7 @@
 
 	<ItemGroup>
 		<Reference Include="EVP.WebToPay.ClientAPI">
-			<HintPath>bin\Debug\net8.0\EVP.WebToPay.ClientAPI.dll</HintPath>
+			<HintPath>EVP.WebToPay.ClientAPI.dll</HintPath>
 		</Reference>
 	</ItemGroup>
 
