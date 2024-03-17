@@ -77,6 +77,7 @@ namespace Basketball.Services
                 Description = user.Description,
                 Gender = user.Gender,
                 Avatar = user.Avatar,
+                CoachStatus = user.Role == Role.Coach ? CoachStatus.Pending : null,
             };
 
             var createdUser = await _userRepository.Create(newUser);

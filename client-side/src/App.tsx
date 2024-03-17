@@ -15,6 +15,7 @@ import eventBus from "./Helpers/eventBus";
 import CoachesList from "./pages/CoachesList";
 import ManageCoach from "./pages/coaches/details/ManageCoach";
 import Complaint from "./pages/Complaint";
+import AboutUs from "./pages/AboutUs";
 
 function App() {
   const navigate = useNavigate();
@@ -48,6 +49,7 @@ function App() {
         <Route path="recover" element={<PasswordRecovery />} />
         <Route path="newPassword" element={<NewPassword />} />
         <Route path="register" element={<Register />} />
+        <Route path="aboutUs" element={<AboutUs />} />
         <Route path="allCoaches" element={<MainCoachesList />} />
         <Route path="coachDetails/:id" element={<CoachDetails />} />
         <Route path="manageCoaches" element={<CoachesList />} />

@@ -20,7 +20,9 @@ const MainNavBar = () => {
         <Box cursor="pointer" onClick={() => navigate("/allCoaches")}>
           TRENERIAI
         </Box>
-        <Box cursor="pointer">APIE</Box>
+        <Box cursor="pointer" onClick={() => navigate("/aboutUs")}>
+          APIE
+        </Box>
       </Flex>
     </>
   );
