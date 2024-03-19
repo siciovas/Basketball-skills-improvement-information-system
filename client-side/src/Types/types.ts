@@ -53,3 +53,27 @@ export interface Complaint {
   studentFullName: string;
   coachFullName: string;
 }
+
+export interface MeDto {
+  name?: string | null;
+  surname?: string | null;
+  email?: string | null;
+  phoneNumber?: string | null;
+  birthDate: string;
+  registerDate: string;
+  avatar: Blob;
+  additionalInfo: AdditionalInfo;
+}
+
+export interface AdditionalInfo {
+  height: number | null;
+  weight: number | null;
+  footSize: number | null;
+  metabolicAge: number | null;
+  education: string | null;
+  experience: number | null;
+  specialization: string | null;
+  rating: number | null;
+  coachStatus: string | null;
+  description: string | null;
+}

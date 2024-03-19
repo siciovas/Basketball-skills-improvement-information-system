@@ -3,6 +3,7 @@ using Basketball.Core.Interfaces.Services;
 using Basketball.Domain.Data.Entities.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Basketball.Controllers
 {
@@ -95,6 +96,52 @@ namespace Basketball.Controllers
             var updatedStatus = await _userService.ChangeCoachStatus(id, status);
 
             return Ok(updatedStatus);
+        }
+
+        [HttpDelete]
+        [Authorize]
+        [Route("deleteProfile")]
+        public async Task<ActionResult> DeleteProfile(Guid id)
+        {
+            var isExists = await _userService.IsUserExistsById(id);
+
+            if (!isExists)
+            {
+                return NotFound();
+            }
+
+            await _userService.Delete(id);
+
+            return NoContent();
+        }
+
+        [HttpPut]
+        [Route("updatePassword")]
+        [Authorize]
+        public async Task<ActionResult> UpdatePassword(Guid id, PasswordDto passwordDto)
+        {
+            var isExists = await _userService.IsUserExistsById(id);
+
+            if (!isExists)
+            {
+                return NotFound();
+            }
+
+            await _userService.UpdatePassword(id, passwordDto);
+
+            return Ok();
+        }
+
+        [HttpGet]
+        [Route("me")]
+        [Authorize]
+        public async Task<ActionResult> GetMe()
+        {
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
+
+            var user = await _userService.GetMe(userId);
+
+            return Ok(user);
         }
     }
 }

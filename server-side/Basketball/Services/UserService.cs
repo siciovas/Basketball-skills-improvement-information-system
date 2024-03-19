@@ -174,5 +174,58 @@ namespace Basketball.Services
 
             return updatedCoach;
         }
+
+        public async Task Delete(Guid id)
+        {
+            var user = await _userRepository.GetUserById(id);
+
+            await _userRepository.Delete(user!);
+        }
+
+        public async Task UpdatePassword(Guid id, PasswordDto passwordDto)
+        {
+            var user = await _userRepository.GetUserById(id);
+
+            if (BCrypt.Net.BCrypt.Verify(passwordDto.OldPassword, user.Password))
+            {
+                if (passwordDto.NewPassword == passwordDto.RepeatPassword)
+                {
+                    var passwordHash = BCrypt.Net.BCrypt.HashPassword(passwordDto.NewPassword);
+
+                    user.Password = passwordHash;
+
+                    await _userRepository.Update(user);
+                }
+            }
+        }
+
+        public async Task<MeDto> GetMe(Guid id)
+        {
+            var user = await _userRepository.GetUserById(id);
+
+            return new MeDto
+            {
+                Email = user.Email,
+                Name = user.Name,
+                PhoneNumber = user.PhoneNumber,
+                Surname = user.Surname,
+                Avatar = user.Avatar,
+                BirthDate = user.BirthDate,
+                RegisterDate = user.RegisterDate,
+                AdditionalInfo = new AdditionalInfo
+                {
+                    CoachStatus = user.CoachStatus,
+                    Description = user.Description,
+                    Education = user.Education,
+                    Experience = user.Experience,
+                    FootSize = user.FootSize,
+                    Height = user.Height,
+                    MetabolicAge = user.MetabolicAge,
+                    Rating = user.Rating,
+                    Specialization = user.Specialization,
+                    Weight = user.Weight,
+                }
+            };
+        }
     }
 }

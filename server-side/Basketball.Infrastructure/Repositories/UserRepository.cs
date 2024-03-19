@@ -60,5 +60,11 @@ namespace Basketball.Infrastructure.Repositories
 
             return updatedCoach.Entity;
         }
+
+        public async Task Delete(User user)
+        {
+            _db.Users.Remove(user);
+            await _db.SaveChangesAsync();
+        }
     }
 }

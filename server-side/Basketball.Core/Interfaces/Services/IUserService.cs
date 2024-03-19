@@ -15,5 +15,8 @@ namespace Basketball.Core.Interfaces.Services
         Task<List<UserCoachDto>> GetApprovedCoaches();
         Task<UserCoachDto> GetCoachById(Guid id);
         Task<User> ChangeCoachStatus(Guid id, CoachStatus status);
+        Task UpdatePassword(Guid id, PasswordDto passwordDto);
+        Task Delete(Guid id);
+        Task<MeDto> GetMe(Guid id);
     }
 }
