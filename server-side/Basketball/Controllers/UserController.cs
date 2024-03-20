@@ -101,16 +101,18 @@ namespace Basketball.Controllers
         [HttpDelete]
         [Authorize]
         [Route("deleteProfile")]
-        public async Task<ActionResult> DeleteProfile(Guid id)
+        public async Task<ActionResult> DeleteProfile()
         {
-            var isExists = await _userService.IsUserExistsById(id);
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
+
+            var isExists = await _userService.IsUserExistsById(userId);
 
             if (!isExists)
             {
                 return NotFound();
             }
 
-            await _userService.Delete(id);
+            await _userService.Delete(userId);
 
             return NoContent();
         }
@@ -118,16 +120,18 @@ namespace Basketball.Controllers
         [HttpPut]
         [Route("updatePassword")]
         [Authorize]
-        public async Task<ActionResult> UpdatePassword(Guid id, PasswordDto passwordDto)
+        public async Task<ActionResult> UpdatePassword(PasswordDto passwordDto)
         {
-            var isExists = await _userService.IsUserExistsById(id);
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
+
+            var isExists = await _userService.IsUserExistsById(userId);
 
             if (!isExists)
             {
                 return NotFound();
             }
 
-            await _userService.UpdatePassword(id, passwordDto);
+            await _userService.UpdatePassword(userId, passwordDto);
 
             return Ok();
         }

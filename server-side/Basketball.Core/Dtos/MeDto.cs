@@ -16,7 +16,7 @@ namespace Basketball.Core.Dtos
         public DateOnly BirthDate { get; set; }
         public DateOnly RegisterDate { get; set; }
         public byte[]? Avatar { get; set; }
-        public AdditionalInfo AdditionalInfo { get; set; } = null!;
+        public AdditionalInfo? AdditionalInfo { get; set; }
     }
 
     public class AdditionalInfo

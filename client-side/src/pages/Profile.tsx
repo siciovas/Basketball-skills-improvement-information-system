@@ -14,22 +14,46 @@ import {
   AccordionItem,
   AccordionPanel,
   SimpleGrid,
-  Highlight,
+  Center,
+  Spinner,
+  useDisclosure,
 } from "@chakra-ui/react";
 import Container from "../components/Container";
-import { useState, useCallback, useEffect } from "react";
+import {
+  useState,
+  useCallback,
+  useEffect,
+  FormEvent,
+  ChangeEvent,
+} from "react";
 import toast from "react-hot-toast";
-// import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Unauthorized } from "../Helpers/constants";
 import eventBus from "../Helpers/eventBus";
-import { MeDto } from "../Types/types";
+import { AdditionalInfo, MeDto } from "../Types/types";
+import translations from "../Helpers/translations.json";
+import ModalWindow from "../components/ModalWindow";
 
 const Profile = () => {
-  const [user, setUser] = useState<MeDto>();
   const token = localStorage.getItem("accessToken");
-  // const { id } = useParams();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const [user, setUser] = useState<MeDto>();
+  const [oldPassword, setOldPassword] = useState<string>();
+  const [newPassword, setNewPassword] = useState<string>();
+  const [repeatPassword, setRepeatPassword] = useState<string>();
+
+  const onOldPasswordChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    setOldPassword(e.target.value as string);
+  };
+  const onNewPasswordChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    setNewPassword(e.target.value as string);
+  };
+  const onRepeatPasswordChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    setRepeatPassword(e.target.value as string);
+  };
 
   const getUserDetails = useCallback(async () => {
     const response = await fetch(import.meta.env.VITE_API_URL + `user/me`, {
@@ -50,6 +74,60 @@ const Profile = () => {
     }
   }, []);
 
+  const updatePassword = async (
+    e: FormEvent<HTMLFormElement>
+  ): Promise<void> => {
+    e.preventDefault();
+    setIsLoading(true);
+    const response = await fetch(
+      import.meta.env.VITE_API_URL + `user/updatePassword`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        method: "PUT",
+        body: JSON.stringify({
+          oldPassword,
+          newPassword,
+          repeatPassword,
+        }),
+      }
+    );
+    if (response.status === 401) {
+      eventBus.dispatch("logOut", Unauthorized);
+    }
+    if (response.status === 200) {
+      toast.success("Slaptažodis pakeistas!");
+      getUserDetails();
+    } else {
+      toast.error("Atnaujinti nepavyko!");
+    }
+  };
+
+  const deleteProfile = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ): Promise<void> => {
+    e.preventDefault();
+    const response = await fetch(import.meta.env.VITE_API_URL + `user/deleteProfile`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      method: "DELETE",
+    });
+
+    if (response.status === 204) {
+      setIsLoading(true);
+      toast.success("Paskyra ištrinta!");
+      onClose();
+      localStorage.removeItem("accessToken");
+      navigate("/");
+    } else {
+      toast.error("Nepavyko ištrinti!");
+    }
+  };
+
   useEffect(() => {
     getUserDetails();
   }, [getUserDetails]);
@@ -57,7 +135,9 @@ const Profile = () => {
   return (
     <>
       {isLoading ? (
-        <Box>Nera</Box>
+        <Center>
+          <Spinner size="xl" textAlign="center" />
+        </Center>
       ) : (
         <>
           <Container minW={1000}>
@@ -78,60 +158,102 @@ const Profile = () => {
                       src={"data:image/jpeg;base64," + user?.avatar}
                     ></Image>
                   </Box>
-                  <Flex>
-                    <Flex flexDir="column" gap={5}>
-                      <Text>Vardas: </Text>
-                      <Text>Pavardė: </Text>
-                      <Text>El. Paštas: </Text>
-                      <Text>Gimimo data: </Text>
-                      <Text>Tel. numeris: </Text>
-                      <Text>Registracijos data: </Text>
+                  <Flex flexDir="column" gap={5}>
+                    <Flex>
+                      <Text fontWeight="bold">Vardas:&nbsp;</Text>
+                      <Text>{user?.name}</Text>
+                    </Flex>
+                    <Flex>
+                      <Text fontWeight="bold">Pavardė:&nbsp;</Text>
+                      <Text>{user?.surname}</Text>
+                    </Flex>
+                    <Flex>
+                      <Text fontWeight="bold">El. Paštas:&nbsp;</Text>
+                      <Text>{user?.email}</Text>
+                    </Flex>
+                    <Flex>
+                      <Text fontWeight="bold">Gimimo data:&nbsp;</Text>
+                      <Text>{user?.birthDate}</Text>
+                    </Flex>
+                    <Flex>
+                      <Text fontWeight="bold">Tel. numeris:&nbsp;</Text>
+                      <Text>{user?.phoneNumber}</Text>
+                    </Flex>
+                    <Flex>
+                      <Text fontWeight="bold">Registracijos data:&nbsp;</Text>
+                      <Text>{user?.registerDate}</Text>
                     </Flex>
                   </Flex>
                 </Flex>
+                <Flex mx={5} mb={5} justifyContent="end">
+                  <Button
+                    backgroundColor="#1E99D6"
+                    color="white"
+                    borderRadius="2xl"
+                    textTransform="uppercase"
+                  >
+                    Redaguoti
+                  </Button>
+                </Flex>
               </Box>
             </Box>
-            <Accordion
-              allowToggle
-              mx="auto"
-              mt={10}
-              boxShadow="dark-lg"
-              w={600}
-              borderRadius="xl"
-              border="solid"
-              borderColor="#9e9d9d"
-            >
-              <AccordionItem>
-                <h2>
-                  <AccordionButton>
-                    <Box as="span" flex="1" textAlign="left">
-                      Papildoma informacija
-                    </Box>
-                    <AccordionIcon />
-                  </AccordionButton>
-                </h2>
-                <AccordionPanel pb={4}>
-                  <SimpleGrid columns={4} spacing={10}>
-                    {Object.keys(user!.additionalInfo).map((key) => {
-                      return (
-                        (user!.additionalInfo as any)[key] && (
-                          <Text mt={6} fontWeight="bold">
-                            <Highlight
-                              query={(user!.additionalInfo as any)[
-                                key
-                              ].toString()}
-                              styles={{ py: "1", fontWeight: "normal" }}
+            {user!.additionalInfo && (
+              <Accordion
+                allowToggle
+                mx="auto"
+                mt={10}
+                boxShadow="dark-lg"
+                w={600}
+                borderRadius="xl"
+                border="solid"
+                borderColor="#9e9d9d"
+              >
+                <AccordionItem>
+                  <h2>
+                    <AccordionButton>
+                      <Box as="span" flex="1" textAlign="left">
+                        Papildoma informacija
+                      </Box>
+                      <AccordionIcon />
+                    </AccordionButton>
+                  </h2>
+                  <AccordionPanel pb={4}>
+                    <SimpleGrid columns={3} spacing={10}>
+                      {Object.keys(user!.additionalInfo).map((key) => {
+                        return (
+                          user!.additionalInfo[key as keyof AdditionalInfo] && (
+                            <Flex
+                              fontWeight="bold"
+                              flexDirection="column"
+                              alignContent="center"
                             >
-                              {`${key}: ${(user!.additionalInfo as any)[key]}`}
-                            </Highlight>
-                          </Text>
-                        )
-                      );
-                    })}
-                  </SimpleGrid>
-                </AccordionPanel>
-              </AccordionItem>
-            </Accordion>
+                              <Box alignSelf="center">
+                                {`${
+                                  translations[key as keyof typeof translations]
+                                }:`}
+                              </Box>
+
+                              <Box fontWeight="normal" alignSelf="center">{`${
+                                translations[
+                                  user!.additionalInfo[
+                                    key as keyof AdditionalInfo
+                                  ]
+                                    ?.toString()
+                                    .toLowerCase() as keyof typeof translations
+                                ] ??
+                                user!.additionalInfo[
+                                  key as keyof AdditionalInfo
+                                ]
+                              }`}</Box>
+                            </Flex>
+                          )
+                        );
+                      })}
+                    </SimpleGrid>
+                  </AccordionPanel>
+                </AccordionItem>
+              </Accordion>
+            )}
             <Flex justify="center" mt={10}>
               <Heading size="md">Slaptažodžio keitimas</Heading>
             </Flex>
@@ -144,7 +266,7 @@ const Profile = () => {
                 border="solid"
                 borderColor="#9e9d9d"
               >
-                <form>
+                <form onSubmit={(e) => updatePassword(e)}>
                   <FormControl>
                     <Flex align="center" flexDir="column" mt={5}>
                       <FormLabel>Dabartinis slaptažodis</FormLabel>
@@ -154,6 +276,9 @@ const Profile = () => {
                         mb={5}
                         name="oldpassword"
                         isRequired
+                        onChange={(e) => {
+                          onOldPasswordChange(e);
+                        }}
                       />
                     </Flex>
                     <Flex align="center" flexDir="column">
@@ -164,6 +289,9 @@ const Profile = () => {
                         mb={5}
                         name="newpassword"
                         isRequired
+                        onChange={(e) => {
+                          onNewPasswordChange(e);
+                        }}
                       />
                     </Flex>
                     <Flex align="center" flexDir="column">
@@ -174,10 +302,15 @@ const Profile = () => {
                         mb={5}
                         name="repeatpassword"
                         isRequired
+                        onChange={(e) => {
+                          onRepeatPasswordChange(e);
+                        }}
                       />
                     </Flex>
                     <Flex justify="center">
                       <Button
+                        type="submit"
+                        loadingText="Keičiama"
                         w="50%"
                         backgroundColor="#1E99D6"
                         color="white"
@@ -192,8 +325,22 @@ const Profile = () => {
                   </FormControl>
                 </form>
               </Box>
+              <Flex w={600} justify="center" mx="auto">
+                <Button
+                  w="50%"
+                  backgroundColor="red"
+                  color="white"
+                  borderRadius="2xl"
+                  mt={20}
+                  textTransform="uppercase"
+                  onClick={onOpen}
+                >
+                  Ištrinti paskyrą
+                </Button>
+              </Flex>
             </Box>
-          </Container>{" "}
+          </Container>
+          <ModalWindow title="Paskyros ištrynimas" text="Ar tikrai norite ištrinti paskyrą?" isOpen={isOpen} onClose={onClose} onClick={deleteProfile} />
         </>
       )}
     </>

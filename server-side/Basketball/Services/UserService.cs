@@ -212,7 +212,7 @@ namespace Basketball.Services
                 Avatar = user.Avatar,
                 BirthDate = user.BirthDate,
                 RegisterDate = user.RegisterDate,
-                AdditionalInfo = new AdditionalInfo
+                AdditionalInfo = user.Role == Role.Admin ? null : new AdditionalInfo
                 {
                     CoachStatus = user.CoachStatus,
                     Description = user.Description,
