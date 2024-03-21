@@ -48,9 +48,11 @@ const Profile = () => {
   const onOldPasswordChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setOldPassword(e.target.value as string);
   };
+
   const onNewPasswordChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setNewPassword(e.target.value as string);
   };
+  
   const onRepeatPasswordChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setRepeatPassword(e.target.value as string);
   };
