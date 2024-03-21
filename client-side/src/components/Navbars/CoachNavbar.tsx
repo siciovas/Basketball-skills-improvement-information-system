@@ -9,8 +9,11 @@ import {
 } from "@chakra-ui/react";
 import MainNavBar from "./MainNavbar";
 import { NavbarProps } from "./types";
+import { useNavigate } from "react-router-dom";
 
-const TeacherNavbar = ({ logOut }: NavbarProps) => {
+const TeacherNavbar = ({ logOut }: NavbarProps) => {  
+  const navigate = useNavigate();
+
   return (
     <Flex
       w="100%"
@@ -26,7 +29,7 @@ const TeacherNavbar = ({ logOut }: NavbarProps) => {
             <Box className="fa-solid fa-user fa-xl"></Box>
           </MenuButton>
           <MenuList>
-            <MenuItem>Profilis</MenuItem>
+            <MenuItem onClick={() => navigate("/profile")}>Profilis</MenuItem>
             <MenuItem>Mano planai</MenuItem>
             <MenuItem onClick={(e) => logOut(e)}>Atsijungti</MenuItem>
           </MenuList>

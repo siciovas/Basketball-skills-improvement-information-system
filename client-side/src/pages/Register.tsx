@@ -129,10 +129,11 @@ const Register = () => {
                 <Flex gap={5}>
                   <Button
                     w={150}
-                    background="blue.500"
-                    textTransform="uppercase"
                     onClick={() => handleStateChange(true)}
-                    textColor="white"
+                    backgroundColor="#1E99D6"
+                    color="white"
+                    borderRadius="2xl"
+                    textTransform="uppercase"
                   >
                     Treneris
                   </Button>
@@ -141,6 +142,7 @@ const Register = () => {
                     textTransform="uppercase"
                     onClick={() => handleStateChange(false)}
                     textColor="black"
+                    borderRadius="2xl"
                   >
                     Krepšininkas
                   </Button>
@@ -290,8 +292,10 @@ const Register = () => {
                     <Button
                       type="submit"
                       w="100%"
-                      background="blue.500"
+                      backgroundColor="#1E99D6"
                       color="white"
+                      borderRadius="2xl"
+                      textTransform="uppercase"
                     >
                       Registruotis
                     </Button>

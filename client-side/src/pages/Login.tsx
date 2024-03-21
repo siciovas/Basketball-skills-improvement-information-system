@@ -92,8 +92,10 @@ const Login = () => {
             <Button
               type="submit"
               w="100%"
-              background="blue.500"
-              textColor="white"
+              backgroundColor="#1E99D6"
+              color="white"
+              borderRadius="2xl"
+              textTransform="uppercase"
             >
               <Box pos="absolute" w="100%" textAlign="left" ml={5}>
                 <i className="fa fa-solid fa-lock" />

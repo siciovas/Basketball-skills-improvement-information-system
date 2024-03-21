@@ -1,22 +1,13 @@
 ﻿using Basketball.Domain.Data.Entities.Enums;
 
-namespace Basketball.Core.Dtos
+namespace Basketball.Core.Dtos.Update
 {
-    public class MeDto
+    public class UserUpdateDto
     {
-        public required string Name { get; set; }
-        public required string Surname { get; set; }
         public required string PhoneNumber { get; set; }
         public required string Email { get; set; }
-        public Gender? Gender { get; set; }
-        public DateOnly BirthDate { get; set; }
-        public DateOnly RegisterDate { get; set; }
         public byte[]? Avatar { get; set; }
-        public AdditionalInfo? AdditionalInfo { get; set; }
-    }
 
-    public class AdditionalInfo
-    {
         // Fields for student
         public int? Height { get; set; }
         public double? Weight { get; set; }
@@ -27,8 +18,6 @@ namespace Basketball.Core.Dtos
         public Education? Education { get; set; }
         public int? Experience { get; set; }
         public string? Specialization { get; set; }
-        public double? Rating { get; set; }
-        public CoachStatus? CoachStatus { get; set; }
         public string? Description { get; set; }
     }
 }

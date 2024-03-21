@@ -1,4 +1,5 @@
 ﻿using Basketball.Core.Dtos;
+using Basketball.Core.Dtos.Update;
 using Basketball.Core.Interfaces.Repositories;
 using Basketball.Core.Interfaces.Services;
 using Basketball.Domain.Data.Entities;
@@ -182,6 +183,25 @@ namespace Basketball.Services
             await _userRepository.Delete(user!);
         }
 
+        public async Task Update(Guid id, UserUpdateDto userDto)
+        {
+            var user = await _userRepository.GetUserById(id);
+
+            user.PhoneNumber = userDto.PhoneNumber;
+            user.Email = userDto.Email;
+            user.Avatar = userDto.Avatar;
+            user.Height = userDto.Height;
+            user.Weight = userDto.Weight;
+            user.FootSize = userDto.FootSize;
+            user.MetabolicAge = userDto.MetabolicAge;
+            user.Education = userDto.Education;
+            user.Description = userDto.Description;
+            user.Experience = userDto.Experience;
+            user.Specialization = userDto.Specialization;
+
+            await _userRepository.Update(user);
+        }
+
         public async Task UpdatePassword(Guid id, PasswordDto passwordDto)
         {
             var user = await _userRepository.GetUserById(id);
@@ -210,6 +230,7 @@ namespace Basketball.Services
                 PhoneNumber = user.PhoneNumber,
                 Surname = user.Surname,
                 Avatar = user.Avatar,
+                Gender = user.Gender,
                 BirthDate = user.BirthDate,
                 RegisterDate = user.RegisterDate,
                 AdditionalInfo = user.Role == Role.Admin ? null : new AdditionalInfo

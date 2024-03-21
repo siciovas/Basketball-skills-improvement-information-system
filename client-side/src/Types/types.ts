@@ -40,10 +40,11 @@ export interface User {
   metabolicAge?: number | undefined;
   education?: string | undefined;
   experience?: number | undefined;
-  specialization?: number | undefined;
+  specialization?: string | undefined;
   description?: string | undefined;
   gender?: string | undefined;
   avatar?: Blob | undefined;
+  role?: number | undefined;
 }
 
 export interface Complaint {
@@ -55,10 +56,11 @@ export interface Complaint {
 }
 
 export interface MeDto {
-  name?: string | null;
-  surname?: string | null;
-  email?: string | null;
-  phoneNumber?: string | null;
+  name: string;
+  surname: string;
+  email: string;
+  phoneNumber: string;
+  gender: string;
   birthDate: string;
   registerDate: string;
   avatar: Blob;

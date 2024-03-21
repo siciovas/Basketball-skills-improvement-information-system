@@ -1,4 +1,5 @@
 ﻿using Basketball.Core.Dtos;
+using Basketball.Core.Dtos.Update;
 using Basketball.Core.Interfaces.Services;
 using Basketball.Domain.Data.Entities.Enums;
 using Microsoft.AspNetCore.Authorization;
@@ -101,7 +102,7 @@ namespace Basketball.Controllers
         [HttpDelete]
         [Authorize]
         [Route("deleteProfile")]
-        public async Task<ActionResult> DeleteProfile()
+        public async Task<IActionResult> DeleteProfile()
         {
             var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
 
@@ -118,9 +119,28 @@ namespace Basketball.Controllers
         }
 
         [HttpPut]
+        [Route("update")]
+        [Authorize]
+        public async Task<IActionResult> Update(UserUpdateDto userDto)
+        {
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
+
+            var isExists = await _userService.IsUserExistsById(userId);
+
+            if (!isExists)
+            {
+                return NotFound();
+            }
+
+            await _userService.Update(userId, userDto);
+
+            return Ok();
+        }
+
+        [HttpPut]
         [Route("updatePassword")]
         [Authorize]
-        public async Task<ActionResult> UpdatePassword(PasswordDto passwordDto)
+        public async Task<IActionResult> UpdatePassword(PasswordDto passwordDto)
         {
             var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
 
@@ -139,7 +159,7 @@ namespace Basketball.Controllers
         [HttpGet]
         [Route("me")]
         [Authorize]
-        public async Task<ActionResult> GetMe()
+        public async Task<IActionResult> GetMe()
         {
             var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
 

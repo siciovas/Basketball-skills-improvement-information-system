@@ -18,7 +18,7 @@ import {
   Spinner,
   useDisclosure,
 } from "@chakra-ui/react";
-import Container from "../components/Container";
+import Container from "../../components/Container";
 import {
   useState,
   useCallback,
@@ -28,11 +28,11 @@ import {
 } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { Unauthorized } from "../Helpers/constants";
-import eventBus from "../Helpers/eventBus";
-import { AdditionalInfo, MeDto } from "../Types/types";
-import translations from "../Helpers/translations.json";
-import ModalWindow from "../components/ModalWindow";
+import { Unauthorized } from "../../Helpers/constants";
+import eventBus from "../../Helpers/eventBus";
+import { AdditionalInfo, MeDto } from "../../Types/types";
+import translations from "../../Helpers/translations.json";
+import ModalWindow from "../../components/ModalWindow";
 
 const Profile = () => {
   const token = localStorage.getItem("accessToken");
@@ -109,13 +109,16 @@ const Profile = () => {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ): Promise<void> => {
     e.preventDefault();
-    const response = await fetch(import.meta.env.VITE_API_URL + `user/deleteProfile`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      method: "DELETE",
-    });
+    const response = await fetch(
+      import.meta.env.VITE_API_URL + `user/deleteProfile`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        method: "DELETE",
+      }
+    );
 
     if (response.status === 204) {
       setIsLoading(true);
@@ -191,6 +194,7 @@ const Profile = () => {
                     color="white"
                     borderRadius="2xl"
                     textTransform="uppercase"
+                    onClick={() => navigate("/editProfile")}
                   >
                     Redaguoti
                   </Button>
@@ -274,7 +278,6 @@ const Profile = () => {
                         w="50%"
                         type="password"
                         mb={5}
-                        name="oldpassword"
                         isRequired
                         onChange={(e) => {
                           onOldPasswordChange(e);
@@ -287,7 +290,6 @@ const Profile = () => {
                         w="50%"
                         type="password"
                         mb={5}
-                        name="newpassword"
                         isRequired
                         onChange={(e) => {
                           onNewPasswordChange(e);
@@ -300,7 +302,6 @@ const Profile = () => {
                         w="50%"
                         type="password"
                         mb={5}
-                        name="repeatpassword"
                         isRequired
                         onChange={(e) => {
                           onRepeatPasswordChange(e);
@@ -310,7 +311,6 @@ const Profile = () => {
                     <Flex justify="center">
                       <Button
                         type="submit"
-                        loadingText="Keičiama"
                         w="50%"
                         backgroundColor="#1E99D6"
                         color="white"
@@ -340,7 +340,13 @@ const Profile = () => {
               </Flex>
             </Box>
           </Container>
-          <ModalWindow title="Paskyros ištrynimas" text="Ar tikrai norite ištrinti paskyrą?" isOpen={isOpen} onClose={onClose} onClick={deleteProfile} />
+          <ModalWindow
+            title="Paskyros ištrynimas"
+            text="Ar tikrai norite ištrinti paskyrą?"
+            isOpen={isOpen}
+            onClose={onClose}
+            onClick={deleteProfile}
+          />
         </>
       )}
     </>

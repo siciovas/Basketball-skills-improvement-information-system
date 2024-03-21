@@ -45,7 +45,7 @@ const AdminNavbar = ({ logOut }: NavbarProps) => {
               <Box className="fa-solid fa-user fa-xl"></Box>
             </MenuButton>
             <MenuList>
-              <MenuItem>Profilis</MenuItem>
+              <MenuItem onClick={() => navigate("/profile")}>Profilis</MenuItem>
               <MenuItem onClick={(e) => logOut(e)}>Atsijungti</MenuItem>
             </MenuList>
           </Menu>
