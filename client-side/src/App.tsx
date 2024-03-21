@@ -16,6 +16,8 @@ import CoachesList from "./pages/CoachesList";
 import ManageCoach from "./pages/coaches/details/ManageCoach";
 import Complaint from "./pages/Complaint";
 import AboutUs from "./pages/AboutUs";
+import Profile from "./pages/profile/Profile";
+import EditProfile from "./pages/profile/EditProfile";
 
 function App() {
   const navigate = useNavigate();
@@ -55,6 +57,8 @@ function App() {
         <Route path="manageCoaches" element={<CoachesList />} />
         <Route path="manageCoach/:id" element={<ManageCoach />} />
         <Route path="complaint/:id" element={<Complaint />} />
+        <Route path="profile" element={<Profile />} />
+        <Route path="editProfile" element={<EditProfile />} />
       </Routes>
       <Footer />
     </>

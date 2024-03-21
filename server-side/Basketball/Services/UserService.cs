@@ -1,4 +1,5 @@
 ﻿using Basketball.Core.Dtos;
+using Basketball.Core.Dtos.Update;
 using Basketball.Core.Interfaces.Repositories;
 using Basketball.Core.Interfaces.Services;
 using Basketball.Domain.Data.Entities;
@@ -173,6 +174,79 @@ namespace Basketball.Services
             var updatedCoach = await _userRepository.Update(coach);
 
             return updatedCoach;
+        }
+
+        public async Task Delete(Guid id)
+        {
+            var user = await _userRepository.GetUserById(id);
+
+            await _userRepository.Delete(user!);
+        }
+
+        public async Task Update(Guid id, UserUpdateDto userDto)
+        {
+            var user = await _userRepository.GetUserById(id);
+
+            user.PhoneNumber = userDto.PhoneNumber;
+            user.Email = userDto.Email;
+            user.Avatar = userDto.Avatar;
+            user.Height = userDto.Height;
+            user.Weight = userDto.Weight;
+            user.FootSize = userDto.FootSize;
+            user.MetabolicAge = userDto.MetabolicAge;
+            user.Education = userDto.Education;
+            user.Description = userDto.Description;
+            user.Experience = userDto.Experience;
+            user.Specialization = userDto.Specialization;
+
+            await _userRepository.Update(user);
+        }
+
+        public async Task UpdatePassword(Guid id, PasswordDto passwordDto)
+        {
+            var user = await _userRepository.GetUserById(id);
+
+            if (BCrypt.Net.BCrypt.Verify(passwordDto.OldPassword, user.Password))
+            {
+                if (passwordDto.NewPassword == passwordDto.RepeatPassword)
+                {
+                    var passwordHash = BCrypt.Net.BCrypt.HashPassword(passwordDto.NewPassword);
+
+                    user.Password = passwordHash;
+
+                    await _userRepository.Update(user);
+                }
+            }
+        }
+
+        public async Task<MeDto> GetMe(Guid id)
+        {
+            var user = await _userRepository.GetUserById(id);
+
+            return new MeDto
+            {
+                Email = user.Email,
+                Name = user.Name,
+                PhoneNumber = user.PhoneNumber,
+                Surname = user.Surname,
+                Avatar = user.Avatar,
+                Gender = user.Gender,
+                BirthDate = user.BirthDate,
+                RegisterDate = user.RegisterDate,
+                AdditionalInfo = user.Role == Role.Admin ? null : new AdditionalInfo
+                {
+                    CoachStatus = user.CoachStatus,
+                    Description = user.Description,
+                    Education = user.Education,
+                    Experience = user.Experience,
+                    FootSize = user.FootSize,
+                    Height = user.Height,
+                    MetabolicAge = user.MetabolicAge,
+                    Rating = user.Rating,
+                    Specialization = user.Specialization,
+                    Weight = user.Weight,
+                }
+            };
         }
     }
 }

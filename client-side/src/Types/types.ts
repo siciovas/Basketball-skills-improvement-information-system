@@ -40,10 +40,11 @@ export interface User {
   metabolicAge?: number | undefined;
   education?: string | undefined;
   experience?: number | undefined;
-  specialization?: number | undefined;
+  specialization?: string | undefined;
   description?: string | undefined;
   gender?: string | undefined;
   avatar?: Blob | undefined;
+  role?: number | undefined;
 }
 
 export interface Complaint {
@@ -52,4 +53,29 @@ export interface Complaint {
   date: string;
   studentFullName: string;
   coachFullName: string;
+}
+
+export interface MeDto {
+  name: string;
+  surname: string;
+  email: string;
+  phoneNumber: string;
+  gender: string;
+  birthDate: string;
+  registerDate: string;
+  avatar: Blob;
+  additionalInfo: AdditionalInfo;
+}
+
+export interface AdditionalInfo {
+  height: number | null;
+  weight: number | null;
+  footSize: number | null;
+  metabolicAge: number | null;
+  education: string | null;
+  experience: number | null;
+  specialization: string | null;
+  rating: number | null;
+  coachStatus: string | null;
+  description: string | null;
 }
