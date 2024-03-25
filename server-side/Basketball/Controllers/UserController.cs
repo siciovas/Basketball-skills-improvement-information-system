@@ -1,6 +1,10 @@
 ﻿using Basketball.Core.Dtos;
+using Basketball.Core.Dtos.Update;
 using Basketball.Core.Interfaces.Services;
+using Basketball.Domain.Data.Entities.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Basketball.Controllers
 {
@@ -48,9 +52,11 @@ namespace Basketball.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("getCoaches")]
         public async Task<IActionResult> GetCoaches()
         {
+
             if (User.IsInRole("Admin"))
             {
                 return Ok(await _userService.GetAllCoaches());
@@ -63,6 +69,7 @@ namespace Basketball.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("coachDetails/{id}")]
         public async Task<IActionResult> GetCoachDetails(Guid id)
         {
@@ -74,6 +81,91 @@ namespace Basketball.Controllers
             }
 
             return Ok(await _userService.GetCoachById(id));
+        }
+
+        [HttpPut]
+        [Authorize(Roles = "Admin")]
+        [Route("status/{id}")]
+        public async Task<IActionResult> UpdateCoachStatus([FromQuery(Name = "status")] CoachStatus status, Guid id)
+        {
+            var isExists = await _userService.IsUserExistsById(id);
+
+            if (!isExists)
+            {
+                return NotFound();
+            }
+            var updatedStatus = await _userService.ChangeCoachStatus(id, status);
+
+            return Ok(updatedStatus);
+        }
+
+        [HttpDelete]
+        [Authorize]
+        [Route("deleteProfile")]
+        public async Task<IActionResult> DeleteProfile()
+        {
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
+
+            var isExists = await _userService.IsUserExistsById(userId);
+
+            if (!isExists)
+            {
+                return NotFound();
+            }
+
+            await _userService.Delete(userId);
+
+            return NoContent();
+        }
+
+        [HttpPut]
+        [Route("update")]
+        [Authorize]
+        public async Task<IActionResult> Update(UserUpdateDto userDto)
+        {
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
+
+            var isExists = await _userService.IsUserExistsById(userId);
+
+            if (!isExists)
+            {
+                return NotFound();
+            }
+
+            await _userService.Update(userId, userDto);
+
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("updatePassword")]
+        [Authorize]
+        public async Task<IActionResult> UpdatePassword(PasswordDto passwordDto)
+        {
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
+
+            var isExists = await _userService.IsUserExistsById(userId);
+
+            if (!isExists)
+            {
+                return NotFound();
+            }
+
+            await _userService.UpdatePassword(userId, passwordDto);
+
+            return Ok();
+        }
+
+        [HttpGet]
+        [Route("me")]
+        [Authorize]
+        public async Task<IActionResult> GetMe()
+        {
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
+
+            var user = await _userService.GetMe(userId);
+
+            return Ok(user);
         }
     }
 }

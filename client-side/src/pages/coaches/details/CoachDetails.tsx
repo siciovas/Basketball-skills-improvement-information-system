@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
-import { URL_ADDRESS, Unauthorized } from "../../../Helpers/constants";
+import { Unauthorized } from "../../../Helpers/constants";
 import eventBus from "../../../Helpers/eventBus";
 import { CoachProfile } from "../../../Types/types";
 
@@ -21,14 +21,19 @@ const CoachDetails = () => {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const { id } = useParams();
+  const token = localStorage.getItem("accessToken");
 
   const getCoachDetails = useCallback(async () => {
-    const response = await fetch(URL_ADDRESS + `user/coachDetails/${id}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "GET",
-    });
+    const response = await fetch(
+      import.meta.env.VITE_API_URL + `user/coachDetails/${id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        method: "GET",
+      }
+    );
     if (response.status === 401) {
       eventBus.dispatch("logOut", Unauthorized);
     } else if (response.status === 200) {
@@ -64,7 +69,7 @@ const CoachDetails = () => {
                   <Image
                     w="100%"
                     h="100%"
-                    src="https://m.basketnews.lt/paveikslelis-25361-crop700x700.jpg"
+                    src={"data:image/jpeg;base64," + coach?.avatar}
                   ></Image>
                 </Box>
                 <Flex flexDir="column" justifyContent="space-between">

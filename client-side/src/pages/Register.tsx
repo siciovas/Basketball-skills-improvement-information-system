@@ -12,7 +12,7 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import toast from "react-hot-toast";
-import { STUDENT_ROLE, COACH_ROLE, URL_ADDRESS } from "../Helpers/constants";
+import { STUDENT_ROLE, COACH_ROLE } from "../Helpers/constants";
 import { useNavigate } from "react-router-dom";
 import { User } from "../Types/types";
 
@@ -43,34 +43,64 @@ const Register = () => {
 
   const Registration = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    const response = await fetch(URL_ADDRESS + "user/register", {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify({
-        name: formState?.name,
-        surname: formState?.surname,
-        email: formState?.email,
-        role: isCoach ? COACH_ROLE : STUDENT_ROLE,
-        phoneNumber: formState?.phoneNumber,
-        birthDate: formState?.birthDate,
-        password: formState?.password,
-        height: formState?.height,
-        weight: formState?.weight,
-        footSize: formState?.footSize,
-        metabolicAge: formState?.metabolicAge,
-        education: formState?.education,
-        experience: formState?.experience,
-        specialization: formState?.specialization,
-        description: formState?.description
-      }),
-    });
+    const response = await fetch(
+      import.meta.env.VITE_API_URL + "user/register",
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({
+          name: formState?.name,
+          surname: formState?.surname,
+          email: formState?.email,
+          role: isCoach ? COACH_ROLE : STUDENT_ROLE,
+          phoneNumber: formState?.phoneNumber,
+          birthDate: formState?.birthDate,
+          password: formState?.password,
+          height: formState?.height,
+          weight: formState?.weight,
+          footSize: formState?.footSize,
+          metabolicAge: formState?.metabolicAge,
+          education: formState?.education,
+          experience: formState?.experience,
+          specialization: formState?.specialization,
+          description: formState?.description,
+          gender: formState?.gender,
+          avatar: formState?.avatar,
+        }),
+      }
+    );
     if (response.status === 201) {
       toast.success("Registracija sėkminga!");
       navigate("/login");
     } else {
       toast.error("Registracija nesėkminga");
+    }
+  };
+
+  const onAvatarChange = async (
+    e: ChangeEvent<HTMLInputElement>
+  ): Promise<void> => {
+    if (e.target.files) {
+      const file = e.target.files[0];
+      const test = new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = (event) => {
+          if (event.target) {
+            resolve(event.target.result);
+          }
+        };
+
+        reader.onerror = (err) => {
+          reject(err);
+        };
+
+        reader.readAsDataURL(file);
+      });
+      const temp = (await test) as string;
+      setFormState({ ...formState, [e.target.name]: temp.split(",")[1] });
     }
   };
 
@@ -99,10 +129,11 @@ const Register = () => {
                 <Flex gap={5}>
                   <Button
                     w={150}
-                    background="blue.500"
-                    textTransform="uppercase"
                     onClick={() => handleStateChange(true)}
-                    textColor="white"
+                    backgroundColor="#1E99D6"
+                    color="white"
+                    borderRadius="2xl"
+                    textTransform="uppercase"
                   >
                     Treneris
                   </Button>
@@ -111,6 +142,7 @@ const Register = () => {
                     textTransform="uppercase"
                     onClick={() => handleStateChange(false)}
                     textColor="black"
+                    borderRadius="2xl"
                   >
                     Krepšininkas
                   </Button>
@@ -148,6 +180,34 @@ const Register = () => {
                   }}
                   isRequired
                 />
+                <FormLabel>Nuotrauka</FormLabel>
+                <Box mb={3}>
+                  <input
+                    onChange={(e) => {
+                      onAvatarChange(e);
+                    }}
+                    className="form-control"
+                    type="file"
+                    id="formFile"
+                    name="avatar"
+                  />
+                </Box>
+                <FormLabel>Lytis</FormLabel>
+                <Select
+                  mb={5}
+                  name="gender"
+                  onChange={(e) => {
+                    handleFormInputChange(e, false);
+                  }}
+                  isRequired
+                  defaultValue=""
+                >
+                  <option hidden disabled value="">
+                    Pasirinkite
+                  </option>
+                  <option value="Male">Vyras</option>
+                  <option value="Female">Moteris</option>
+                </Select>
                 <FormLabel>Gimimo data</FormLabel>
                 <Input
                   type="date"
@@ -232,8 +292,10 @@ const Register = () => {
                     <Button
                       type="submit"
                       w="100%"
-                      background="blue.500"
+                      backgroundColor="#1E99D6"
                       color="white"
+                      borderRadius="2xl"
+                      textTransform="uppercase"
                     >
                       Registruotis
                     </Button>

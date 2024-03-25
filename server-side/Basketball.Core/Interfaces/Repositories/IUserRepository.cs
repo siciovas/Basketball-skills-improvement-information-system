@@ -11,5 +11,7 @@ namespace Basketball.Core.Interfaces.Repositories
         Task<List<User>> GetAllCoaches();
         Task<List<User>> GetApprovedCoaches();
         Task<User> GetUserById(Guid id);
+        Task<User> Update(User user);
+        Task Delete(User user);
     }
 }

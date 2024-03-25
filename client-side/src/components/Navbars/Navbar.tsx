@@ -1,9 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  ADMIN_ROLE,
-  STUDENT_ROLE,
-  COACH_ROLE,
-} from "../../Helpers/constants";
+import { ADMIN_ROLE, STUDENT_ROLE, COACH_ROLE } from "../../Helpers/constants";
 import AdminNavbar from "./AdminNavbar";
 import GuestNavbar from "./GuestNavbar";
 import StudentNavbar from "./StudentNavbar";

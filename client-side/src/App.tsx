@@ -16,6 +16,10 @@ import CoachesList from "./pages/CoachesList";
 import ManageCoach from "./pages/coaches/details/ManageCoach";
 import Complaint from "./pages/Complaint";
 import Checkout from "./pages/Checkout";
+import AboutUs from "./pages/AboutUs";
+import Profile from "./pages/profile/Profile";
+import EditProfile from "./pages/profile/EditProfile";
+
 
 function App() {
   const navigate = useNavigate();
@@ -49,12 +53,15 @@ function App() {
         <Route path="recover" element={<PasswordRecovery />} />
         <Route path="newPassword" element={<NewPassword />} />
         <Route path="register" element={<Register />} />
+        <Route path="aboutUs" element={<AboutUs />} />
         <Route path="allCoaches" element={<MainCoachesList />} />
         <Route path="coachDetails/:id" element={<CoachDetails />} />
         <Route path="manageCoaches" element={<CoachesList />} />
         <Route path="manageCoach/:id" element={<ManageCoach />} />
         <Route path="complaint/:id" element={<Complaint />} />
         <Route path="checkout" element={<Checkout />} />
+        <Route path="profile" element={<Profile />} />
+        <Route path="editProfile" element={<EditProfile />} />
       </Routes>
       <Footer />
     </>

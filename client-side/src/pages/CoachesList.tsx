@@ -14,7 +14,7 @@ import {
   Center,
 } from "@chakra-ui/react";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
-import { URL_ADDRESS, Unauthorized } from "../Helpers/constants";
+import { Unauthorized } from "../Helpers/constants";
 import toast from "react-hot-toast";
 import { Coach } from "../Types/types";
 import eventBus from "../Helpers/eventBus";
@@ -31,6 +31,7 @@ interface FilterProps {
 const CoachesList = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [coaches, setCoaches] = useState<Coach[]>([]);
+  const token = localStorage.getItem("accessToken");
   const [filterData, setFilterData] = useState<FilterProps>({
     from: undefined,
     to: undefined,
@@ -40,12 +41,16 @@ const CoachesList = () => {
   const navigate = useNavigate();
 
   const getCoachesList = useCallback(async () => {
-    const response = await fetch(URL_ADDRESS + "user/getCoaches", {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "GET",
-    });
+    const response = await fetch(
+      import.meta.env.VITE_API_URL + "user/getCoaches",
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        method: "GET",
+      }
+    );
     if (response.status === 401) {
       eventBus.dispatch("logOut", Unauthorized);
     } else if (response.status === 200) {

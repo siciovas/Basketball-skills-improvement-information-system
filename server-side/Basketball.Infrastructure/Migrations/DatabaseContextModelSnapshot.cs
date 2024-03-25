@@ -200,6 +200,9 @@ namespace Basketball.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<byte[]>("Avatar")
+                        .HasColumnType("longblob");
+
                     b.Property<DateOnly>("BirthDate")
                         .HasColumnType("date");
 
@@ -221,6 +224,9 @@ namespace Basketball.Infrastructure.Migrations
 
                     b.Property<double?>("FootSize")
                         .HasColumnType("double");
+
+                    b.Property<int?>("Gender")
+                        .HasColumnType("int");
 
                     b.Property<int?>("Height")
                         .HasColumnType("int");

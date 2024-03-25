@@ -15,27 +15,32 @@ import {
   Spinner,
   Center,
 } from "@chakra-ui/react";
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Container from "../../components/Container";
 import { Coach } from "../../Types/types";
 import toast from "react-hot-toast";
-import { URL_ADDRESS, Unauthorized } from "../../Helpers/constants";
+import { Unauthorized } from "../../Helpers/constants";
 import eventBus from "../../Helpers/eventBus";
 import { useNavigate } from "react-router-dom";
 
 const MainCoachesList = () => {
   const [coaches, setCoaches] = useState<Coach[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const token = localStorage.getItem("accessToken");
 
   const navigate = useNavigate();
 
   const getCoachesList = useCallback(async () => {
-    const response = await fetch(URL_ADDRESS + "user/getCoaches", {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "GET",
-    });
+    const response = await fetch(
+      import.meta.env.VITE_API_URL + "user/getCoaches",
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        method: "GET",
+      }
+    );
     if (response.status === 401) {
       eventBus.dispatch("logOut", Unauthorized);
     } else if (response.status === 200) {
@@ -63,7 +68,12 @@ const MainCoachesList = () => {
           <HStack justifyContent="end" spacing={10}>
             <Flex>
               <Menu closeOnSelect={false}>
-                <MenuButton as={Button} border="solid" borderColor="#9e9d9d" backgroundColor="#E2E2E2">
+                <MenuButton
+                  as={Button}
+                  border="solid"
+                  borderColor="#9e9d9d"
+                  backgroundColor="#E2E2E2"
+                >
                   <Box className="fa-solid fa-filter"></Box>
                 </MenuButton>
                 <MenuList

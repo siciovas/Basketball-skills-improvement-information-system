@@ -13,6 +13,8 @@ namespace Basketball.Domain.Data.Entities
         public Role Role { get; set; }
         public required string Password { get; set; }
         public DateOnly RegisterDate { get; set; }
+        public Gender? Gender { get; set; }
+        public byte[]? Avatar { get; set; }
 
         // Fields for student
         public int? Height { get; set; }

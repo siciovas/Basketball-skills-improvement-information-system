@@ -1,7 +1,9 @@
 ﻿using Basketball.Core.Dtos;
+using Basketball.Core.Dtos.Update;
 using Basketball.Core.Interfaces.Repositories;
 using Basketball.Core.Interfaces.Services;
 using Basketball.Domain.Data.Entities;
+using Basketball.Domain.Data.Entities.Enums;
 using Basketball.Infrastructure.Authentication;
 
 namespace Basketball.Services
@@ -74,6 +76,9 @@ namespace Basketball.Services
                 FootSize = user.FootSize,
                 MetabolicAge = user.MetabolicAge,
                 Description = user.Description,
+                Gender = user.Gender,
+                Avatar = user.Avatar,
+                CoachStatus = user.Role == Role.Coach ? CoachStatus.Pending : null,
             };
 
             var createdUser = await _userRepository.Create(newUser);
@@ -95,7 +100,9 @@ namespace Basketball.Services
                 Specialization = x.Specialization!,
                 Rating = x.Rating,
                 CoachStatus = x.CoachStatus,
-                RegisterDate = x.RegisterDate
+                RegisterDate = x.RegisterDate,
+                Gender = x.Gender,
+                Avatar = x.Avatar,
             }).ToList();
         }
 
@@ -117,6 +124,8 @@ namespace Basketball.Services
                 CoachStatus = x.CoachStatus!,
                 RegisterDate = x.RegisterDate,
                 Description = x.Description,
+                Gender = x.Gender,
+                Avatar = x.Avatar,
                 TrainingPlansCount = trainingPlansCount.TryGetValue(x.Id, out int value) ? value : 0
             });
 
@@ -143,6 +152,8 @@ namespace Basketball.Services
                 Description = coach.Description,
                 Experience = coach.Experience,
                 PhoneNumber = coach.PhoneNumber,
+                Gender = coach.Gender,
+                Avatar = coach.Avatar,
                 TrainingPlansCount = trainingPlans.Count,
                 TrainingPlans = trainingPlans.Select(x => new TrainingPlanSummaryDto
                 {
@@ -151,6 +162,90 @@ namespace Basketball.Services
                     Price = x.Price,
                     ShortDescription = x.ShortDescription
                 }).ToList()
+            };
+        }
+
+        public async Task<User> ChangeCoachStatus(Guid id, CoachStatus status)
+        {
+            var coach = await _userRepository.GetUserById(id);
+
+            coach.CoachStatus = status;
+
+            var updatedCoach = await _userRepository.Update(coach);
+
+            return updatedCoach;
+        }
+
+        public async Task Delete(Guid id)
+        {
+            var user = await _userRepository.GetUserById(id);
+
+            await _userRepository.Delete(user!);
+        }
+
+        public async Task Update(Guid id, UserUpdateDto userDto)
+        {
+            var user = await _userRepository.GetUserById(id);
+
+            user.PhoneNumber = userDto.PhoneNumber;
+            user.Email = userDto.Email;
+            user.Avatar = userDto.Avatar;
+            user.Height = userDto.Height;
+            user.Weight = userDto.Weight;
+            user.FootSize = userDto.FootSize;
+            user.MetabolicAge = userDto.MetabolicAge;
+            user.Education = userDto.Education;
+            user.Description = userDto.Description;
+            user.Experience = userDto.Experience;
+            user.Specialization = userDto.Specialization;
+
+            await _userRepository.Update(user);
+        }
+
+        public async Task UpdatePassword(Guid id, PasswordDto passwordDto)
+        {
+            var user = await _userRepository.GetUserById(id);
+
+            if (BCrypt.Net.BCrypt.Verify(passwordDto.OldPassword, user.Password))
+            {
+                if (passwordDto.NewPassword == passwordDto.RepeatPassword)
+                {
+                    var passwordHash = BCrypt.Net.BCrypt.HashPassword(passwordDto.NewPassword);
+
+                    user.Password = passwordHash;
+
+                    await _userRepository.Update(user);
+                }
+            }
+        }
+
+        public async Task<MeDto> GetMe(Guid id)
+        {
+            var user = await _userRepository.GetUserById(id);
+
+            return new MeDto
+            {
+                Email = user.Email,
+                Name = user.Name,
+                PhoneNumber = user.PhoneNumber,
+                Surname = user.Surname,
+                Avatar = user.Avatar,
+                Gender = user.Gender,
+                BirthDate = user.BirthDate,
+                RegisterDate = user.RegisterDate,
+                AdditionalInfo = user.Role == Role.Admin ? null : new AdditionalInfo
+                {
+                    CoachStatus = user.CoachStatus,
+                    Description = user.Description,
+                    Education = user.Education,
+                    Experience = user.Experience,
+                    FootSize = user.FootSize,
+                    Height = user.Height,
+                    MetabolicAge = user.MetabolicAge,
+                    Rating = user.Rating,
+                    Specialization = user.Specialization,
+                    Weight = user.Weight,
+                }
             };
         }
     }

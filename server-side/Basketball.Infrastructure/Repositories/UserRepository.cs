@@ -52,5 +52,19 @@ namespace Basketball.Infrastructure.Repositories
         {
             return await _db.Users.Where(x => x.Role == Role.Coach && x.CoachStatus == CoachStatus.Approved).ToListAsync();
         }
+
+        public async Task<User> Update(User user)
+        {
+            var updatedCoach = _db.Users.Update(user);
+            await _db.SaveChangesAsync();
+
+            return updatedCoach.Entity;
+        }
+
+        public async Task Delete(User user)
+        {
+            _db.Users.Remove(user);
+            await _db.SaveChangesAsync();
+        }
     }
 }
