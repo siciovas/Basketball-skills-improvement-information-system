@@ -125,11 +125,11 @@ const MainCoachesList = () => {
                   p={2}
                 >
                   <Flex dir="column" pos="relative" gap={3}>
-                    <Box alignSelf="center" h={40} w={60}>
+                    <Box alignSelf="center" h={60} w={60} ml={5}>
                       <Image
                         w="100%"
                         h="100%"
-                        src="https://m.basketnews.lt/paveikslelis-25361-crop700x700.jpg"
+                        src={"data:image/jpeg;base64," + coach.avatar}
                       ></Image>
                     </Box>
                     <Flex flexDir="column" gap={2} w="100%">
