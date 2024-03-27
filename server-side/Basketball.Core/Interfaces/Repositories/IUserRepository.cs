@@ -13,5 +13,6 @@ namespace Basketball.Core.Interfaces.Repositories
         Task<User> GetUserById(Guid id);
         Task<User> Update(User user);
         Task Delete(User user);
+        Task<string> GetAdminEmail();
     }
 }
