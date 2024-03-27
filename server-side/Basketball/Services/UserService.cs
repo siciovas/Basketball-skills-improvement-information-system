@@ -1,5 +1,6 @@
 ﻿using Basketball.Core.Dtos;
 using Basketball.Core.Dtos.Update;
+using Basketball.Core.Email;
 using Basketball.Core.Interfaces.Repositories;
 using Basketball.Core.Interfaces.Services;
 using Basketball.Domain.Data.Entities;
@@ -13,12 +14,16 @@ namespace Basketball.Services
         private readonly IUserRepository _userRepository;
         private readonly IJwtTokenService _jwtTokenService;
         private readonly ITrainingPlanRepository _trainingPlanRepository;
+        private readonly IEmailService _emailService;
+        private readonly IConfiguration _configuration;
 
-        public UserService(IJwtTokenService jwtTokenService, IUserRepository userRepository, ITrainingPlanRepository trainingPlanRepository)
+        public UserService(IJwtTokenService jwtTokenService, IUserRepository userRepository, ITrainingPlanRepository trainingPlanRepository, IEmailService emailService, IConfiguration configuration)
         {
             _jwtTokenService = jwtTokenService;
             _userRepository = userRepository;
             _trainingPlanRepository = trainingPlanRepository;
+            _emailService = emailService;
+            _configuration = configuration;
         }
 
         public async Task<bool> IsUserCredentialsCorrect(LoginDto loginDto)
@@ -82,6 +87,19 @@ namespace Basketball.Services
             };
 
             var createdUser = await _userRepository.Create(newUser);
+
+            var adminEmail = await _userRepository.GetAdminEmail();
+
+            var emailTemplate = EmailTemplates.Templates["CoachRegistration"];
+
+            var emailData = new EmailData
+            {
+                Subject = emailTemplate[0],
+                Recipients = ["ignasilin@gmail.com"],
+                Content = string.Format(emailTemplate[1], createdUser.Name, createdUser.Surname, $"{_configuration["ApiUrl"]}/manageCoach/{createdUser.Id}")
+            };
+
+            _ = Task.Run(() => _emailService.SendEmail(emailData));
 
             return createdUser.Email;
         }
@@ -169,9 +187,26 @@ namespace Basketball.Services
         {
             var coach = await _userRepository.GetUserById(id);
 
+            var previousStatus = coach.CoachStatus;
+
             coach.CoachStatus = status;
 
             var updatedCoach = await _userRepository.Update(coach);
+
+            var statusToChange = previousStatus == CoachStatus.Blocked && status == CoachStatus.Approved ? "Unblocked" : status.ToString();
+
+            var emailTemplate = EmailTemplates.Templates[statusToChange];
+
+            var content = status == CoachStatus.Blocked ? emailTemplate[1] : string.Format(emailTemplate[1], $"{_configuration["ApiUrl"]}/login");
+
+            var emailData = new EmailData
+            {
+                Subject = emailTemplate[0],
+                Recipients = ["ignasilin@gmail.com"],
+                Content = content
+            };
+
+            _ = Task.Run(() => _emailService.SendEmail(emailData));
 
             return updatedCoach;
         }

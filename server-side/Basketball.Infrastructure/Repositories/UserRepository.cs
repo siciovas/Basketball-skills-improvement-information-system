@@ -66,5 +66,10 @@ namespace Basketball.Infrastructure.Repositories
             _db.Users.Remove(user);
             await _db.SaveChangesAsync();
         }
+
+        public async Task<string> GetAdminEmail()
+        {
+            return await _db.Users.Where(x => x.Role == Role.Admin).Select(x => x.Email).SingleAsync();
+        }
     }
 }
