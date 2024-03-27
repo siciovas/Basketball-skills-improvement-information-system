@@ -27,6 +27,13 @@ jobs:
       - name: Restore
         run: dotnet restore ./server-side/Basketball/Basketball.sln
 
+      - name: App Settings Variable Substitution
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: './server-side/Basketball/appsettings.json'
+        env:
+          AppUrl: "https://bsdis-front.azurewebsites.net"
+
       - name: Build
         run: dotnet build ./server-side/Basketball/Basketball.sln --configuration Release --no-restore
 
