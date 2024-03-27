@@ -37,7 +37,7 @@ namespace Basketball.Services
             {
                 Subject = emailTemplate[0],
                 Recipients = ["ignasilin@gmail.com"],
-                Content = string.Format(emailTemplate[1], createdComplaint.Coach.Name, createdComplaint.Coach.Surname, $"{_configuration["ApiUrl"]}/manageCoach/{createdComplaint.Coach.Id}")
+                Content = string.Format(emailTemplate[1], createdComplaint.Coach.Name, createdComplaint.Coach.Surname, $"{_configuration["AppUrl"]}/manageCoach/{createdComplaint.Coach.Id}")
             };
 
             _ = Task.Run(() => _emailService.SendEmail(emailData));

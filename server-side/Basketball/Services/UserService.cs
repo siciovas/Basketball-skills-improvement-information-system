@@ -96,7 +96,7 @@ namespace Basketball.Services
             {
                 Subject = emailTemplate[0],
                 Recipients = ["ignasilin@gmail.com"],
-                Content = string.Format(emailTemplate[1], createdUser.Name, createdUser.Surname, $"{_configuration["ApiUrl"]}/manageCoach/{createdUser.Id}")
+                Content = string.Format(emailTemplate[1], createdUser.Name, createdUser.Surname, $"{_configuration["AppUrl"]}/manageCoach/{createdUser.Id}")
             };
 
             _ = Task.Run(() => _emailService.SendEmail(emailData));
@@ -197,7 +197,7 @@ namespace Basketball.Services
 
             var emailTemplate = EmailTemplates.Templates[statusToChange];
 
-            var content = status == CoachStatus.Blocked ? emailTemplate[1] : string.Format(emailTemplate[1], $"{_configuration["ApiUrl"]}/login");
+            var content = status == CoachStatus.Blocked ? emailTemplate[1] : string.Format(emailTemplate[1], $"{_configuration["AppUrl"]}/login");
 
             var emailData = new EmailData
             {
