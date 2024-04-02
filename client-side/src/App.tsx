@@ -19,7 +19,7 @@ import Checkout from "./pages/Checkout";
 import AboutUs from "./pages/AboutUs";
 import Profile from "./pages/profile/Profile";
 import EditProfile from "./pages/profile/EditProfile";
-
+import PayseraSuccessfulPayment from "./pages/PayseraSuccessfulPayment";
 
 function App() {
   const navigate = useNavigate();
@@ -62,6 +62,7 @@ function App() {
         <Route path="checkout" element={<Checkout />} />
         <Route path="profile" element={<Profile />} />
         <Route path="editProfile" element={<EditProfile />} />
+        <Route path="successfulPayment" element={<PayseraSuccessfulPayment />} />
       </Routes>
       <Footer />
     </>
