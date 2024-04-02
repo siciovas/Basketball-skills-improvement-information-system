@@ -122,6 +122,15 @@ const CoachDetails = () => {
                     />
                     {coach?.rating}
                   </Box>
+                  <Button
+                    textTransform="uppercase"
+                    background="red.500"
+                    textColor="white"
+                    borderRadius="2xl"
+                    onClick={() => navigate(`/complaint/${coach?.id}`)}
+                  >
+                    PRANEŠTI
+                  </Button>
                 </Flex>
               </Flex>
               <Box ml={5} my={5}>

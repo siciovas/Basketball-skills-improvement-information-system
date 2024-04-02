@@ -293,7 +293,6 @@ const ManageCoach = () => {
         onClose={onClose}
         onClick={updateCoachStatus}
       />
-      \
     </>
   );
 };

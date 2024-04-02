@@ -72,7 +72,7 @@ const Complaint = () => {
     });
     if (response.status === 201) {
       toast.success("Skundas pateiktas sėkmingai!");
-      navigate("/");
+      navigate("/allCoaches");
     } else {
       toast.error("Įvyko klaida");
     }
@@ -87,7 +87,7 @@ const Complaint = () => {
           </Center>
         ) : (
           <>
-            <Heading textAlign="center">Skundo pateikimo forma</Heading>
+            <Heading textAlign="center">Trenerio skundas: {coach}</Heading>
             <Flex
               mt={10}
               p={5}
@@ -99,7 +99,7 @@ const Complaint = () => {
               flexDirection="column"
               gap={5}
             >
-              <Heading size="md">{coach}</Heading>
+              <Heading size="md">Skundo aprašymas</Heading>
               <Textarea
                 onChange={onComplaintChange}
                 placeholder="Skundo aprašymas"
