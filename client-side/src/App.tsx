@@ -19,7 +19,7 @@ import Checkout from "./pages/Checkout";
 import AboutUs from "./pages/AboutUs";
 import Profile from "./pages/profile/Profile";
 import EditProfile from "./pages/profile/EditProfile";
-
+import Home from "./pages/Home";
 
 function App() {
   const navigate = useNavigate();
@@ -49,6 +49,7 @@ function App() {
       <Toaster />
       <Navbar />
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route path="login" element={<Login />} />
         <Route path="recover" element={<PasswordRecovery />} />
         <Route path="newPassword" element={<NewPassword />} />

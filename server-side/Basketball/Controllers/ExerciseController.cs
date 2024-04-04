@@ -30,11 +30,12 @@ namespace Basketball.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Coach")]
-        public async Task<IActionResult> Create(ExercisePostDto exerciseDto)
+        [DisableRequestSizeLimit]
+        public async Task<IActionResult> Create(ExercisePostDto data)
         {
             var coachId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
-
-            var exercise = await _exerciseService.Create(exerciseDto, coachId);
+            var stream = data.ExerciseVideo.OpenReadStream();
+            var exercise = await _exerciseService.Create(data, coachId);
 
             return CreatedAtAction(nameof(Create), exercise);
         }
