@@ -19,7 +19,8 @@ import Checkout from "./pages/Checkout";
 import AboutUs from "./pages/AboutUs";
 import Profile from "./pages/profile/Profile";
 import EditProfile from "./pages/profile/EditProfile";
-import Home from "./pages/Home";
+import PayseraSuccessfulPayment from "./pages/PayseraSuccessfulPayment";
+import HomePage from "./pages/HomePage";
 
 function App() {
   const navigate = useNavigate();
@@ -49,7 +50,7 @@ function App() {
       <Toaster />
       <Navbar />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="login" element={<Login />} />
         <Route path="recover" element={<PasswordRecovery />} />
         <Route path="newPassword" element={<NewPassword />} />
@@ -63,6 +64,10 @@ function App() {
         <Route path="checkout" element={<Checkout />} />
         <Route path="profile" element={<Profile />} />
         <Route path="editProfile" element={<EditProfile />} />
+        <Route
+          path="successfulPayment"
+          element={<PayseraSuccessfulPayment />}
+        />
       </Routes>
       <Footer />
     </>

@@ -9,14 +9,9 @@ namespace Basketball.Controllers
 {
     [ApiController]
     [Route("api/complaint")]
-    public class ComplaintController : ControllerBase
+    public class ComplaintController(IComplaintService complaintService) : ControllerBase
     {
-        private readonly IComplaintService _complaintService;
-
-        public ComplaintController(IComplaintService complaintService)
-        {
-            _complaintService = complaintService;
-        }
+        private readonly IComplaintService _complaintService = complaintService;
 
         [HttpPost]
         [Authorize(Roles = "Student")]

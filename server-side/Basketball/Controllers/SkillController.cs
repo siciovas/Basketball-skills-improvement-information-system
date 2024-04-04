@@ -8,14 +8,9 @@ namespace Basketball.Controllers
 {
     [ApiController]
     [Route("api/skill")]
-    public class SkillController : ControllerBase
+    public class SkillController(ISkillService skillService) : ControllerBase
     {
-        private readonly ISkillService _skillService;
-
-        public SkillController(ISkillService skillService)
-        {
-            _skillService = skillService;
-        }
+        private readonly ISkillService _skillService = skillService;
 
         [HttpGet]
         [Authorize(Roles = "Coach")]

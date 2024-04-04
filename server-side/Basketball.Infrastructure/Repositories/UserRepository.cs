@@ -6,14 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Basketball.Infrastructure.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository(DatabaseContext db) : IUserRepository
     {
-        private readonly DatabaseContext _db;
-
-        public UserRepository(DatabaseContext db)
-        {
-            _db = db;
-        }
+        private readonly DatabaseContext _db = db;
 
         public async Task<User> Create(User user)
         {
@@ -25,32 +20,42 @@ namespace Basketball.Infrastructure.Repositories
 
         public async Task<User> GetUserByEmail(string email)
         {
-            return await _db.Users.Where(x => x.Email == email).FirstAsync();
+            return await _db.Users
+                            .Where(u => u.Email == email)
+                            .FirstAsync();
         }
 
         public async Task<User> GetUserById(Guid id)
         {
-            return await _db.Users.FirstAsync(x => x.Id == id);
+            return await _db.Users.FirstAsync(u => u.Id == id);
         }
 
         public Task<bool> IsExistsByEmail(string email)
         {
-            return _db.Users.Where(x => x.Email == email).AnyAsync();
+            return _db.Users
+                      .Where(u => u.Email == email)
+                      .AnyAsync();
         }
 
         public Task<bool> IsExistsById(Guid id)
         {
-            return _db.Users.Where(x => x.Id == id).AnyAsync();
+            return _db.Users
+                      .Where(u => u.Id == id)
+                      .AnyAsync();
         }
 
         public async Task<List<User>> GetAllCoaches()
         {
-            return await _db.Users.Where(x => x.Role == Role.Coach).ToListAsync();
+            return await _db.Users
+                            .Where(u => u.Role == Role.Coach)
+                            .ToListAsync();
         }
 
         public async Task<List<User>> GetApprovedCoaches()
         {
-            return await _db.Users.Where(x => x.Role == Role.Coach && x.CoachStatus == CoachStatus.Approved).ToListAsync();
+            return await _db.Users
+                            .Where(u => u.Role == Role.Coach && u.CoachStatus == CoachStatus.Approved)
+                            .ToListAsync();
         }
 
         public async Task<User> Update(User user)
@@ -69,7 +74,10 @@ namespace Basketball.Infrastructure.Repositories
 
         public async Task<string> GetAdminEmail()
         {
-            return await _db.Users.Where(x => x.Role == Role.Admin).Select(x => x.Email).SingleAsync();
+            return await _db.Users
+                            .Where(u => u.Role == Role.Admin)
+                            .Select(u => u.Email)
+                            .SingleAsync();
         }
     }
 }

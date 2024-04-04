@@ -7,16 +7,11 @@ using Basketball.Domain.Data.Entities;
 
 namespace Basketball.Services
 {
-    public class ExerciseService : IExerciseService
+    public class ExerciseService(IExerciseRepository exerciseRepository, IConfiguration configuration) : IExerciseService
     {
-        private readonly IExerciseRepository _exerciseRepository;
-        private readonly IConfiguration _configuration;
+        private readonly IExerciseRepository _exerciseRepository = exerciseRepository;
+        private readonly IConfiguration _configuration = configuration;
 
-        public ExerciseService(IExerciseRepository exerciseRepository, IConfiguration configuration)
-        {
-            _exerciseRepository = exerciseRepository;
-            _configuration = configuration;
-        }
         public async Task<ExerciseDto> Create(ExercisePostDto exerciseDto, Guid coachId)
         {
             var container = new BlobContainerClient(_configuration["ConnectionStrings:StorageConnectionString"], "videos");

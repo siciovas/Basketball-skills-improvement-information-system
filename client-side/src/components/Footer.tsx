@@ -6,12 +6,12 @@ const Footer = () => {
       <Flex justify="center" align="center">
         <Image mt={5} h={40} src="/logo.ico" />
       </Flex>
-      <Flex mt={5} justify="center" alignItems="center">
-        <i className="fa-solid fa-phone"></i>
+      <Flex mt={5} justify="center" alignItems="center" gap={3}>
+        <Box className="fa-solid fa-phone" color="#ffffff"></Box>
         <Text color="white">+37060000000</Text>
       </Flex>
-      <Flex justify="center" alignItems="center">
-        <i className="fa-regular fa-envelope"></i>
+      <Flex justify="center" alignItems="center" gap={3}>
+        <Box className="fa-regular fa-envelope" color="#ffffff"></Box>
         <Text color="white">ktu@ktu.lt</Text>
       </Flex>
       <Flex justify="center">

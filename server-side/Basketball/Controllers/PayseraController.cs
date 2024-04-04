@@ -24,9 +24,9 @@ namespace Basketball.Controllers
             request.Currency = "EUR";
             request.Country = "LT";
             request.Test = true;
-            request.AcceptUrl = $"https://bsdis-front.azurewebsites.net/sekmingasuzsakymas?ordernumber={payseraDto.OrderNumber}";
-            request.CancelUrl = "https://bsdis-front.azurewebsites.net/sekmingasuzsakymas";
-            request.CallbackUrl = "https://bsdis-front.azurewebsites.net/sekmingasuzsakymas";
+            request.AcceptUrl = $"https://bsdis-front.azurewebsites.net/successfulPayment?ordernumber={payseraDto.OrderNumber}";
+            request.CancelUrl = "https://bsdis-front.azurewebsites.net/successfulPayment";
+            request.CallbackUrl = "https://bsdis-front.azurewebsites.net/successfulPayment";
 
             string redirectUrl = client.BuildRequestUrl(request);
 
