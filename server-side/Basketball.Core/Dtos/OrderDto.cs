@@ -1,6 +1,4 @@
-﻿using Basketball.Domain.Data.Entities;
-
-namespace Basketball.Core.Dtos
+﻿namespace Basketball.Core.Dtos
 {
     public class OrderDto
     {

@@ -76,5 +76,11 @@ namespace Basketball.Infrastructure.Repositories
 
             return updatedPlan.Entity;
         }
+
+        public async Task<int> GetAllCount()
+        {
+            return await _db.TrainingPlans
+                            .CountAsync();
+        }
     }
 }

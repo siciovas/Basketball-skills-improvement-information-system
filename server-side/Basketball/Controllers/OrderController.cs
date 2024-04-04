@@ -1,7 +1,5 @@
 ﻿using Basketball.Core.Dtos.Post;
 using Basketball.Core.Interfaces.Services;
-using Basketball.Domain.Data.Entities;
-using Basketball.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;

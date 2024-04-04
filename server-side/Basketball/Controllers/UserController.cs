@@ -162,5 +162,15 @@ namespace Basketball.Controllers
 
             return Ok(user);
         }
+
+        [HttpGet]
+        [Route("counts")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetCountsForAdmin()
+        {
+            var counts = await _userService.GetCountsForAdmin();
+
+            return Ok(counts);
+        }
     }
 }
