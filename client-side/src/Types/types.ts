@@ -79,3 +79,10 @@ export interface AdditionalInfo {
   coachStatus: string | null;
   description: string | null;
 }
+
+export interface Counts {
+  coaches: number | null;
+  students: number | null;
+  trainingPlans: number | null;
+  orders: number | null;
+}

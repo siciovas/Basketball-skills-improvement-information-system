@@ -9,5 +9,6 @@ namespace Basketball.Core.Interfaces.Repositories
         public Task<List<Order>> GetByUserId(Guid userId);
         public Task<List<Order>> GetAll();
         public Task<Order?> GetById(Guid id);
+        public Task<int> GetAllCount();
     }
 }

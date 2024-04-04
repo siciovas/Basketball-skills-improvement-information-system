@@ -59,5 +59,12 @@ namespace Basketball.Infrastructure.Repositories
         {
             return await _db.Orders.FirstOrDefaultAsync(o => o.Id == Id);
         }
+
+        public async Task<int> GetAllCount()
+        {
+            return await _db.Orders
+                            .Where(o => o.IsPaid)
+                            .CountAsync();
+        }
     }
 }
