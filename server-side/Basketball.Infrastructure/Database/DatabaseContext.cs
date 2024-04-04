@@ -3,10 +3,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Basketball.Infrastructure.Database
 {
-    public class DatabaseContext : DbContext
+    public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbContext(options)
     {
-        public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
-
         public DbSet<User> Users { get; set; }
         public DbSet<Complaint> Complaints { get; set; }
         public DbSet<Exercise> Exercises { get; set; }
@@ -15,6 +13,7 @@ namespace Basketball.Infrastructure.Database
         public DbSet<Skill> Skills { get; set; }
         public DbSet<ExerciseSkill> ExerciseSkill { get; set; }
         public DbSet<TrainingPlanSkill> TrainingPlanSkill { get; set; }
+        public DbSet<Order> Orders { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Skill>()

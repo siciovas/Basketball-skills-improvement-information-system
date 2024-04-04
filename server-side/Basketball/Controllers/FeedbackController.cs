@@ -9,14 +9,9 @@ namespace Basketball.Controllers
 {
     [ApiController]
     [Route("api/feedback")]
-    public class FeedbackController : ControllerBase
+    public class FeedbackController(IFeedbackService feedbackService) : ControllerBase
     {
-        private readonly IFeedbackService _feedbackService;
-
-        public FeedbackController(IFeedbackService feedbackService)
-        {
-            _feedbackService = feedbackService;
-        }
+        private readonly IFeedbackService _feedbackService = feedbackService;
 
         [HttpGet]
         [Authorize]

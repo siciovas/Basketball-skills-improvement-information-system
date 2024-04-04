@@ -7,18 +7,13 @@ using Basketball.Domain.Data.Entities;
 
 namespace Basketball.Services
 {
-    public class ComplaintService : IComplaintService
+    public class ComplaintService(IComplaintRepository complaintRepository, IEmailService emailService,
+                                  IConfiguration configuration) : IComplaintService
     {
-        private readonly IComplaintRepository _complaintRepository;
-        private readonly IEmailService _emailService;
-        private readonly IConfiguration _configuration;
+        private readonly IComplaintRepository _complaintRepository = complaintRepository;
+        private readonly IEmailService _emailService = emailService;
+        private readonly IConfiguration _configuration = configuration;
 
-        public ComplaintService(IComplaintRepository complaintRepository, IEmailService emailService, IConfiguration configuration)
-        {
-            _complaintRepository = complaintRepository;
-            _emailService = emailService;
-            _configuration = configuration;
-        }
         public async Task<ComplaintDto> Create(ComplaintPostDto complaintDto)
         {
             var newComplaint = new Complaint

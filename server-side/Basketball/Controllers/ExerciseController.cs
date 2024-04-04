@@ -8,14 +8,9 @@ namespace Basketball.Controllers
 {
     [ApiController]
     [Route("api/exercise")]
-    public class ExerciseController : ControllerBase
+    public class ExerciseController(IExerciseService exerciseService) : ControllerBase
     {
-        private readonly IExerciseService _exerciseService;
-
-        public ExerciseController(IExerciseService exerciseService)
-        {
-            _exerciseService = exerciseService;
-        }
+        private readonly IExerciseService _exerciseService = exerciseService;
 
         [HttpGet]
         [Authorize(Roles = "Coach")]
