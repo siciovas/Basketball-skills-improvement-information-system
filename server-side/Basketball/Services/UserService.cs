@@ -9,22 +9,15 @@ using Basketball.Infrastructure.Authentication;
 
 namespace Basketball.Services
 {
-    public class UserService : IUserService
+    public class UserService(IJwtTokenService jwtTokenService, IUserRepository userRepository,
+                             ITrainingPlanRepository trainingPlanRepository, IEmailService emailService,
+                             IConfiguration configuration) : IUserService
     {
-        private readonly IUserRepository _userRepository;
-        private readonly IJwtTokenService _jwtTokenService;
-        private readonly ITrainingPlanRepository _trainingPlanRepository;
-        private readonly IEmailService _emailService;
-        private readonly IConfiguration _configuration;
-
-        public UserService(IJwtTokenService jwtTokenService, IUserRepository userRepository, ITrainingPlanRepository trainingPlanRepository, IEmailService emailService, IConfiguration configuration)
-        {
-            _jwtTokenService = jwtTokenService;
-            _userRepository = userRepository;
-            _trainingPlanRepository = trainingPlanRepository;
-            _emailService = emailService;
-            _configuration = configuration;
-        }
+        private readonly IUserRepository _userRepository = userRepository;
+        private readonly IJwtTokenService _jwtTokenService = jwtTokenService;
+        private readonly ITrainingPlanRepository _trainingPlanRepository = trainingPlanRepository;
+        private readonly IEmailService _emailService = emailService;
+        private readonly IConfiguration _configuration = configuration;
 
         public async Task<bool> IsUserCredentialsCorrect(LoginDto loginDto)
         {

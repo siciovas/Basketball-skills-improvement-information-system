@@ -7,20 +7,12 @@ using System.Text;
 
 namespace Basketball.Infrastructure.Authentication
 {
-    public class JwtTokenService : IJwtTokenService
+    public class JwtTokenService(IConfiguration configuration) : IJwtTokenService
     {
-        private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler;
-        private readonly SymmetricSecurityKey _authSigningKey;
-        private readonly string _audienice;
-        private readonly string _issuer;
-
-        public JwtTokenService(IConfiguration configuration)
-        {
-            _audienice = configuration.GetSection("JwtSettings:Audience").Value!.ToString();
-            _issuer = configuration.GetSection("JwtSettings:Issuer").Value!.ToString();
-            _jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
-            _authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetSection("JwtSettings:Secret").Value!.ToString()));
-        }
+        private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler = new();
+        private readonly SymmetricSecurityKey _authSigningKey = new(Encoding.UTF8.GetBytes(configuration.GetSection("JwtSettings:Secret").Value!.ToString()));
+        private readonly string _audience = configuration.GetSection("JwtSettings:Audience").Value!.ToString();
+        private readonly string _issuer = configuration.GetSection("JwtSettings:Issuer").Value!.ToString();
 
         public string CreateAccessToken(string email, string userId, Role role)
         {
@@ -43,7 +35,7 @@ namespace Basketball.Infrastructure.Authentication
             var accessSecurityToken = new JwtSecurityToken
             (
                 issuer: _issuer,
-                audience: _audienice,
+                audience: _audience,
                 expires: DateTime.UtcNow.AddHours(24),
                 claims: claims,
                 signingCredentials: new SigningCredentials(_authSigningKey, SecurityAlgorithms.HmacSha256)

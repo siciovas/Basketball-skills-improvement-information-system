@@ -6,16 +6,10 @@ using Basketball.Domain.Data.Entities;
 
 namespace Basketball.Services
 {
-    public class TrainingPlanService : ITrainingPlanService
+    public class TrainingPlanService(ITrainingPlanRepository trainingPlanRepository, ISkillRepository skillRepository) : ITrainingPlanService
     {
-        private readonly ITrainingPlanRepository _trainingPlanRepository;
-        private readonly ISkillRepository _skillRepository;
-
-        public TrainingPlanService(ITrainingPlanRepository trainingPlanRepository, ISkillRepository skillRepository)
-        {
-            _trainingPlanRepository = trainingPlanRepository;
-            _skillRepository = skillRepository;
-        }
+        private readonly ITrainingPlanRepository _trainingPlanRepository = trainingPlanRepository;
+        private readonly ISkillRepository _skillRepository = skillRepository;
 
         public async Task<TrainingPlanDto> Create(TrainingPlanPostDto trainingPlan, Guid coachId)
         {

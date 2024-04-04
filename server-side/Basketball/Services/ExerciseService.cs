@@ -6,14 +6,10 @@ using Basketball.Domain.Data.Entities;
 
 namespace Basketball.Services
 {
-    public class ExerciseService : IExerciseService
+    public class ExerciseService(IExerciseRepository exerciseRepository) : IExerciseService
     {
-        private readonly IExerciseRepository _exerciseRepository;
+        private readonly IExerciseRepository _exerciseRepository = exerciseRepository;
 
-        public ExerciseService(IExerciseRepository exerciseRepository)
-        {
-            _exerciseRepository = exerciseRepository;
-        }
         public async Task<ExerciseDto> Create(ExercisePostDto exerciseDto, Guid coachId)
         {
             var newExercise = new Exercise

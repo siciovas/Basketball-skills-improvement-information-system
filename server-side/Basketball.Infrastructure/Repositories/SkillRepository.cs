@@ -5,14 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Basketball.Infrastructure.Repositories
 {
-    public class SkillRepository : ISkillRepository
+    public class SkillRepository(DatabaseContext db) : ISkillRepository
     {
-        private readonly DatabaseContext _db;
-
-        public SkillRepository(DatabaseContext db)
-        {
-            _db = db;
-        }
+        private readonly DatabaseContext _db = db;
 
         public async Task<Skill> Create(Skill skill)
         {
@@ -31,20 +26,22 @@ namespace Basketball.Infrastructure.Repositories
         public async Task<List<Skill>> GetAll(Guid coachId)
         {
             var skills = await _db.Skills
-                .Where(x => x.CoachId == coachId)
-                .ToListAsync();
+                                  .Where(s => s.CoachId == coachId)
+                                  .ToListAsync();
 
             return skills;
         }
 
         public async Task<Skill?> GetById(Guid id)
         {
-            return await _db.Skills.FirstOrDefaultAsync(x => x.Id == id);
+            return await _db.Skills.FirstOrDefaultAsync(s => s.Id == id);
         }
 
         public async Task<Skill> Update(Skill skill)
         {
-            _db.ExerciseSkill.Where(x => x.SkillId == skill.Id).ExecuteDelete();
+            _db.ExerciseSkill
+               .Where(s => s.SkillId == skill.Id)
+               .ExecuteDelete();
 
             var updatedSkill = _db.Skills.Update(skill);
             await _db.SaveChangesAsync();

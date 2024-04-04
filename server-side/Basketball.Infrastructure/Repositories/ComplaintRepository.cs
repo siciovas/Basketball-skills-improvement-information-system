@@ -5,26 +5,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Basketball.Infrastructure.Repositories
 {
-    public class ComplaintRepository : IComplaintRepository
+    public class ComplaintRepository(DatabaseContext db) : IComplaintRepository
     {
-        private readonly DatabaseContext _db;
-
-        public ComplaintRepository(DatabaseContext db)
-        {
-            _db = db;
-        }
+        private readonly DatabaseContext _db = db;
 
         public async Task<Complaint> Create(Complaint complaint)
         {
             var createdComplaint = _db.Add(complaint);
 
             _db.Entry(createdComplaint.Entity)
-                .Reference(t => t.Coach)
-                .Load();
+               .Reference(u => u.Coach)
+               .Load();
 
             _db.Entry(createdComplaint.Entity)
-                .Reference(t => t.Student)
-                .Load();
+               .Reference(u => u.Student)
+               .Load();
 
             await _db.SaveChangesAsync();
 
@@ -40,9 +35,9 @@ namespace Basketball.Infrastructure.Repositories
         public async Task<List<Complaint>> GetAllComplaints()
         {
             var complaints = await _db.Complaints
-                .Include(x => x.Coach)
-                .Include(x => x.Student)
-                .ToListAsync();
+                                      .Include(u => u.Coach)
+                                      .Include(u => u.Student)
+                                      .ToListAsync();
 
             return complaints;
         }
@@ -50,10 +45,10 @@ namespace Basketball.Infrastructure.Repositories
         public async Task<List<Complaint>> GetAllComplaintsByCoachId(Guid coachId)
         {
             var complaints = await _db.Complaints
-                .Include(x => x.Coach)
-                .Include(x => x.Student)
-                .Where(x => x.CoachId == coachId)
-                .ToListAsync();
+                                      .Include(u => u.Coach)
+                                      .Include(u => u.Student)
+                                      .Where(c => c.CoachId == coachId)
+                                      .ToListAsync();
 
             return complaints;
         }
@@ -61,10 +56,10 @@ namespace Basketball.Infrastructure.Repositories
         public async Task<List<Complaint>> GetAllComplaintsByStudentId(Guid studentId)
         {
             var complaints = await _db.Complaints
-                .Include(x => x.Coach)
-                .Include(x => x.Student)
-                .Where(x => x.StudentId == studentId)
-                .ToListAsync();
+                                      .Include(u => u.Coach)
+                                      .Include(u => u.Student)
+                                      .Where(c => c.StudentId == studentId)
+                                      .ToListAsync();
 
             return complaints;
         }
@@ -72,9 +67,9 @@ namespace Basketball.Infrastructure.Repositories
         public async Task<Complaint?> GetComplaintById(Guid id)
         {
             return await _db.Complaints
-                .Include(x => x.Coach)
-                .Include(x => x.Student)
-                .FirstOrDefaultAsync(x => x.Id == id);
+                            .Include(u => u.Coach)
+                            .Include(u => u.Student)
+                            .FirstOrDefaultAsync(c => c.Id == id);
         }
     }
 }

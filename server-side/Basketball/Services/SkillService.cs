@@ -6,16 +6,11 @@ using Basketball.Domain.Data.Entities;
 
 namespace Basketball.Services
 {
-    public class SkillService : ISkillService
+    public class SkillService(ISkillRepository skillRepository, IExerciseRepository exerciseRepository) : ISkillService
     {
-        private readonly ISkillRepository _skillRepository;
-        private readonly IExerciseRepository _exerciseRepository;
+        private readonly ISkillRepository _skillRepository = skillRepository;
+        private readonly IExerciseRepository _exerciseRepository = exerciseRepository;
 
-        public SkillService(ISkillRepository skillRepository, IExerciseRepository exerciseRepository)
-        {
-            _skillRepository = skillRepository;
-            _exerciseRepository = exerciseRepository;
-        }
         public async Task<SkillDto> Create(SkillPostDto skill, Guid coachId)
         {
             var exercisesTasks = new List<Task<Exercise>>();
