@@ -1,5 +1,5 @@
 import { Center, Spinner } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 
 const VideoPlayer = () => {
