@@ -71,5 +71,12 @@ namespace Basketball.Infrastructure.Repositories
             _db.Orders.Remove(order);
             await _db.SaveChangesAsync();
         }
+
+        public async Task<int> GetAllCount()
+        {
+            return await _db.Orders
+                            .Where(o => o.IsPaid)
+                            .CountAsync();
+        }
     }
 }

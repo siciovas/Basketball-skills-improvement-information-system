@@ -1,4 +1,5 @@
 ﻿using Basketball.Domain.Data.Entities;
+using Basketball.Domain.Data.Entities.Enums;
 
 namespace Basketball.Core.Interfaces.Repositories
 {
@@ -14,5 +15,6 @@ namespace Basketball.Core.Interfaces.Repositories
         Task<User> Update(User user);
         Task Delete(User user);
         Task<string> GetAdminEmail();
+        public Task<int> GetAllByRoleCount(Role role);
     }
 }

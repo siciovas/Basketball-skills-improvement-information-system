@@ -79,5 +79,12 @@ namespace Basketball.Infrastructure.Repositories
                             .Select(u => u.Email)
                             .SingleAsync();
         }
+
+        public async Task<int> GetAllByRoleCount(Role role)
+        {
+            return await _db.Users
+                            .Where(u => u.Role == role)
+                            .CountAsync();
+        }
     }
 }

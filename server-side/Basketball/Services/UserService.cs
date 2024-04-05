@@ -10,12 +10,13 @@ using Basketball.Infrastructure.Authentication;
 namespace Basketball.Services
 {
     public class UserService(IJwtTokenService jwtTokenService, IUserRepository userRepository,
-                             ITrainingPlanRepository trainingPlanRepository, IEmailService emailService,
-                             IConfiguration configuration) : IUserService
+                             ITrainingPlanRepository trainingPlanRepository, IOrderRepository orderRepository,
+                             IEmailService emailService, IConfiguration configuration) : IUserService
     {
         private readonly IUserRepository _userRepository = userRepository;
         private readonly IJwtTokenService _jwtTokenService = jwtTokenService;
         private readonly ITrainingPlanRepository _trainingPlanRepository = trainingPlanRepository;
+        private readonly IOrderRepository _orderRepository = orderRepository;
         private readonly IEmailService _emailService = emailService;
         private readonly IConfiguration _configuration = configuration;
 
@@ -274,6 +275,22 @@ namespace Basketball.Services
                     Specialization = user.Specialization,
                     Weight = user.Weight,
                 }
+            };
+        }
+
+        public async Task<CountsDto> GetCountsForAdmin()
+        {
+            var coaches = await _userRepository.GetAllByRoleCount(Role.Coach);
+            var students = await _userRepository.GetAllByRoleCount(Role.Student);
+            var trainingPlans = await _trainingPlanRepository.GetAllCount();
+            var orders = await _orderRepository.GetAllCount();
+
+            return new CountsDto
+            {
+                Coaches = coaches,
+                Students = students,
+                TrainingPlans = trainingPlans,
+                Orders = orders
             };
         }
     }

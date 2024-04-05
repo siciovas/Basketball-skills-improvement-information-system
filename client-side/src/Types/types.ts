@@ -89,3 +89,9 @@ export interface CheckoutDto {
   price: number;
   commissionFee: number | null;
 }
+export interface Counts {
+  coaches: number | null;
+  students: number | null;
+  trainingPlans: number | null;
+  orders: number | null;
+}
