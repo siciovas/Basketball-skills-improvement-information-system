@@ -79,3 +79,13 @@ export interface AdditionalInfo {
   coachStatus: string | null;
   description: string | null;
 }
+
+export interface CheckoutDto {
+  id: string;
+  orderDate: string;
+  coachFullName: string;
+  studentFullName: string | null;
+  trainingPlanTitle: string;
+  price: number;
+  commissionFee: number | null;
+}

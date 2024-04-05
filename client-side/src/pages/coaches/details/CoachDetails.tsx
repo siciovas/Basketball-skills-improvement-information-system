@@ -161,6 +161,9 @@ const CoachDetails = () => {
                         borderRadius="2xl"
                         mt={10}
                         textTransform="uppercase"
+                        onClick={() =>
+                          navigate(`/trainingPlan/${trainingPlan.id}`)
+                        }
                       >
                         Plačiau
                       </Button>

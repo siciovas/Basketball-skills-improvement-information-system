@@ -11,6 +11,8 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using Newtonsoft.Json.Converters;
 using Microsoft.AspNetCore.Http.Features;
+using Quartz;
+using Basketball.Infrastructure.Jobs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +24,18 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
+
+builder.Services.AddQuartz(options =>
+{
+    var jobKey = JobKey.Create(nameof(OrderExpirationJob));
+    options.AddJob<OrderExpirationJob>(jobKey)
+    .AddTrigger(trigger =>
+        trigger
+            .ForJob(jobKey)
+            .WithSimpleSchedule(schedule => schedule.WithIntervalInHours(120).RepeatForever()));
+});
+
+builder.Services.AddQuartzHostedService();
 
 builder.Services.AddSwaggerGen(option =>
 {
