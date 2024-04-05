@@ -80,6 +80,15 @@ export interface AdditionalInfo {
   description: string | null;
 }
 
+export interface CheckoutDto {
+  id: string;
+  orderDate: string;
+  coachFullName: string;
+  studentFullName: string | null;
+  trainingPlanTitle: string;
+  price: number;
+  commissionFee: number | null;
+}
 export interface Counts {
   coaches: number | null;
   students: number | null;

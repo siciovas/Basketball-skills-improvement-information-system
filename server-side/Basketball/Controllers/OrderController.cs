@@ -14,11 +14,11 @@ namespace Basketball.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Create(OrderPostDto order)
+        public async Task<IActionResult> Create(OrderPostDto orderDto)
         {
             var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
 
-            var createdOrder = await _orderService.Create(order, userId);
+            var createdOrder = await _orderService.Create(orderDto, userId);
 
             return CreatedAtAction(nameof(Create), createdOrder);
         }
@@ -32,7 +32,7 @@ namespace Basketball.Controllers
             return Ok(orders);
         }
 
-        [HttpGet("/myOrders")]
+        [HttpGet("myOrders")]
         [Authorize(Roles = "Student")]
         public async Task<IActionResult> GetByUser()
         {
@@ -43,13 +43,31 @@ namespace Basketball.Controllers
             return Ok(orders);
         }
 
-        [HttpPut("/{orderId}")]
+        [HttpGet("checkout/{id}")]
+        [Authorize]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var order = await _orderService.GetById(id);
+
+            return Ok(order);
+        }
+
+        [HttpPut("{orderId}")]
         [Authorize]
         public async Task<IActionResult> UpdatePaymentStatus(Guid orderId)
         {
             var updatedOrder = await _orderService.UpdatePaymentStatus(orderId);
 
             return Ok(updatedOrder);
+        }
+
+        [HttpDelete("{orderId}")]
+        [Authorize]
+        public async Task<IActionResult> CancelOrder(Guid orderId)
+        {
+            await _orderService.CancelOrder(orderId);
+
+            return NoContent();
         }
     }
 }

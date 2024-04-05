@@ -10,5 +10,7 @@ namespace Basketball.Core.Interfaces.Repositories
         public Task<List<Order>> GetAll();
         public Task<Order?> GetById(Guid id);
         public Task<int> GetAllCount();
+        public Task RemoveExpiredOrders();
+        public Task Remove(Order order);
     }
 }

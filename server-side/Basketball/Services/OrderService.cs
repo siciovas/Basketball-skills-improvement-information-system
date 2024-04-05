@@ -7,32 +7,28 @@ using Basketball.Domain.Data.Entities;
 
 namespace Basketball.Services
 {
-    public class OrderService(IOrderRepository orderRepository) : IOrderService
+    public class OrderService(IOrderRepository orderRepository, ITrainingPlanRepository trainingPlanRepository) : IOrderService
     {
         private readonly IOrderRepository _orderRepository = orderRepository;
-        public async Task<OrderDto> Create(OrderPostDto orderDto, Guid userId)
+        private readonly ITrainingPlanRepository _trainingPlanRepository = trainingPlanRepository;
+
+        public async Task<Guid> Create(OrderPostDto orderDto, Guid userId)
         {
+            var trainingPlan = await _trainingPlanRepository.GetById(orderDto.TrainingPlanId);
+
             var newOrder = new Order
             {
                 Id = Guid.NewGuid(),
                 OrderDate = DateTime.Now,
-                Price = orderDto.Price,
+                Price = (decimal)trainingPlan!.Price,
                 TrainingPlanId = orderDto.TrainingPlanId,
                 UserId = userId,
-                CommissionFee = orderDto.CommissionFee,
+                CommissionFee = null,
             };
 
             var createdOrder = await _orderRepository.Create(newOrder);
 
-            return new OrderDto
-            {
-                Id = createdOrder.Id,
-                OrderDate = createdOrder.OrderDate,
-                Price = createdOrder.Price,
-                StudentFullName = string.Format("{0} {1}", createdOrder.User.Name, createdOrder.User.Surname),
-                CoachFullName = string.Format("{0} {1}", createdOrder.TrainingPlan.Coach.Name, createdOrder.TrainingPlan.Coach.Surname),
-                CommissionFee = createdOrder.CommissionFee,
-            };
+            return createdOrder.Id;
         }
 
         public async Task<List<OrderDto>> GetByUserId(Guid userId)
@@ -45,7 +41,8 @@ namespace Basketball.Services
                 OrderDate = x.OrderDate,
                 CoachFullName = string.Format("{0} {1}", x.TrainingPlan.Coach.Name, x.TrainingPlan.Coach.Surname),
                 Price = x.Price,
-                CommissionFee = x.CommissionFee
+                CommissionFee = x.CommissionFee,
+                TrainingPlanTitle = x.TrainingPlan.Title
             }).ToList();
         }
 
@@ -61,6 +58,7 @@ namespace Basketball.Services
                 StudentFullName = string.Format("{0} {1}", x.User.Name, x.User.Surname),
                 CoachFullName = string.Format("{0} {1}", x.TrainingPlan.Coach.Name, x.TrainingPlan.Coach.Surname),
                 CommissionFee = x.CommissionFee,
+                TrainingPlanTitle = x.TrainingPlan.Title
             }).ToList();
         }
 
@@ -76,6 +74,28 @@ namespace Basketball.Services
             {
                 IsPaid = updatedOrder.IsPaid,
             };
+        }
+
+        public async Task<OrderDto> GetById(Guid id)
+        {
+            var order = await _orderRepository.GetById(id);
+
+            return new OrderDto
+            {
+                Id = order!.Id,
+                OrderDate = order.OrderDate,
+                CoachFullName = string.Format("{0} {1}", order.TrainingPlan.Coach.Name, order.TrainingPlan.Coach.Surname),
+                Price = order.Price,
+                CommissionFee = order.CommissionFee,
+                TrainingPlanTitle = order.TrainingPlan.Title
+            };
+        }
+
+        public async Task CancelOrder(Guid id)
+        {
+            var order = await _orderRepository.GetById(id);
+
+            await _orderRepository.Remove(order!);
         }
     }
 }
