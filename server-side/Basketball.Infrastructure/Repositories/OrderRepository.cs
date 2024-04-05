@@ -57,7 +57,19 @@ namespace Basketball.Infrastructure.Repositories
 
         public async Task<Order?> GetById(Guid Id)
         {
-            return await _db.Orders.FirstOrDefaultAsync(o => o.Id == Id);
+            return await _db.Orders.Include(t => t.TrainingPlan).ThenInclude(c => c.Coach).FirstOrDefaultAsync(o => o.Id == Id);
+        }
+
+        public async Task RemoveExpiredOrders()
+        {
+            _db.Orders.RemoveRange(_db.Orders.Where(x => x.OrderDate.AddMinutes(20) < DateTime.Now && !x.IsPaid));
+            await _db.SaveChangesAsync();
+        }
+
+        public async Task Remove(Order order)
+        {
+            _db.Orders.Remove(order);
+            await _db.SaveChangesAsync();
         }
 
         public async Task<int> GetAllCount()
