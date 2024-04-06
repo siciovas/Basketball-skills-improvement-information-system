@@ -15,11 +15,13 @@ import NewExerciseForm from "../forms/NewExerciseForm";
 import NewSkillForm from "../forms/NewSkillForm";
 import { useState } from "react";
 import eventBus from "../../Helpers/eventBus";
+import { useNavigate } from "react-router";
 
 const CoachHomePage = () => {
   const exerciseModal = useDisclosure();
   const skillModal = useDisclosure();
   const [isExerciseFromSkill, setIsExerciseFromSkill] = useState(false);
+  const navigate = useNavigate();
 
   const addNewExercise = () => {
     setIsExerciseFromSkill(true);
@@ -91,7 +93,11 @@ const CoachHomePage = () => {
             <Button>Įgūdis</Button>
             <Button>Įgūdis</Button>
             <Button>Įgūdis</Button>
-            <Button backgroundColor="#1E99D6" color="white">
+            <Button
+              backgroundColor="#1E99D6"
+              color="white"
+              onClick={() => navigate("/skills")}
+            >
               Visi įgūdžiai
             </Button>
           </Flex>
@@ -123,7 +129,11 @@ const CoachHomePage = () => {
             <Button>Pratimas</Button>
             <Button>Pratimas</Button>
             <Button>Pratimas</Button>
-            <Button backgroundColor="#1E99D6" color="white">
+            <Button
+              backgroundColor="#1E99D6"
+              color="white"
+              onClick={() => navigate("/exercises")}
+            >
               Visi pratimai
             </Button>
           </Flex>
@@ -143,7 +153,10 @@ const CoachHomePage = () => {
         <ModalContent>
           <ModalCloseButton />
           <ModalBody>
-            <NewSkillForm onClose={skillModal.onClose} addNewExercise={addNewExercise} />
+            <NewSkillForm
+              onClose={skillModal.onClose}
+              addNewExercise={addNewExercise}
+            />
           </ModalBody>
         </ModalContent>
       </Modal>

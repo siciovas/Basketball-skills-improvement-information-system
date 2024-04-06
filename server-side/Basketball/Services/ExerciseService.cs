@@ -34,8 +34,6 @@ namespace Basketball.Services
             {
                 Id = createdExercise.Id,
                 Name = createdExercise.Name,
-                Description = createdExercise.Description,
-                Difficulty = createdExercise.Difficulty,
             };
         }
 
@@ -54,8 +52,7 @@ namespace Basketball.Services
             {
                 Id = x.Id,
                 Name = x.Name,
-                Description = x.Description,
-                Difficulty = x.Difficulty
+                IsUsed = x.Skills.Count > 0,
             }).ToList();
         }
 
@@ -67,8 +64,6 @@ namespace Basketball.Services
             {
                 Id = id,
                 Name = exercise!.Name,
-                Description = exercise.Description,
-                Difficulty = exercise.Difficulty,
             };
         }
 
@@ -93,8 +88,6 @@ namespace Basketball.Services
             {
                 Id = updatedExercise.Id,
                 Name = updatedExercise.Name,
-                Description = updatedExercise.Description,
-                Difficulty = updatedExercise.Difficulty,
             };
         }
     }

@@ -114,3 +114,9 @@ export interface Exercise {
   description: string;
   difficulty: string;
 }
+
+export interface GenericExerciseSkillInfo {
+  id: number;
+  name: string;
+  isUsed: boolean
+}
