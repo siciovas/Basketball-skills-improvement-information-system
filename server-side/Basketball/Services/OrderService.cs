@@ -92,6 +92,23 @@ namespace Basketball.Services
             };
         }
 
+        public async Task<ViewOrderDto> GetOrderInfoById(Guid id)
+        {
+            var order = await _orderRepository.GetById(id);
+
+            return new ViewOrderDto
+            {
+                Id = order!.Id,
+                OrderDate = order.OrderDate,
+                Price = order.Price,
+                TrainingPlanTitle = order.TrainingPlan.Title,
+                BuyerFullName = string.Format("{0} {1}", order.User.Name, order.User.Surname),
+                CoachFullName = string.Format("{0} {1}", order.TrainingPlan.Coach.Name, order.TrainingPlan.Coach.Surname),
+                Email = order.User.Email,
+                PhoneNumber = order.User.PhoneNumber,
+            };
+        }
+
         public async Task CancelOrder(Guid id)
         {
             var order = await _orderRepository.GetById(id);

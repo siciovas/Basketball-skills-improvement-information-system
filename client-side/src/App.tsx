@@ -24,6 +24,7 @@ import HomePage from "./pages/HomePage";
 import TrainingPlan from "./pages/TrainingPlan";
 import AllOrders from "./pages/AllOrders";
 import MyOrders from "./pages/MyOrders";
+import ViewOrderedPlan from "./pages/ViewOrderedPlan";
 
 function App() {
   const navigate = useNavigate();
@@ -74,6 +75,7 @@ function App() {
         />
         <Route path="allOrders" element={<AllOrders />} />
         <Route path="myOrders" element={<MyOrders />} />
+        <Route path="viewOrderedPlan/:id" element={<ViewOrderedPlan />} />
       </Routes>
       <Footer />
     </>
