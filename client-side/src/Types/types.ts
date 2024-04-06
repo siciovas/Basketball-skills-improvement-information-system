@@ -107,3 +107,14 @@ export interface Orders {
   commissionFee: number | null;
   isPaid: boolean | null;
 }
+
+export interface OrderedPlanInfo {
+  id: string;
+  orderDate: string;
+  trainingPlanTitle: string;
+  coachFullName: string;
+  price: number;
+  buyerFullName: string;
+  phoneNumber: string;
+  email: string;
+}

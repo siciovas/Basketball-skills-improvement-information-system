@@ -20,6 +20,7 @@ import { Unauthorized } from "../Helpers/constants";
 import toast from "react-hot-toast";
 import moment from "moment";
 import OrderFilter from "../components/OrderFilter";
+import { useNavigate } from "react-router-dom";
 
 interface FilterProps {
   from: Date | undefined;
@@ -32,6 +33,7 @@ interface SortProps {
 }
 
 const AllOrders = () => {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const token = localStorage.getItem("accessToken");
   const [orders, setOrders] = useState<Orders[]>([]);
@@ -138,7 +140,14 @@ const AllOrders = () => {
                   .map((order) => (
                     <Tr>
                       <Td>
-                        <Text as="u" color="blue.400">
+                        <Text
+                          as="u"
+                          color="blue.400"
+                          cursor="pointer"
+                          onClick={() =>
+                            navigate(`/viewOrderedPlan/${order.id}`)
+                          }
+                        >
                           {order.id}
                         </Text>
                       </Td>

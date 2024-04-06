@@ -20,6 +20,7 @@ import { Unauthorized } from "../Helpers/constants";
 import { Orders } from "../Types/types";
 import toast from "react-hot-toast";
 import Container from "../components/Container";
+import { useNavigate } from "react-router-dom";
 
 interface FilterProps {
   from: Date | undefined;
@@ -32,6 +33,7 @@ interface SortProps {
 }
 
 const MyOrders = () => {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const token = localStorage.getItem("accessToken");
   const [orders, setOrders] = useState<Orders[]>([]);
@@ -151,7 +153,7 @@ const MyOrders = () => {
                         <Text>{order.price?.toFixed(2)}€</Text>
                       </Td>
                       <Td>
-                        <Text as="u" color="blue.400">
+                        <Text cursor="pointer" as="u" color="blue.400" onClick={() => navigate(order.isPaid ? `/viewOrderedPlan/${order.id}` : `/checkout/${order.id}`)}>
                           {order.isPaid
                             ? "Peržiūrėti užsakymą"
                             : "Užbaigti užsakymą"}
