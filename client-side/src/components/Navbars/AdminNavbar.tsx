@@ -46,6 +46,7 @@ const AdminNavbar = ({ logOut }: NavbarProps) => {
             </MenuButton>
             <MenuList>
               <MenuItem onClick={() => navigate("/profile")}>Profilis</MenuItem>
+              <MenuItem onClick={() => navigate("/allOrders")}>Užsakymai</MenuItem>
               <MenuItem onClick={(e) => logOut(e)}>Atsijungti</MenuItem>
             </MenuList>
           </Menu>

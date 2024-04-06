@@ -75,7 +75,6 @@ const CoachesList = () => {
       ...filterData,
       [e.target.name]: e.target.value ? new Date(e.target.value) : undefined,
     });
-    console.log(e.target.value);
   };
 
   return (
