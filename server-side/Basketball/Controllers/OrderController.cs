@@ -52,6 +52,15 @@ namespace Basketball.Controllers
             return Ok(order);
         }
 
+        [HttpGet("viewOrderedPlan/{id}")]
+        [Authorize]
+        public async Task<IActionResult> GetOrderInfoById(Guid id)
+        {
+            var order = await _orderService.GetOrderInfoById(id);
+
+            return Ok(order);
+        }
+
         [HttpPut("{orderId}")]
         [Authorize]
         public async Task<IActionResult> UpdatePaymentStatus(Guid orderId)

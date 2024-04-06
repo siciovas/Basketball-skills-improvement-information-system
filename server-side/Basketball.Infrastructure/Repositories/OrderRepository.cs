@@ -40,7 +40,7 @@ namespace Basketball.Infrastructure.Repositories
         {
             return await _db.Orders
                             .Include(t => t.TrainingPlan)
-                            .ThenInclude(c => c.Coach)
+                            .ThenInclude(u => u.Coach)
                             .Where(o => o.UserId == userId)
                             .ToListAsync();
         }
@@ -57,7 +57,11 @@ namespace Basketball.Infrastructure.Repositories
 
         public async Task<Order?> GetById(Guid Id)
         {
-            return await _db.Orders.Include(t => t.TrainingPlan).ThenInclude(c => c.Coach).FirstOrDefaultAsync(o => o.Id == Id);
+            return await _db.Orders
+                            .Include(t => t.TrainingPlan)
+                            .ThenInclude(c => c.Coach)
+                            .Include(u => u.User)
+                            .FirstOrDefaultAsync(o => o.Id == Id);
         }
 
         public async Task RemoveExpiredOrders()
