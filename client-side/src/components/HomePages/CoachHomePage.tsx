@@ -12,9 +12,27 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import NewExerciseForm from "../forms/NewExerciseForm";
+import NewSkillForm from "../forms/NewSkillForm";
+import { useState } from "react";
+import eventBus from "../../Helpers/eventBus";
 
 const CoachHomePage = () => {
-  const { isOpen, onClose, onOpen } = useDisclosure();
+  const exerciseModal = useDisclosure();
+  const skillModal = useDisclosure();
+  const [isExerciseFromSkill, setIsExerciseFromSkill] = useState(false);
+
+  const addNewExercise = () => {
+    setIsExerciseFromSkill(true);
+    exerciseModal.onOpen();
+  };
+
+  const onExerciseClose = () => {
+    if (isExerciseFromSkill) {
+      eventBus.dispatch("triggerExercisesList", null);
+    }
+    exerciseModal.onClose();
+  };
+
   return (
     <>
       <SimpleGrid columns={3} m={10} gap={5}>
@@ -62,7 +80,11 @@ const CoachHomePage = () => {
           </Heading>
           <Box className="fa-solid fa-basketball fa-8x" my={2} />
           <Flex flexDirection="column" gap={5} w="70%">
-            <Button backgroundColor="#1E99D6" color="white">
+            <Button
+              backgroundColor="#1E99D6"
+              color="white"
+              onClick={skillModal.onOpen}
+            >
               Naujas įgūdis
             </Button>
             <Button>Įgūdis</Button>
@@ -90,7 +112,11 @@ const CoachHomePage = () => {
           </Heading>
           <Box className="fa-solid fa-person-running fa-8x" my={2} />
           <Flex flexDirection="column" gap={5} w="70%">
-            <Button backgroundColor="#1E99D6" color="white" onClick={onOpen}>
+            <Button
+              backgroundColor="#1E99D6"
+              color="white"
+              onClick={exerciseModal.onOpen}
+            >
               Naujas planas
             </Button>
             <Button>Pratimas</Button>
@@ -103,12 +129,21 @@ const CoachHomePage = () => {
           </Flex>
         </Flex>
       </SimpleGrid>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={exerciseModal.isOpen} onClose={exerciseModal.onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalCloseButton />
           <ModalBody>
-            <NewExerciseForm onClose={onClose} />
+            <NewExerciseForm onClose={onExerciseClose} />
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+      <Modal isOpen={skillModal.isOpen} onClose={skillModal.onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalCloseButton />
+          <ModalBody>
+            <NewSkillForm onClose={skillModal.onClose} addNewExercise={addNewExercise} />
           </ModalBody>
         </ModalContent>
       </Modal>
