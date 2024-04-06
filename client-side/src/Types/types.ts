@@ -107,3 +107,10 @@ export interface Orders {
   commissionFee: number | null;
   isPaid: boolean | null;
 }
+
+export interface Exercise {
+  id: number;
+  name: string;
+  description: string;
+  difficulty: string;
+}
