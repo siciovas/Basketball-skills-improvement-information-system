@@ -14,6 +14,7 @@ export interface Coach {
   trainingPlansCount: number;
   gender: string;
   avatar: Blob;
+  clientsCount: number;
 }
 
 export interface CoachProfile extends Coach {
