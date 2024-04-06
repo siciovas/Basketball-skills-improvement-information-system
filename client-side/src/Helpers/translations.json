@@ -11,6 +11,8 @@
     "weight": "Svoris",
     "pending": "Laukiama patvirtinimo",
     "approved": "Patvirtintas",
+    "rejected": "Atšauktas",
+    "blocked": "Užblokuotas",
     "student": "Krepšininkas",
     "admin": "Administratorius",
     "coach": "Treneris",

@@ -14,6 +14,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Unauthorized } from "../../../Helpers/constants";
 import eventBus from "../../../Helpers/eventBus";
+import translations from "../../../Helpers/translations.json";
 import { CoachProfile } from "../../../Types/types";
 
 const CoachDetails = () => {
@@ -101,7 +102,11 @@ const CoachDetails = () => {
                     </Box>
                     <Box>
                       <Box className="fa-solid fa-graduation-cap" mr={1} />
-                      {coach?.education}
+                      {
+                        translations[
+                          coach?.education.toLowerCase() as keyof typeof translations
+                        ]
+                      }
                     </Box>
                   </Flex>
                 </Flex>

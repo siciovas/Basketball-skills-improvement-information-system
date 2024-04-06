@@ -35,16 +35,16 @@ const CoachFilter = ({ onFilterStatusChange, onDateRangeChange }: Props) => {
             onChange={onFilterStatusChange}
           >
             <MenuItemOption backgroundColor="#E2E2E2" value="rejected">
-              Rejected
+              Atšauktas
             </MenuItemOption>
             <MenuItemOption backgroundColor="#E2E2E2" value="approved">
-              Approved
+              Patvirtintas
             </MenuItemOption>
             <MenuItemOption backgroundColor="#E2E2E2" value="pending">
-              Pending
+              Laukiama patvirtinimo
             </MenuItemOption>
             <MenuItemOption backgroundColor="#E2E2E2" value="blocked">
-              Blocked
+              Užblokuotas
             </MenuItemOption>
           </MenuOptionGroup>
           <MenuDivider />

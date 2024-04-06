@@ -25,6 +25,7 @@ import {
   Unauthorized,
 } from "../../../Helpers/constants";
 import eventBus from "../../../Helpers/eventBus";
+import translations from "../../../Helpers/translations.json";
 import { CoachProfile, Complaint } from "../../../Types/types";
 import ModalWindow from "../../../components/ModalWindow";
 
@@ -171,7 +172,11 @@ const ManageCoach = () => {
                         </Box>
                         <Box>
                           <Box className="fa-solid fa-graduation-cap" mr={1} />
-                          {coach?.education}
+                          {
+                            translations[
+                              coach?.education.toLowerCase() as keyof typeof translations
+                            ]
+                          }
                         </Box>
                       </Flex>
                       <Flex

@@ -21,6 +21,7 @@ import eventBus from "../Helpers/eventBus";
 import CoachFilter from "../components/CoachFilter";
 import Container from "../components/Container";
 import { useNavigate } from "react-router-dom";
+import translations from "../Helpers/translations.json";
 
 interface FilterProps {
   from: Date | undefined;
@@ -131,7 +132,13 @@ const CoachesList = () => {
                         <Text>{coach.rating}</Text>
                       </Td>
                       <Td>
-                        <Text>{coach.coachStatus}</Text>
+                        <Text>
+                          {
+                            translations[
+                              coach.coachStatus.toLowerCase() as keyof typeof translations
+                            ]
+                          }
+                        </Text>
                       </Td>
                       <Td>
                         <Text>{coach.registerDate}</Text>
