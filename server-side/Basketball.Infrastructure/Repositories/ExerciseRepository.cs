@@ -26,6 +26,7 @@ namespace Basketball.Infrastructure.Repositories
         public async Task<List<Exercise>> GetAll(Guid coachId)
         {
             var exercise = await _db.Exercises
+                                    .Include(x => x.Skills)
                                     .Where(e => e.CoachId == coachId)
                                     .ToListAsync();
 

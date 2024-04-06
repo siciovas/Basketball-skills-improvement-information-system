@@ -34,7 +34,7 @@ namespace Basketball.Services
             return new SkillDto
             {
                 Id = createdSkill.Id,
-                Title = createdSkill.Title,
+                Name = createdSkill.Title,
                 Description = createdSkill.Description,
             };
         }
@@ -53,8 +53,9 @@ namespace Basketball.Services
             return exercises.Select(x => new SkillDto
             {
                 Id = x.Id,
-                Title = x.Title,
+                Name = x.Title,
                 Description = x.Description,
+                IsUsed = x.TrainingPlans.Count > 0
             }).ToList();
         }
 
@@ -65,7 +66,7 @@ namespace Basketball.Services
             return new SkillDto
             {
                 Id = id,
-                Title = skill!.Title,
+                Name = skill!.Title,
                 Description = skill.Description
             };
         }
@@ -98,7 +99,7 @@ namespace Basketball.Services
             return new SkillDto
             {
                 Id = updatedSkill.Id,
-                Title = updatedSkill.Title,
+                Name = updatedSkill.Title,
                 Description = updatedSkill.Description,
             };
         }
