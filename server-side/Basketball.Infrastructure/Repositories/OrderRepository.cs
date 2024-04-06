@@ -41,7 +41,7 @@ namespace Basketball.Infrastructure.Repositories
             return await _db.Orders
                             .Include(t => t.TrainingPlan)
                             .ThenInclude(c => c.Coach)
-                            .Where(o => o.UserId == userId && o.IsPaid)
+                            .Where(o => o.UserId == userId)
                             .ToListAsync();
         }
 

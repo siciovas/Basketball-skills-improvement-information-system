@@ -105,4 +105,5 @@ export interface Orders {
   trainingPlanTitle: string;
   price: number;
   commissionFee: number | null;
+  isPaid: boolean | null;
 }

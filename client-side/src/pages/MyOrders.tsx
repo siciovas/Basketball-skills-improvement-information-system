@@ -1,4 +1,5 @@
 import {
+  Box,
   Center,
   Flex,
   Heading,
@@ -10,16 +11,15 @@ import {
   Thead,
   Tr,
   Text,
-  Box,
 } from "@chakra-ui/react";
-import Container from "../components/Container";
-import { ChangeEvent, useCallback, useEffect, useState } from "react";
-import { Orders } from "../Types/types";
-import eventBus from "../Helpers/eventBus";
-import { Unauthorized } from "../Helpers/constants";
-import toast from "react-hot-toast";
 import moment from "moment";
 import OrderFilter from "../components/OrderFilter";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
+import eventBus from "../Helpers/eventBus";
+import { Unauthorized } from "../Helpers/constants";
+import { Orders } from "../Types/types";
+import toast from "react-hot-toast";
+import Container from "../components/Container";
 
 interface FilterProps {
   from: Date | undefined;
@@ -31,7 +31,7 @@ interface SortProps {
   price: boolean | undefined;
 }
 
-const AllOrders = () => {
+const MyOrders = () => {
   const [isLoading, setIsLoading] = useState(true);
   const token = localStorage.getItem("accessToken");
   const [orders, setOrders] = useState<Orders[]>([]);
@@ -45,13 +45,16 @@ const AllOrders = () => {
   });
 
   const getOrderedList = useCallback(async () => {
-    const response = await fetch(import.meta.env.VITE_API_URL + "order", {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      method: "GET",
-    });
+    const response = await fetch(
+      import.meta.env.VITE_API_URL + "order/myOrders",
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        method: "GET",
+      }
+    );
     if (response.status === 401) {
       eventBus.dispatch("logOut", Unauthorized);
     } else if (response.status === 200) {
@@ -106,11 +109,8 @@ const AllOrders = () => {
                 <Tr>
                   <Th>Užsakymo numeris</Th>
                   <Th>Data</Th>
-                  <Th>Treneris</Th>
-                  <Th>Krepšininkas</Th>
-                  <Th>Plano pavadinimas</Th>
                   <Th>Suma</Th>
-                  <Th>Komisinis mokestis</Th>
+                  <Th>Veiksmas</Th>
                 </Tr>
               </Thead>
               <Tbody>
@@ -138,9 +138,7 @@ const AllOrders = () => {
                   .map((order) => (
                     <Tr>
                       <Td>
-                        <Text as="u" color="blue.400">
-                          {order.id}
-                        </Text>
+                        <Text>{order.id}</Text>
                       </Td>
                       <Td>
                         <Text>
@@ -150,19 +148,14 @@ const AllOrders = () => {
                         </Text>
                       </Td>
                       <Td>
-                        <Text>{order.coachFullName}</Text>
-                      </Td>
-                      <Td>
-                        <Text>{order.studentFullName}</Text>
-                      </Td>
-                      <Td>
-                        <Text>{order.trainingPlanTitle}</Text>
-                      </Td>
-                      <Td>
                         <Text>{order.price?.toFixed(2)}€</Text>
                       </Td>
                       <Td>
-                        <Text>{order.commissionFee?.toFixed(2)}€</Text>
+                        <Text as="u" color="blue.400">
+                          {order.isPaid
+                            ? "Peržiūrėti užsakymą"
+                            : "Užbaigti užsakymą"}
+                        </Text>
                       </Td>
                     </Tr>
                   ))}
@@ -175,4 +168,4 @@ const AllOrders = () => {
   );
 };
 
-export default AllOrders;
+export default MyOrders;

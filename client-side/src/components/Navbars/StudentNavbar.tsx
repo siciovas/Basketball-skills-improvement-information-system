@@ -30,8 +30,9 @@ const StudentNavbar = ({ logOut }: NavbarProps) => {
           </MenuButton>
           <MenuList>
             <MenuItem onClick={() => navigate("/profile")}>Profilis</MenuItem>
-            <MenuItem>Mano treniruotės</MenuItem>
             <MenuItem>Krepšelis</MenuItem>
+            <MenuItem>Mano treniruotės</MenuItem>
+            <MenuItem onClick={() => navigate("/myOrders")}>Mano užsakymai</MenuItem>
             <MenuItem onClick={(e) => logOut(e)}>Atsijungti</MenuItem>
           </MenuList>
         </Menu>

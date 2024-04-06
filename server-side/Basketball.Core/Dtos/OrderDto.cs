@@ -9,5 +9,6 @@
         public required string TrainingPlanTitle { get; set; }
         public decimal Price { get; set; }
         public int? CommissionFee { get; set; }
+        public bool? IsPaid { get; set; }
     }
 }
