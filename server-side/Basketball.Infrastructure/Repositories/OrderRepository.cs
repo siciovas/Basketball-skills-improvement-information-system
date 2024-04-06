@@ -78,5 +78,16 @@ namespace Basketball.Infrastructure.Repositories
                             .Where(o => o.IsPaid)
                             .CountAsync();
         }
+
+        public async Task<Dictionary<Guid, int>> GetClientsCount(List<Guid> coachesIds)
+        {
+            return await _db.Orders
+                .Include(x => x.TrainingPlan)
+                .Where(t => coachesIds.Contains(t.TrainingPlan.CoachId) && t.IsPaid)
+                .Select(x => x.TrainingPlan.CoachId)
+                .GroupBy(t => t)
+                .Select(t => new { t.Key, Count = t.Count() })
+                .ToDictionaryAsync(kvp => kvp.Key, kvp => kvp.Count);
+        }
     }
 }

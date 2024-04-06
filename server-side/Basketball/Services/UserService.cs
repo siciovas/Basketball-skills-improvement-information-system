@@ -123,7 +123,11 @@ namespace Basketball.Services
         {
             var coaches = await _userRepository.GetApprovedCoaches();
 
-            var trainingPlansCount = await _trainingPlanRepository.GetTrainingPlansCountByCoachId(coaches.Select(x => x.Id).ToList());
+            var coachesIds = coaches.Select(x => x.Id).ToList();
+
+            var trainingPlansCount = await _trainingPlanRepository.GetTrainingPlansCountByCoachId(coachesIds);
+
+            var clientsCount = await _orderRepository.GetClientsCount(coachesIds);
 
             var allCoaches = coaches.Select(x => new UserCoachDto
             {
@@ -139,7 +143,8 @@ namespace Basketball.Services
                 Description = x.Description,
                 Gender = x.Gender,
                 Avatar = x.Avatar,
-                TrainingPlansCount = trainingPlansCount.TryGetValue(x.Id, out int value) ? value : 0
+                TrainingPlansCount = trainingPlansCount.TryGetValue(x.Id, out int value) ? value : 0,
+                ClientsCount = clientsCount.TryGetValue(x.Id, out int count) ? count : 0
             });
 
             return allCoaches.ToList();

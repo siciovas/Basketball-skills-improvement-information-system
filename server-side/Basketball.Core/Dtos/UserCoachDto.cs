@@ -19,6 +19,7 @@ namespace Basketball.Core.Dtos
         public int? Experience { get; set; }
         public string? PhoneNumber { get; set; }
         public int TrainingPlansCount { get; set; }
+        public int ClientsCount { get; set; }
         public List<TrainingPlanSummaryDto> TrainingPlans { get; set; } = [];
 
     }
