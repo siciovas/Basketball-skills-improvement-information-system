@@ -42,7 +42,8 @@ namespace Basketball.Services
                 CoachFullName = string.Format("{0} {1}", x.TrainingPlan.Coach.Name, x.TrainingPlan.Coach.Surname),
                 Price = x.Price,
                 CommissionFee = x.CommissionFee,
-                TrainingPlanTitle = x.TrainingPlan.Title
+                TrainingPlanTitle = x.TrainingPlan.Title,
+                IsPaid = x.IsPaid,
             }).ToList();
         }
 

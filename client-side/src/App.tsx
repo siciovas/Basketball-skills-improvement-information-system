@@ -23,6 +23,7 @@ import PayseraSuccessfulPayment from "./pages/PayseraSuccessfulPayment";
 import HomePage from "./pages/HomePage";
 import TrainingPlan from "./pages/TrainingPlan";
 import AllOrders from "./pages/AllOrders";
+import MyOrders from "./pages/MyOrders";
 
 function App() {
   const navigate = useNavigate();
@@ -72,6 +73,7 @@ function App() {
           element={<PayseraSuccessfulPayment />}
         />
         <Route path="allOrders" element={<AllOrders />} />
+        <Route path="myOrders" element={<MyOrders />} />
       </Routes>
       <Footer />
     </>
