@@ -13,14 +13,13 @@ namespace Basketball.Services
 
         public async Task<SkillDto> Create(SkillPostDto skill, Guid coachId)
         {
-            var exercisesTasks = new List<Task<Exercise>>();
+            var exercises = new List<Exercise>();
 
             foreach (var id in skill.Exercises)
             {
-                exercisesTasks.Add(_exerciseRepository.GetById(id)!);
+                var exercise = await _exerciseRepository.GetById(id);
+                exercises.Add(exercise!);
             }
-
-            var exercises = await Task.WhenAll(exercisesTasks);
 
             var newSkill = new Skill
             {

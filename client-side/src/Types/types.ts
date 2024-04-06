@@ -118,3 +118,10 @@ export interface OrderedPlanInfo {
   phoneNumber: string;
   email: string;
 }
+
+export interface Exercise {
+  id: number;
+  name: string;
+  description: string;
+  difficulty: string;
+}
