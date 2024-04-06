@@ -96,3 +96,13 @@ export interface Counts {
   trainingPlans: number | null;
   orders: number | null;
 }
+
+export interface Orders {
+  id: string;
+  orderDate: string;
+  coachFullName: string;
+  studentFullName: string | null;
+  trainingPlanTitle: string;
+  price: number;
+  commissionFee: number | null;
+}
