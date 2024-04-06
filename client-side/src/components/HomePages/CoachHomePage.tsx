@@ -108,7 +108,7 @@ const CoachHomePage = () => {
         <ModalContent>
           <ModalCloseButton />
           <ModalBody>
-            <NewExerciseForm />
+            <NewExerciseForm onClose={onClose} />
           </ModalBody>
         </ModalContent>
       </Modal>
