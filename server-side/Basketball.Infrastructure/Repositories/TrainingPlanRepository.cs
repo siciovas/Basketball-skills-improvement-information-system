@@ -47,6 +47,8 @@ namespace Basketball.Infrastructure.Repositories
         {
             return await _db.TrainingPlans
                             .Include(t => t.Coach)
+                            .Include(s => s.Skills)
+                            .ThenInclude(e => e.Exercises)
                             .FirstOrDefaultAsync(t => t.Id == id);
         }
 

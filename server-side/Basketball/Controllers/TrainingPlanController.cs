@@ -42,7 +42,6 @@ namespace Basketball.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles = "Coach")]
         public async Task<IActionResult> GetById(Guid id)
         {
             var trainingPlan = await _trainingPlanService.GetById(id);
