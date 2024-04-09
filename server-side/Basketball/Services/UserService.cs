@@ -11,7 +11,7 @@ namespace Basketball.Services
 {
     public class UserService(IJwtTokenService jwtTokenService, IUserRepository userRepository,
                              ITrainingPlanRepository trainingPlanRepository, IOrderRepository orderRepository,
-                             IEmailService emailService, IConfiguration configuration) : IUserService
+                             IEmailService emailService, IConfiguration configuration, ISkillRepository skillRepository, IExerciseRepository exerciseRepository) : IUserService
     {
         private readonly IUserRepository _userRepository = userRepository;
         private readonly IJwtTokenService _jwtTokenService = jwtTokenService;
@@ -19,6 +19,8 @@ namespace Basketball.Services
         private readonly IOrderRepository _orderRepository = orderRepository;
         private readonly IEmailService _emailService = emailService;
         private readonly IConfiguration _configuration = configuration;
+        private readonly ISkillRepository _skillRepository = skillRepository;
+        private readonly IExerciseRepository _exerciseRepository = exerciseRepository;
 
         public async Task<bool> IsUserCredentialsCorrect(LoginDto loginDto)
         {
@@ -156,6 +158,8 @@ namespace Basketball.Services
 
             var trainingPlans = await _trainingPlanRepository.GetAllByCoachId(id);
 
+            var clientsCount = await _orderRepository.GetClientsCount([id]);
+
             return new UserCoachDto
             {
                 Id = coach.Id,
@@ -173,6 +177,7 @@ namespace Basketball.Services
                 Gender = coach.Gender,
                 Avatar = coach.Avatar,
                 TrainingPlansCount = trainingPlans.Count,
+                ClientsCount = clientsCount.TryGetValue(id, out int count) ? count : 0,
                 TrainingPlans = trainingPlans.Select(x => new TrainingPlanSummaryDto
                 {
                     Id = x.Id,
@@ -297,6 +302,32 @@ namespace Basketball.Services
                 Students = students,
                 TrainingPlans = trainingPlans,
                 Orders = orders
+            };
+        }
+
+        public async Task<AdminHomeDataDto> GetHomeData(Guid coachId)
+        {
+            var trainingPlans = await _trainingPlanRepository.GetAllByCoachId(coachId);
+            var skills = await _skillRepository.GetAll(coachId);
+            var exercises = await _exerciseRepository.GetAll(coachId);
+
+            return new AdminHomeDataDto
+            {
+                TrainingPlans = trainingPlans.Select(x => new HomeData
+                {
+                    Id = x.Id,
+                    Name = x.Title
+                }).TakeLast(4).ToList(),
+                Skills = skills.Select(x => new HomeData
+                {
+                    Id = x.Id,
+                    Name = x.Title
+                }).TakeLast(4).ToList(),
+                Exercises = exercises.Select(x => new HomeData
+                {
+                    Id = x.Id,
+                    Name = x.Name
+                }).TakeLast(4).ToList(),
             };
         }
     }

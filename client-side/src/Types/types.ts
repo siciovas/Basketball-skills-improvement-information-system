@@ -138,3 +138,28 @@ export interface Skill {
   description: string;
   exercises: GenericExerciseSkillInfo[];
 }
+
+export interface TrainingPlanViewDto {
+  id: string;
+  title: string;
+  description: string;
+  price: number;
+  coach: string;
+  skills: TrainingPlanSkill[];
+}
+
+export interface TrainingPlanSkill {
+  name: string;
+  exercises: string[];
+}
+
+export interface CoachHomePageDto {
+  trainingPlans: HomeData[];
+  skills: HomeData[];
+  exercises: HomeData[];
+}
+
+export interface HomeData {
+  id: string;
+  name: string;
+}

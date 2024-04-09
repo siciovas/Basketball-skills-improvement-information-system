@@ -91,6 +91,12 @@ namespace Basketball.Services
         {
             var trainingPlan = await _trainingPlanRepository.GetById(id);
 
+            var skills = trainingPlan!.Skills.Select(x => new TrainingPlanSkillDto
+            {
+                Name = x.Title,
+                Exercises = x.Exercises.Select(e => e.Name).ToList(),
+            }).ToList();
+
             return new TrainingPlanDto
             {
                 Id = trainingPlan!.Id,
@@ -99,7 +105,8 @@ namespace Basketball.Services
                 Price = trainingPlan.Price,
                 IsActive = trainingPlan.IsActive,
                 Version = trainingPlan.Version,
-                Coach = string.Format("{0} {1}", trainingPlan.Coach.Name, trainingPlan.Coach.Surname)
+                Coach = string.Format("{0} {1}", trainingPlan.Coach.Name, trainingPlan.Coach.Surname),
+                Skills = skills
             };
         }
 

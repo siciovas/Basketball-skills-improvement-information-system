@@ -1,6 +1,4 @@
-﻿using Basketball.Domain.Data.Entities.Enums;
-
-namespace Basketball.Core.Dtos
+﻿namespace Basketball.Core.Dtos
 {
     public class ExerciseDto
     {
