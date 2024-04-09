@@ -20,6 +20,7 @@ import {
 import toast from "react-hot-toast";
 import { Unauthorized } from "../../Helpers/constants";
 import eventBus from "../../Helpers/eventBus";
+import { useNavigate } from "react-router-dom";
 
 type eventHandleChange<T extends HTMLElement> = ChangeEvent<T>;
 
@@ -38,6 +39,7 @@ const ExerciseForm = ({ onClose, exerciseId }: Props) => {
     exerciseVideoName: undefined,
   });
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -110,12 +112,14 @@ const ExerciseForm = ({ onClose, exerciseId }: Props) => {
 
     if (response.status === 201 || response.status === 200) {
       setIsLoading(false);
+      onClose();
+      navigate("/exercises");
       toast.success(
         exerciseId
           ? "Pratimas sėkmingai atnaujintas!"
           : "Pratimas sėkmingai sukurtas!"
       );
-      onClose();
+      eventBus.dispatch("triggerExerciseCreated", null);
     } else {
       toast.error("Klaida");
     }
@@ -139,7 +143,7 @@ const ExerciseForm = ({ onClose, exerciseId }: Props) => {
         <form onSubmit={onSubmit}>
           <Flex flexDir="column">
             <Heading size="md">
-              {exerciseId ? "Redaguoti pratimą" : "Naujas pratimas"}
+              {exerciseId ? "Pratimo redagavimas" : "Naujas pratimas"}
             </Heading>
             <FormLabel mt={5}>Pavadinimas</FormLabel>
             <Input

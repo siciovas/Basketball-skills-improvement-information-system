@@ -89,6 +89,9 @@ const Skills = () => {
   }, []);
 
   useEffect(() => {
+    eventBus.on("triggerSkillCreated", () => {
+      getSkillsList();
+    });
     getSkillsList();
   }, [getSkillsList]);
 
