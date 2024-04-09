@@ -10,7 +10,6 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using Newtonsoft.Json.Converters;
-using Microsoft.AspNetCore.Http.Features;
 using Quartz;
 using Basketball.Infrastructure.Jobs;
 

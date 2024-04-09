@@ -129,7 +129,7 @@ export interface Exercise {
 export interface GenericExerciseSkillInfo {
   id: number;
   name: string;
-  isUsed: boolean
+  isUsed: boolean;
 }
 
 export interface TrainingPlanViewDto {
@@ -138,10 +138,21 @@ export interface TrainingPlanViewDto {
   description: string;
   price: number;
   coach: string;
-  skills: TrainingPlanSkill[]
+  skills: TrainingPlanSkill[];
 }
 
 export interface TrainingPlanSkill {
   name: string;
   exercises: string[];
+}
+
+export interface CoachHomePageDto {
+  trainingPlans: HomeData[];
+  skills: HomeData[];
+  exercises: HomeData[];
+}
+
+export interface HomeData {
+  id: string;
+  name: string;
 }

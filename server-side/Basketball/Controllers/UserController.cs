@@ -64,6 +64,16 @@ namespace Basketball.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Coach")]
+        [Route("home")]
+        public async Task<IActionResult> GetHomeData()
+        {
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
+
+            return Ok(await _userService.GetHomeData(userId));
+        }
+
+        [HttpGet]
         [Authorize]
         [Route("coachDetails/{id}")]
         public async Task<IActionResult> GetCoachDetails(Guid id)
