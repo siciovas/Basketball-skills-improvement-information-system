@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using EVP.WebToPay.ClientAPI;
 using Microsoft.AspNetCore.Authorization;
-using Basketball.Domain.Data.Entities;
-using System.Security.Claims;
 
 namespace Basketball.Controllers
 {
