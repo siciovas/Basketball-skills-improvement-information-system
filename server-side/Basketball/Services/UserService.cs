@@ -156,6 +156,8 @@ namespace Basketball.Services
 
             var trainingPlans = await _trainingPlanRepository.GetAllByCoachId(id);
 
+            var clientsCount = await _orderRepository.GetClientsCount([id]);
+
             return new UserCoachDto
             {
                 Id = coach.Id,
@@ -173,6 +175,7 @@ namespace Basketball.Services
                 Gender = coach.Gender,
                 Avatar = coach.Avatar,
                 TrainingPlansCount = trainingPlans.Count,
+                ClientsCount = clientsCount.TryGetValue(id, out int count) ? count : 0,
                 TrainingPlans = trainingPlans.Select(x => new TrainingPlanSummaryDto
                 {
                     Id = x.Id,

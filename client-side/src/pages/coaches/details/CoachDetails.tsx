@@ -81,7 +81,7 @@ const CoachDetails = () => {
                       Planai <b>{coach?.trainingPlansCount}</b>
                     </Box>
                     <Box>
-                      Klientai <b>120</b>
+                      Klientai <b>{coach?.clientsCount}</b>
                     </Box>
                     <Box>
                       Patirtis <b>{coach?.experience}m</b>
