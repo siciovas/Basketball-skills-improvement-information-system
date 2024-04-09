@@ -8,6 +8,6 @@ namespace Basketball.Core.Dtos.Post
         public required string Name { get; set; }
         public required string Description { get; set; }
         public Difficulty Difficulty { get; set; }
-        public IFormFile ExerciseVideo { get; set; }
+        public IFormFile? ExerciseVideo { get; set; }
     }
 }

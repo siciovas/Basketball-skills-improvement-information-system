@@ -59,13 +59,13 @@ namespace Basketball.Services
         public async Task<ExerciseDto> GetById(Guid id)
         {
             var exercise = await _exerciseRepository.GetById(id);
-
             return new ExerciseDto
             {
                 Id = id,
                 Name = exercise!.Name,
                 Description = exercise!.Description,
                 Difficulty = exercise!.Difficulty,
+                ExerciseVideoName = exercise.ExerciseBlobUrl.Split("/").Last()
             };
         }
 
@@ -78,11 +78,20 @@ namespace Basketball.Services
 
         public async Task<ExerciseDto> Update(ExercisePostDto exerciseDto, Guid id, Guid coachId)
         {
+            var container = new BlobContainerClient(_configuration["ConnectionStrings:StorageConnectionString"], "videos");
+            var blob = container.GetBlobClient($"{exerciseDto.Name}.mp4");
+
+            if (exerciseDto.ExerciseVideo != null)
+            {
+                await blob.UploadAsync(exerciseDto.ExerciseVideo.OpenReadStream(), overwrite: true);
+            } 
+
             var exercise = await _exerciseRepository.GetById(id);
             exercise!.Name = exerciseDto.Name;
             exercise.Description = exerciseDto.Description;
             exercise.Difficulty = exerciseDto.Difficulty;
             exercise.CoachId = coachId;
+            exercise.ExerciseBlobUrl = exerciseDto.ExerciseVideo != null ? blob.Uri.ToString() : exercise.ExerciseBlobUrl;
 
             var updatedExercise = await _exerciseRepository.Update(exercise);
 

@@ -18,7 +18,6 @@ import {
   useState,
 } from "react";
 import toast from "react-hot-toast";
-import { Exercise } from "../../Types/types";
 import { Unauthorized } from "../../Helpers/constants";
 import eventBus from "../../Helpers/eventBus";
 
@@ -36,9 +35,9 @@ const ExerciseForm = ({ onClose, exerciseId }: Props) => {
     name: "",
     description: "",
     difficulty: "",
+    exerciseVideoName: undefined,
   });
-  const [isLoading, setIsLoading] = useState(false);
-  const [exercise, setExercise] = useState<Exercise>();
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -56,6 +55,10 @@ const ExerciseForm = ({ onClose, exerciseId }: Props) => {
     setFormState({ ...formState, [name]: data });
   };
 
+  const handleChangeVideo = () => {
+    setFormState({ ...formState, exerciseVideoName: undefined });
+  };
+
   const getExercise = useCallback(async () => {
     const response = await fetch(
       import.meta.env.VITE_API_URL + `exercise/${exerciseId}`,
@@ -71,7 +74,12 @@ const ExerciseForm = ({ onClose, exerciseId }: Props) => {
       eventBus.dispatch("logOut", Unauthorized);
     } else if (response.status === 200) {
       const exercise = await response.json();
-      setExercise(exercise);
+      setFormState({
+        name: exercise.name,
+        description: exercise.description,
+        difficulty: exercise.difficulty,
+        exerciseVideoName: exercise.exerciseVideoName,
+      });
       setIsLoading(false);
     } else {
       toast.error("Netikėta klaida!");
@@ -100,7 +108,7 @@ const ExerciseForm = ({ onClose, exerciseId }: Props) => {
       },
     });
 
-    if (response.status === 201) {
+    if (response.status === 201 || response.status === 200) {
       setIsLoading(false);
       toast.success(
         exerciseId
@@ -116,6 +124,8 @@ const ExerciseForm = ({ onClose, exerciseId }: Props) => {
   useEffect(() => {
     if (exerciseId !== undefined) {
       getExercise();
+    } else {
+      setIsLoading(false);
     }
   }, []);
 
@@ -136,13 +146,13 @@ const ExerciseForm = ({ onClose, exerciseId }: Props) => {
               type="text"
               name="name"
               onChange={onChange}
-              value={exercise?.name}
+              value={formState.name}
             />
             <FormLabel>Aprašymas</FormLabel>
             <Textarea
               name="description"
               onChange={onChange}
-              value={exercise?.description}
+              value={formState.description}
             ></Textarea>
             <FormLabel>Sudėtingumas</FormLabel>
             <Select
@@ -151,7 +161,7 @@ const ExerciseForm = ({ onClose, exerciseId }: Props) => {
               onChange={onChange}
               isRequired
               defaultValue=""
-              value={exercise?.difficulty}
+              value={formState.difficulty}
             >
               <option hidden disabled value="">
                 Pasirinkite
@@ -163,14 +173,22 @@ const ExerciseForm = ({ onClose, exerciseId }: Props) => {
               <option value="Beginner">Pradedantysis</option>
             </Select>
             <FormLabel>Mokomasis video</FormLabel>
-            <Box>
-              <input
-                onChange={handleFileChange}
-                className="form-control"
-                type="file"
-                id="formFile"
-              />
-            </Box>
+            {formState.exerciseVideoName ? (
+              <Flex gap={1} alignItems="center">
+                <Box>{formState.exerciseVideoName}</Box>
+                <Button onClick={handleChangeVideo}>Keisti</Button>
+              </Flex>
+            ) : (
+              <Box>
+                <input
+                  onChange={handleFileChange}
+                  className="form-control"
+                  type="file"
+                  id="formFile"
+                />
+              </Box>
+            )}
+
             <Button
               backgroundColor="#1E99D6"
               color="white"

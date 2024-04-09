@@ -63,6 +63,7 @@ namespace Basketball.Controllers
 
         [HttpPut("{id}")]
         [Authorize(Roles = "Coach")]
+        [DisableRequestSizeLimit]
         public async Task<IActionResult> Update(ExercisePostDto exercise, Guid id)
         {
             var coachId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
