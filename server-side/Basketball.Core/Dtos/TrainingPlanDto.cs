@@ -9,5 +9,6 @@
         public bool IsActive { get; set; }
         public int Version { get; set; }
         public required string Coach { get; set; } 
+        public List<TrainingPlanSkillDto> Skills { get; set; } = [];
     }
 }

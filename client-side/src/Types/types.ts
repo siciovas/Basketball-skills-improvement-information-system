@@ -131,3 +131,17 @@ export interface GenericExerciseSkillInfo {
   name: string;
   isUsed: boolean
 }
+
+export interface TrainingPlanViewDto {
+  id: string;
+  title: string;
+  description: string;
+  price: number;
+  coach: string;
+  skills: TrainingPlanSkill[]
+}
+
+export interface TrainingPlanSkill {
+  name: string;
+  exercises: string[];
+}
