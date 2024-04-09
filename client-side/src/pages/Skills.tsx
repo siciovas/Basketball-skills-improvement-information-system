@@ -26,8 +26,8 @@ import toast from "react-hot-toast";
 import { Unauthorized } from "../Helpers/constants";
 import { GenericExerciseSkillInfo } from "../Types/types";
 import { Filter } from "./Exercises";
-import NewExerciseForm from "../components/forms/NewExerciseForm";
-import NewSkillForm from "../components/forms/NewSkillForm";
+import ExerciseForm from "../components/forms/ExerciseForm";
+import SkillForm from "../components/forms/SkillForm";
 
 const Skills = () => {
   const exerciseModal = useDisclosure();
@@ -40,6 +40,12 @@ const Skills = () => {
     isUsed: undefined,
     page: 10,
   });
+  const [skillId, setSkillId] = useState<string | undefined>();
+
+  const onFormOpen = (skillId: string | undefined) => {
+    setSkillId(skillId);
+    skillModal.onOpen();
+  };
 
   const addNewExercise = () => {
     setIsExerciseFromSkill(true);
@@ -102,7 +108,7 @@ const Skills = () => {
               <Button
                 backgroundColor="#1E99D6"
                 color="white"
-                onClick={skillModal.onOpen}
+                onClick={() => onFormOpen(undefined)}
               >
                 Naujas įgūdis
               </Button>
@@ -213,6 +219,7 @@ const Skills = () => {
                       backgroundColor="#1E99D6"
                       textTransform="uppercase"
                       fontSize="small"
+                      onClick={() => onFormOpen(skill.id)}
                     >
                       Redaguoti
                     </Button>
@@ -227,7 +234,7 @@ const Skills = () => {
         <ModalContent>
           <ModalCloseButton />
           <ModalBody>
-            <NewExerciseForm onClose={onExerciseClose} />
+            <ExerciseForm onClose={onExerciseClose} />
           </ModalBody>
         </ModalContent>
       </Modal>
@@ -236,9 +243,10 @@ const Skills = () => {
         <ModalContent>
           <ModalCloseButton />
           <ModalBody>
-            <NewSkillForm
+            <SkillForm
               onClose={skillModal.onClose}
               addNewExercise={addNewExercise}
+              skillId={skillId}
             />
           </ModalBody>
         </ModalContent>

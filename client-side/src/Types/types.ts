@@ -120,16 +120,23 @@ export interface OrderedPlanInfo {
 }
 
 export interface Exercise {
-  id: number;
+  id: string;
   name: string;
   description: string;
   difficulty: string;
 }
 
 export interface GenericExerciseSkillInfo {
-  id: number;
+  id: string;
   name: string;
   isUsed: boolean;
+}
+
+export interface Skill {
+  id: string;
+  name: string;
+  description: string;
+  exercises: GenericExerciseSkillInfo[];
 }
 
 export interface TrainingPlanViewDto {

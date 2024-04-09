@@ -25,7 +25,7 @@ import eventBus from "../Helpers/eventBus";
 import toast from "react-hot-toast";
 import { Unauthorized } from "../Helpers/constants";
 import { GenericExerciseSkillInfo } from "../Types/types";
-import NewExerciseForm from "../components/forms/NewExerciseForm";
+import ExerciseForm from "../components/forms/ExerciseForm";
 
 export interface Filter {
   isUsed: boolean | undefined;
@@ -41,6 +41,12 @@ const Exercises = () => {
     isUsed: undefined,
     page: 10,
   });
+  const [exerciseId, setExerciseId] = useState<string | undefined>();
+
+  const onFormOpen = (exerciseId: string | undefined) => {
+    setExerciseId(exerciseId);
+    onOpen();
+  };
 
   const handleFilter = (value: string | string[]) => {
     setFilterData({
@@ -88,7 +94,11 @@ const Exercises = () => {
               <Heading size="xl">Treniruočių pratimai</Heading>
             </Flex>
             <Flex justifyContent="end">
-              <Button backgroundColor="#1E99D6" color="white" onClick={onOpen}>
+              <Button
+                backgroundColor="#1E99D6"
+                color="white"
+                onClick={() => onFormOpen(undefined)}
+              >
                 Naujas pratimas
               </Button>
             </Flex>
@@ -198,6 +208,7 @@ const Exercises = () => {
                       backgroundColor="#1E99D6"
                       textTransform="uppercase"
                       fontSize="small"
+                      onClick={() => onFormOpen(exercise.id)}
                     >
                       Redaguoti
                     </Button>
@@ -212,7 +223,7 @@ const Exercises = () => {
         <ModalContent>
           <ModalCloseButton />
           <ModalBody>
-            <NewExerciseForm onClose={onClose} />
+            <ExerciseForm onClose={onClose} exerciseId={exerciseId} />
           </ModalBody>
         </ModalContent>
       </Modal>

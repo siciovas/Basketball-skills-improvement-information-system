@@ -10,16 +10,26 @@ import {
   Center,
   Spinner,
 } from "@chakra-ui/react";
-import { ChangeEvent, FormEvent, useState } from "react";
+import {
+  ChangeEvent,
+  FormEvent,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import toast from "react-hot-toast";
+import { Exercise } from "../../Types/types";
+import { Unauthorized } from "../../Helpers/constants";
+import eventBus from "../../Helpers/eventBus";
 
 type eventHandleChange<T extends HTMLElement> = ChangeEvent<T>;
 
 interface Props {
   onClose: () => void;
+  exerciseId?: string;
 }
 
-const NewExerciseForm = ({ onClose }: Props) => {
+const ExerciseForm = ({ onClose, exerciseId }: Props) => {
   const [fileState, setFileState] = useState<File>();
   const token = localStorage.getItem("accessToken");
   const [formState, setFormState] = useState({
@@ -28,6 +38,7 @@ const NewExerciseForm = ({ onClose }: Props) => {
     difficulty: "",
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [exercise, setExercise] = useState<Exercise>();
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -45,6 +56,28 @@ const NewExerciseForm = ({ onClose }: Props) => {
     setFormState({ ...formState, [name]: data });
   };
 
+  const getExercise = useCallback(async () => {
+    const response = await fetch(
+      import.meta.env.VITE_API_URL + `exercise/${exerciseId}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        method: "GET",
+      }
+    );
+    if (response.status === 401) {
+      eventBus.dispatch("logOut", Unauthorized);
+    } else if (response.status === 200) {
+      const exercise = await response.json();
+      setExercise(exercise);
+      setIsLoading(false);
+    } else {
+      toast.error("Netikėta klaida!");
+    }
+  }, []);
+
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     setIsLoading(true);
     e.preventDefault();
@@ -54,8 +87,13 @@ const NewExerciseForm = ({ onClose }: Props) => {
     formData.append("description", formState.description);
     formData.append("difficulty", formState.difficulty);
 
-    const response = await fetch(import.meta.env.VITE_API_URL + `exercise`, {
-      method: "POST",
+    const url = exerciseId
+      ? `${import.meta.env.VITE_API_URL}exercise/${exerciseId}`
+      : `${import.meta.env.VITE_API_URL}exercise`;
+    const method = exerciseId ? "PUT" : "POST";
+
+    const response = await fetch(url, {
+      method: method,
       body: formData,
       headers: {
         Authorization: `Bearer ${token}`,
@@ -64,12 +102,22 @@ const NewExerciseForm = ({ onClose }: Props) => {
 
     if (response.status === 201) {
       setIsLoading(false);
-      toast.success("Pratimas sėkmingai sukurtas!");
+      toast.success(
+        exerciseId
+          ? "Pratimas sėkmingai atnaujintas!"
+          : "Pratimas sėkmingai sukurtas!"
+      );
       onClose();
     } else {
       toast.error("Klaida");
     }
   };
+
+  useEffect(() => {
+    if (exerciseId !== undefined) {
+      getExercise();
+    }
+  }, []);
 
   return (
     <>
@@ -80,11 +128,22 @@ const NewExerciseForm = ({ onClose }: Props) => {
       ) : (
         <form onSubmit={onSubmit}>
           <Flex flexDir="column">
-            <Heading size="md">Naujas pratimas</Heading>
+            <Heading size="md">
+              {exerciseId ? "Redaguoti pratimą" : "Naujas pratimas"}
+            </Heading>
             <FormLabel mt={5}>Pavadinimas</FormLabel>
-            <Input type="text" name="name" onChange={onChange} />
+            <Input
+              type="text"
+              name="name"
+              onChange={onChange}
+              value={exercise?.name}
+            />
             <FormLabel>Aprašymas</FormLabel>
-            <Textarea name="description" onChange={onChange}></Textarea>
+            <Textarea
+              name="description"
+              onChange={onChange}
+              value={exercise?.description}
+            ></Textarea>
             <FormLabel>Sudėtingumas</FormLabel>
             <Select
               mb={5}
@@ -92,6 +151,7 @@ const NewExerciseForm = ({ onClose }: Props) => {
               onChange={onChange}
               isRequired
               defaultValue=""
+              value={exercise?.difficulty}
             >
               <option hidden disabled value="">
                 Pasirinkite
@@ -128,4 +188,4 @@ const NewExerciseForm = ({ onClose }: Props) => {
   );
 };
 
-export default NewExerciseForm;
+export default ExerciseForm;

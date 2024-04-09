@@ -35,15 +35,13 @@ namespace Basketball.Infrastructure.Repositories
 
         public async Task<Skill?> GetById(Guid id)
         {
-            return await _db.Skills.FirstOrDefaultAsync(s => s.Id == id);
+            return await _db.Skills
+                            .Include(e => e.Exercises)
+                            .FirstOrDefaultAsync(s => s.Id == id);
         }
 
         public async Task<Skill> Update(Skill skill)
         {
-            _db.ExerciseSkill
-               .Where(s => s.SkillId == skill.Id)
-               .ExecuteDelete();
-
             var updatedSkill = _db.Skills.Update(skill);
             await _db.SaveChangesAsync();
 
