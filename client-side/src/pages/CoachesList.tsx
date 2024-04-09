@@ -22,11 +22,17 @@ import CoachFilter from "../components/CoachFilter";
 import Container from "../components/Container";
 import { useNavigate } from "react-router-dom";
 import translations from "../Helpers/translations.json";
+import CoachSort from "../components/CoachSort";
 
 interface FilterProps {
   from: Date | undefined;
   to: Date | undefined;
   status: string[];
+}
+
+interface SortProps {
+  date: boolean | undefined;
+  rating: boolean | undefined;
 }
 
 const CoachesList = () => {
@@ -37,6 +43,10 @@ const CoachesList = () => {
     from: undefined,
     to: undefined,
     status: [],
+  });
+  const [sortData, setSortData] = useState<SortProps>({
+    date: true,
+    rating: undefined,
   });
 
   const navigate = useNavigate();
@@ -78,6 +88,16 @@ const CoachesList = () => {
     });
   };
 
+  const handleSortChange = (value: string | string[]) => {
+    const name = (value as string).split(";")[0];
+    const data = (value as string).split(";")[1];
+    if (name === "rating") {
+      setSortData({ rating: Boolean(parseInt(data)), date: undefined });
+    } else {
+      setSortData({ date: Boolean(parseInt(data)), rating: undefined });
+    }
+  };
+
   return (
     <Container minW={1200}>
       {isLoading ? (
@@ -90,10 +110,13 @@ const CoachesList = () => {
             <Heading size="xl">Trenerių sąrašas</Heading>
           </Flex>
           <Box overflowX="auto" maxWidth="100%" mt={5}>
-            <CoachFilter
-              onFilterStatusChange={handleFilterChange}
-              onDateRangeChange={handleDateRangeChange}
-            />
+            <Flex justify="flex-end" mb={5}>
+              <CoachFilter
+                onFilterStatusChange={handleFilterChange}
+                onDateRangeChange={handleDateRangeChange}
+              />
+              <CoachSort onSortChange={handleSortChange} />
+            </Flex>
             <Table variant="striped">
               <Thead>
                 <Tr>
@@ -119,6 +142,17 @@ const CoachesList = () => {
                       (filterData.to
                         ? new Date(x.registerDate) <= filterData.to
                         : true)
+                  )
+                  .sort((a, b) =>
+                    sortData.date !== undefined
+                      ? sortData.date
+                        ? new Date(b.registerDate).getTime() -
+                          new Date(a.registerDate).getTime()
+                        : new Date(a.registerDate).getTime() -
+                          new Date(b.registerDate).getTime()
+                      : sortData.rating
+                      ? b.rating - a.rating
+                      : a.rating - b.rating
                   )
                   .map((coach) => (
                     <Tr>
