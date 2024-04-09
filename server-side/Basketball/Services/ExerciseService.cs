@@ -64,6 +64,8 @@ namespace Basketball.Services
             {
                 Id = id,
                 Name = exercise!.Name,
+                Description = exercise!.Description,
+                Difficulty = exercise!.Difficulty,
             };
         }
 

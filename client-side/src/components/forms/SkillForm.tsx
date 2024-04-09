@@ -24,16 +24,17 @@ import {
 import toast from "react-hot-toast";
 import { Unauthorized } from "../../Helpers/constants";
 import eventBus from "../../Helpers/eventBus";
-import { Exercise } from "../../Types/types";
+import { Exercise, GenericExerciseSkillInfo } from "../../Types/types";
 import { useNavigate } from "react-router";
 
 interface Props {
   addNewExercise: () => void;
   onClose: () => void;
+  skillId?: string;
 }
 
-const NewSkillForm = ({ addNewExercise, onClose }: Props) => {
-  const [isLoading, setIsLoading] = useState(false);
+const SkillForm = ({ addNewExercise, onClose, skillId }: Props) => {
+  const [isLoading, setIsLoading] = useState(true);
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const token = localStorage.getItem("accessToken");
   const [formState, setFormState] = useState({
@@ -73,12 +74,45 @@ const NewSkillForm = ({ addNewExercise, onClose }: Props) => {
     }
   }, []);
 
+  const getSkill = useCallback(async () => {
+    const response = await fetch(
+      import.meta.env.VITE_API_URL + `skill/${skillId}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        method: "GET",
+      }
+    );
+    if (response.status === 401) {
+      eventBus.dispatch("logOut", Unauthorized);
+    } else if (response.status === 200) {
+      const skill = await response.json();
+      setFormState({
+        title: skill.name,
+        description: skill.description,
+        exercises: skill.exercises.map((exercise: GenericExerciseSkillInfo) => {
+          return exercise.id;
+        }),
+      });
+      await getExercisesList();
+    } else {
+      toast.error("Netikėta klaida!");
+    }
+  }, []);
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     setIsLoading(true);
     e.preventDefault();
 
-    const response = await fetch(import.meta.env.VITE_API_URL + `skill`, {
-      method: "POST",
+    const url = skillId
+      ? `${import.meta.env.VITE_API_URL}skill/${skillId}`
+      : `${import.meta.env.VITE_API_URL}skill`;
+    const method = skillId ? "PUT" : "POST";
+
+    const response = await fetch(url, {
+      method: method,
       body: JSON.stringify(formState),
       headers: {
         "Content-Type": "application/json",
@@ -86,11 +120,13 @@ const NewSkillForm = ({ addNewExercise, onClose }: Props) => {
       },
     });
 
-    if (response.status === 201) {
+    if (response.status === 201 || response.status === 200) {
       setIsLoading(false);
       onClose();
       navigate("/skills");
-      toast.success("Įgūdis sėkmingai sukurtas!");
+      toast.success(
+        skillId ? "Įgūdis sėkmingai atnaujintas!" : "Įgūdis sėkmingai sukurtas!"
+      );
     } else {
       toast.error("Klaida");
     }
@@ -100,7 +136,11 @@ const NewSkillForm = ({ addNewExercise, onClose }: Props) => {
     eventBus.on("triggerExercisesList", () => {
       getExercisesList();
     });
-    getExercisesList();
+    if (skillId !== undefined) {
+      getSkill();
+    } else {
+      getExercisesList();
+    }
   }, [getExercisesList]);
 
   return (
@@ -112,7 +152,9 @@ const NewSkillForm = ({ addNewExercise, onClose }: Props) => {
       ) : (
         <form onSubmit={handleSubmit}>
           <Flex flexDir="column">
-            <Heading size="md">Naujas įgūdis</Heading>
+            <Heading size="md">
+              {skillId ? "Redaguoti įgūdis" : "Naujas įgūdis"}
+            </Heading>
             <FormLabel mt={5}>Pavadinimas</FormLabel>
             <Input
               type="text"
@@ -133,9 +175,7 @@ const NewSkillForm = ({ addNewExercise, onClose }: Props) => {
                   <Box>
                     {formState.exercises
                       .map((exercise) => {
-                        return exercises.find(
-                          (x) => x.id.toString() === exercise
-                        )?.name;
+                        return exercises.find((x) => x.id === exercise)?.name;
                       })
                       .join(", ")
                       .substring(0, 30)}
@@ -149,7 +189,7 @@ const NewSkillForm = ({ addNewExercise, onClose }: Props) => {
                   >
                     {exercises.map((exercise) => {
                       return (
-                        <MenuItemOption value={exercise.id.toString()}>
+                        <MenuItemOption value={exercise.id}>
                           {exercise.name}
                         </MenuItemOption>
                       );
@@ -173,9 +213,7 @@ const NewSkillForm = ({ addNewExercise, onClose }: Props) => {
             </Heading>
             {formState.exercises.map((exercise) => {
               return (
-                <Box>
-                  {exercises.find((x) => x.id.toString() === exercise)?.name}
-                </Box>
+                <Box>{exercises.find((x) => x.id === exercise)?.name}</Box>
               );
             })}
             <Button
@@ -195,4 +233,4 @@ const NewSkillForm = ({ addNewExercise, onClose }: Props) => {
   );
 };
 
-export default NewSkillForm;
+export default SkillForm;

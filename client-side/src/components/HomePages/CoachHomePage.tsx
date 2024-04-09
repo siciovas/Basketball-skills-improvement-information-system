@@ -11,8 +11,8 @@ import {
   SimpleGrid,
   useDisclosure,
 } from "@chakra-ui/react";
-import NewExerciseForm from "../forms/NewExerciseForm";
-import NewSkillForm from "../forms/NewSkillForm";
+import ExerciseForm from "../forms/ExerciseForm";
+import SkillForm from "../forms/SkillForm";
 import { useState } from "react";
 import eventBus from "../../Helpers/eventBus";
 import { useNavigate } from "react-router";
@@ -144,7 +144,7 @@ const CoachHomePage = () => {
         <ModalContent>
           <ModalCloseButton />
           <ModalBody>
-            <NewExerciseForm onClose={onExerciseClose} />
+            <ExerciseForm onClose={onExerciseClose}/>
           </ModalBody>
         </ModalContent>
       </Modal>
@@ -153,7 +153,7 @@ const CoachHomePage = () => {
         <ModalContent>
           <ModalCloseButton />
           <ModalBody>
-            <NewSkillForm
+            <SkillForm
               onClose={skillModal.onClose}
               addNewExercise={addNewExercise}
             />
