@@ -78,6 +78,9 @@ const Exercises = () => {
   }, []);
 
   useEffect(() => {
+    eventBus.on("triggerExerciseCreated", () => {
+      getExercisesList();
+    });
     getExercisesList();
   }, [getExercisesList]);
 

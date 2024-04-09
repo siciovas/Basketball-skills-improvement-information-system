@@ -127,6 +127,7 @@ const SkillForm = ({ addNewExercise, onClose, skillId }: Props) => {
       toast.success(
         skillId ? "Įgūdis sėkmingai atnaujintas!" : "Įgūdis sėkmingai sukurtas!"
       );
+      eventBus.dispatch("triggerSkillCreated", null);
     } else {
       toast.error("Klaida");
     }
@@ -153,7 +154,7 @@ const SkillForm = ({ addNewExercise, onClose, skillId }: Props) => {
         <form onSubmit={handleSubmit}>
           <Flex flexDir="column">
             <Heading size="md">
-              {skillId ? "Redaguoti įgūdis" : "Naujas įgūdis"}
+              {skillId ? "Įgūdžio redagavimas" : "Naujas įgūdis"}
             </Heading>
             <FormLabel mt={5}>Pavadinimas</FormLabel>
             <Input
