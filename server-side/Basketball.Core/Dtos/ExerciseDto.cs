@@ -1,4 +1,7 @@
-﻿namespace Basketball.Core.Dtos
+﻿using Basketball.Domain.Data.Entities.Enums;
+using System;
+
+namespace Basketball.Core.Dtos
 {
     public class ExerciseDto
     {
@@ -7,5 +10,6 @@
         public string? Description { get; set; }
         public Difficulty Difficulty { get; set; }
         public bool IsUsed { get; set; }
+        public string? ExerciseVideoName { get; set; }
     }
 }
