@@ -15,6 +15,6 @@ namespace Basketball.Core.Interfaces.Repositories
         Task<User> Update(User user);
         Task Delete(User user);
         Task<string> GetAdminEmail();
-        public Task<int> GetAllByRoleCount(Role role);
+        Task<List<User>> GetAllStudents();
     }
 }

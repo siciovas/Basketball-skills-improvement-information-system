@@ -36,7 +36,9 @@ const AdminNavbar = ({ logOut }: NavbarProps) => {
           <Box cursor="pointer" onClick={() => navigate("/manageCoaches")}>
             TRENERIAI
           </Box>
-          <Box cursor="pointer">FINANSAI</Box>
+          <Box cursor="pointer" onClick={() => navigate("/finance")}>
+            FINANSAI
+          </Box>
           <Box cursor="pointer">ŽINUTĖS</Box>
         </Flex>
         <Flex mr={5} alignItems="center" gap={5}>
@@ -46,7 +48,9 @@ const AdminNavbar = ({ logOut }: NavbarProps) => {
             </MenuButton>
             <MenuList>
               <MenuItem onClick={() => navigate("/profile")}>Profilis</MenuItem>
-              <MenuItem onClick={() => navigate("/allOrders")}>Užsakymai</MenuItem>
+              <MenuItem onClick={() => navigate("/allOrders")}>
+                Užsakymai
+              </MenuItem>
               <MenuItem onClick={(e) => logOut(e)}>Atsijungti</MenuItem>
             </MenuList>
           </Menu>

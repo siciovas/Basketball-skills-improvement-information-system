@@ -16,7 +16,6 @@ const CommissionFee = () => {
       borderRadius="lg"
       mt={10}
       mb={10}
-      w="50%"
       flexDir="column"
     >
       <Heading size="lg">Komisinis mokestis</Heading>
