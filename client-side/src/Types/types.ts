@@ -95,6 +95,7 @@ export interface Counts {
   students: number | null;
   trainingPlans: number | null;
   orders: number | null;
+  commissions: { [key: number]: number; };
 }
 
 export interface Orders {
@@ -162,4 +163,11 @@ export interface CoachHomePageDto {
 export interface HomeData {
   id: string;
   name: string;
+}
+
+export interface Statistics {
+  registeredCoaches: { [key: number]: number; };
+  registeredStudents: { [key: number]: number; };
+  ordersAmount: { [key: number]: number; };
+  commissions: { [key: number]: number; };
 }

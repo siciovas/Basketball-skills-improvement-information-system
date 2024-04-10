@@ -92,6 +92,7 @@ builder.Services.AddScoped<ITrainingPlanService, TrainingPlanService>();
 builder.Services.AddScoped<IFeedbackService, FeedbackService>();
 builder.Services.AddScoped<ISkillService, SkillService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IStatisticsService, StatisticsService>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IComplaintRepository, ComplaintRepository>();
