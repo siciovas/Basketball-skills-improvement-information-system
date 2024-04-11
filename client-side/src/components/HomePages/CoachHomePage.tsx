@@ -175,7 +175,7 @@ const CoachHomePage = () => {
                 color="white"
                 onClick={exerciseModal.onOpen}
               >
-                Naujas planas
+                Naujas pratimas
               </Button>
               {homePageData?.exercises.map((exercise) => {
                 return (
