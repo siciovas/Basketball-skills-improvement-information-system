@@ -5,8 +5,16 @@ import {
   Button,
   Center,
   Spinner,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  useDisclosure,
 } from "@chakra-ui/react";
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState, ChangeEvent, MouseEvent } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
@@ -25,6 +33,7 @@ const ExerciseProgressForm = ({
   const [isLoading, setIsLoading] = useState(false);
   const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
+  const confirmationModal = useDisclosure();
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -32,7 +41,7 @@ const ExerciseProgressForm = ({
     }
   };
 
-  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: MouseEvent<HTMLButtonElement>) => {
     setIsLoading(true);
     e.preventDefault();
     const formData = new FormData();
@@ -68,7 +77,7 @@ const ExerciseProgressForm = ({
           <Spinner size="xl" textAlign="center" />
         </Center>
       ) : (
-        <form onSubmit={onSubmit}>
+        <form>
           <Flex flexDir="column">
             <FormLabel>Mokomasis video</FormLabel>
             <Box>
@@ -85,13 +94,33 @@ const ExerciseProgressForm = ({
               mt={10}
               w={52}
               alignSelf="end"
-              type="submit"
+              onClick={confirmationModal.onOpen}
             >
               Įkelti progresą
             </Button>
           </Flex>
         </form>
       )}
+      <Modal
+        isOpen={confirmationModal.isOpen}
+        onClose={confirmationModal.onClose}
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Progreso įkėlimas</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>Ar tikrai norite įkelti progreso įrašą?</ModalBody>
+
+          <ModalFooter>
+            <Button mr={3} onClick={confirmationModal.onClose}>
+              Ne
+            </Button>
+            <Button onClick={onSubmit} backgroundColor="#1E99D6" color="white">
+              Taip
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 };
