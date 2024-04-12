@@ -28,6 +28,7 @@ import Exercises from "./pages/Exercises";
 import Skills from "./pages/Skills";
 import ViewOrderedPlan from "./pages/ViewOrderedPlan";
 import Finance from "./pages/Finance";
+import TrainingPlans from "./pages/TrainingPlans";
 
 function App() {
   const navigate = useNavigate();
@@ -82,6 +83,7 @@ function App() {
         <Route path="skills" element={<Skills />} />
         <Route path="viewOrderedPlan/:id" element={<ViewOrderedPlan />} />
         <Route path="finance" element={<Finance />} />
+        <Route path="trainingPlans" element={<TrainingPlans />} />
       </Routes>
       <Footer />
     </>

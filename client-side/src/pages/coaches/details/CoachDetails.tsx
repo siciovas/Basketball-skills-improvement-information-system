@@ -19,6 +19,7 @@ import { CoachProfile } from "../../../Types/types";
 
 const CoachDetails = () => {
   const [coach, setCoach] = useState<CoachProfile>();
+  const [canUserReport, setCanUserReport] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const { id } = useParams();
@@ -39,7 +40,18 @@ const CoachDetails = () => {
       eventBus.dispatch("logOut", Unauthorized);
     } else if (response.status === 200) {
       const coach = await response.json();
-      console.log(coach);
+      const hasPlanResponse = await fetch(
+        import.meta.env.VITE_API_URL + `order/hasUserTrainingPlan/${coach.id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          method: "GET",
+        }
+      );
+      const canReport = await hasPlanResponse.json();
+      setCanUserReport(canReport);
       setCoach(coach);
       setIsLoading(false);
     } else {
@@ -127,15 +139,17 @@ const CoachDetails = () => {
                     />
                     {coach?.rating}
                   </Box>
-                  <Button
-                    textTransform="uppercase"
-                    background="red.500"
-                    textColor="white"
-                    borderRadius="2xl"
-                    onClick={() => navigate(`/complaint/${coach?.id}`)}
-                  >
-                    PRANEŠTI
-                  </Button>
+                  {canUserReport && (
+                    <Button
+                      textTransform="uppercase"
+                      background="red.500"
+                      textColor="white"
+                      borderRadius="2xl"
+                      onClick={() => navigate(`/complaint/${coach?.id}`)}
+                    >
+                      PRANEŠTI
+                    </Button>
+                  )}
                 </Flex>
               </Flex>
               <Box ml={5} my={5}>

@@ -13,5 +13,6 @@ namespace Basketball.Core.Interfaces.Services
         public Task<List<OrderDto>> GetAll();
         public Task CancelOrder(Guid id);
         public Task<ViewOrderDto> GetOrderInfoById(Guid id);
+        public Task<bool> HasUserTrainingPlanByCoachId(Guid coachId, Guid userId);
     }
 }

@@ -78,5 +78,14 @@ namespace Basketball.Controllers
 
             return NoContent();
         }
+
+        [HttpGet("hasUserTrainingPlan/{coachId}")]
+        [Authorize]
+        public async Task<IActionResult> HasUserTrainingPlanByCoachId(Guid coachId)
+        {
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
+
+            return Ok(await _orderService.HasUserTrainingPlanByCoachId(coachId, userId));
+        }
     }
 }

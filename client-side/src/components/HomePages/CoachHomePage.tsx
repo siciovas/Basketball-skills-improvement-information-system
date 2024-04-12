@@ -105,7 +105,11 @@ const CoachHomePage = () => {
                   </Button>
                 );
               })}
-              <Button backgroundColor="#1E99D6" color="white">
+              <Button
+                backgroundColor="#1E99D6"
+                color="white"
+                onClick={() => navigate("/trainingPlans")}
+              >
                 Visi planai
               </Button>
             </Flex>
@@ -205,7 +209,7 @@ const CoachHomePage = () => {
         <ModalContent>
           <ModalCloseButton />
           <ModalBody>
-            <ExerciseForm onClose={onExerciseClose}/>
+            <ExerciseForm onClose={onExerciseClose} />
           </ModalBody>
         </ModalContent>
       </Modal>
