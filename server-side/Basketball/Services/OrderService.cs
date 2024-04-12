@@ -115,5 +115,14 @@ namespace Basketball.Services
 
             await _orderRepository.Remove(order!);
         }
+
+        public async Task<bool> HasUserTrainingPlanByCoachId(Guid coachId, Guid userId)
+        {
+            var userTrainingPlans = await _orderRepository.GetByUserId(userId);
+
+            var userTrainingPlansByCoachIdCount = userTrainingPlans.Count(x => x.IsPaid && x.TrainingPlan.CoachId == coachId);
+
+            return userTrainingPlansByCoachIdCount > 0;
+        }
     }
 }
