@@ -43,7 +43,6 @@ const EditProfile = () => {
     >,
     isNumber: boolean
   ) => {
-    console.log("a");
     const value = isNumber
       ? (e.target.value as unknown as number)
       : e.target.value;
@@ -83,29 +82,26 @@ const EditProfile = () => {
   const updateUser = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     setIsLoading(true);
-    const response = await fetch(
-      import.meta.env.VITE_API_URL + `user/update`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        method: "PUT",
-        body: JSON.stringify({
-          email: formState?.email,
-          phoneNumber: formState?.phoneNumber,
-          height: formState?.height,
-          weight: formState?.weight,
-          footSize: formState?.footSize,
-          metabolicAge: formState?.metabolicAge,
-          education: formState?.education,
-          experience: formState?.experience,
-          specialization: formState?.specialization,
-          description: formState?.description,
-          avatar: formState?.avatar,
-        }),
-      }
-    );
+    const response = await fetch(import.meta.env.VITE_API_URL + `user/update`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      method: "PUT",
+      body: JSON.stringify({
+        email: formState?.email,
+        phoneNumber: formState?.phoneNumber,
+        height: formState?.height,
+        weight: formState?.weight,
+        footSize: formState?.footSize,
+        metabolicAge: formState?.metabolicAge,
+        education: formState?.education,
+        experience: formState?.experience,
+        specialization: formState?.specialization,
+        description: formState?.description,
+        avatar: formState?.avatar,
+      }),
+    });
     if (response.status === 401) {
       eventBus.dispatch("logOut", Unauthorized);
     }
@@ -197,7 +193,12 @@ const EditProfile = () => {
                       placeholder={formState?.surname}
                     />
                     <FormLabel>Lytis</FormLabel>
-                    <Select mb={5} name="gender" disabled value={formState?.gender}>
+                    <Select
+                      mb={5}
+                      name="gender"
+                      disabled
+                      value={formState?.gender}
+                    >
                       <option hidden disabled value="">
                         Pasirinkite
                       </option>
@@ -335,9 +336,7 @@ const EditProfile = () => {
                             onChange={(e) => {
                               handleFormInputChange(e, false);
                             }}
-                            value={
-                                formState?.specialization as string
-                            }
+                            value={formState?.specialization as string}
                           />
                         </>
                       ))}
