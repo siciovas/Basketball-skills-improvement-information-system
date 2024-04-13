@@ -3,6 +3,7 @@ using System;
 using Basketball.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Basketball.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20240311172238_passwordRecovery")]
+    partial class passwordRecovery
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,10 +66,6 @@ namespace Basketball.Infrastructure.Migrations
                     b.Property<int>("Difficulty")
                         .HasColumnType("int");
 
-                    b.Property<string>("ExerciseBlobUrl")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -76,36 +75,6 @@ namespace Basketball.Infrastructure.Migrations
                     b.HasIndex("CoachId");
 
                     b.ToTable("Exercises");
-                });
-
-            modelBuilder.Entity("Basketball.Domain.Data.Entities.ExerciseProgress", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("ExerciseId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<string>("ProgressVideoUrl")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<Guid>("TrainingPlanId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ExerciseId");
-
-                    b.HasIndex("TrainingPlanId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ExerciseProgresses");
                 });
 
             modelBuilder.Entity("Basketball.Domain.Data.Entities.ExerciseSkill", b =>
@@ -151,44 +120,15 @@ namespace Basketball.Infrastructure.Migrations
                     b.ToTable("Feedbacks");
                 });
 
-            modelBuilder.Entity("Basketball.Domain.Data.Entities.Order", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<int?>("CommissionFee")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsPaid")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<DateTime>("OrderDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.Property<Guid>("TrainingPlanId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TrainingPlanId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Orders");
-                });
-
             modelBuilder.Entity("Basketball.Domain.Data.Entities.PasswordRecovery", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
+
+                    b.Property<string>("GeneratedString")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("char(36)");
@@ -281,9 +221,6 @@ namespace Basketball.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<byte[]>("Avatar")
-                        .HasColumnType("longblob");
-
                     b.Property<DateOnly>("BirthDate")
                         .HasColumnType("date");
 
@@ -305,9 +242,6 @@ namespace Basketball.Infrastructure.Migrations
 
                     b.Property<double?>("FootSize")
                         .HasColumnType("double");
-
-                    b.Property<int?>("Gender")
-                        .HasColumnType("int");
 
                     b.Property<int?>("Height")
                         .HasColumnType("int");
@@ -381,33 +315,6 @@ namespace Basketball.Infrastructure.Migrations
                     b.Navigation("Coach");
                 });
 
-            modelBuilder.Entity("Basketball.Domain.Data.Entities.ExerciseProgress", b =>
-                {
-                    b.HasOne("Basketball.Domain.Data.Entities.Exercise", "Exercise")
-                        .WithMany()
-                        .HasForeignKey("ExerciseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Basketball.Domain.Data.Entities.TrainingPlan", "TrainingPlan")
-                        .WithMany()
-                        .HasForeignKey("TrainingPlanId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Basketball.Domain.Data.Entities.User", "user")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Exercise");
-
-                    b.Navigation("TrainingPlan");
-
-                    b.Navigation("user");
-                });
-
             modelBuilder.Entity("Basketball.Domain.Data.Entities.ExerciseSkill", b =>
                 {
                     b.HasOne("Basketball.Domain.Data.Entities.Exercise", null)
@@ -440,25 +347,6 @@ namespace Basketball.Infrastructure.Migrations
                     b.Navigation("Student");
 
                     b.Navigation("TrainingPlan");
-                });
-
-            modelBuilder.Entity("Basketball.Domain.Data.Entities.Order", b =>
-                {
-                    b.HasOne("Basketball.Domain.Data.Entities.TrainingPlan", "TrainingPlan")
-                        .WithMany()
-                        .HasForeignKey("TrainingPlanId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Basketball.Domain.Data.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("TrainingPlan");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Basketball.Domain.Data.Entities.Skill", b =>

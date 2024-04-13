@@ -5,25 +5,23 @@
 namespace Basketball.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Exerciseprogresstable : Migration
+    public partial class passwordRecovery : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "ExerciseProgresses",
+                name: "PasswordRecovery",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    TrainingPlanId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    ExerciseId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    ProgressVideoUrl = table.Column<string>(type: "longtext", nullable: false)
+                    GeneratedString = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ExerciseProgresses", x => x.Id);
+                    table.PrimaryKey("PK_PasswordRecovery", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
         }
@@ -32,7 +30,7 @@ namespace Basketball.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ExerciseProgresses");
+                name: "PasswordRecovery");
         }
     }
 }

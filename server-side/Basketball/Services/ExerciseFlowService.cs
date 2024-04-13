@@ -1,5 +1,4 @@
 ﻿using Azure.Storage.Blobs;
-using Basketball.Core.Dtos;
 using Basketball.Core.Dtos.Post;
 using Basketball.Core.Interfaces.Repositories;
 using Basketball.Core.Interfaces.Services;
