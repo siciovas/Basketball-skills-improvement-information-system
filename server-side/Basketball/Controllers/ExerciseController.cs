@@ -8,14 +8,9 @@ namespace Basketball.Controllers
 {
     [ApiController]
     [Route("api/exercise")]
-    public class ExerciseController : ControllerBase
+    public class ExerciseController(IExerciseService exerciseService) : ControllerBase
     {
-        private readonly IExerciseService _exerciseService;
-
-        public ExerciseController(IExerciseService exerciseService)
-        {
-            _exerciseService = exerciseService;
-        }
+        private readonly IExerciseService _exerciseService = exerciseService;
 
         [HttpGet]
         [Authorize(Roles = "Coach")]
@@ -30,13 +25,14 @@ namespace Basketball.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Coach")]
-        public async Task<IActionResult> Post(ExercisePostDto exerciseDto)
+        [DisableRequestSizeLimit]
+        public async Task<IActionResult> Create(ExercisePostDto data)
         {
             var coachId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
+            var stream = data.ExerciseVideo.OpenReadStream();
+            var exercise = await _exerciseService.Create(data, coachId);
 
-            var exercise = await _exerciseService.Create(exerciseDto, coachId);
-
-            return CreatedAtAction(nameof(Post), exercise);
+            return CreatedAtAction(nameof(Create), exercise);
         }
 
         [HttpDelete("{id}")]
@@ -67,6 +63,7 @@ namespace Basketball.Controllers
 
         [HttpPut("{id}")]
         [Authorize(Roles = "Coach")]
+        [DisableRequestSizeLimit]
         public async Task<IActionResult> Update(ExercisePostDto exercise, Guid id)
         {
             var coachId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);

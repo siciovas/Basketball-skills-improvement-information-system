@@ -11,21 +11,15 @@ import {
   Center,
   Flex,
   Heading,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   Spinner,
   Textarea,
   useDisclosure,
 } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
-import { URL_ADDRESS, Unauthorized } from "../Helpers/constants";
+import { Unauthorized } from "../Helpers/constants";
 import toast from "react-hot-toast";
 import eventBus from "../Helpers/eventBus";
+import ModalWindow from "../components/ModalWindow";
 
 const Complaint = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -37,9 +31,10 @@ const Complaint = () => {
   const token = localStorage.getItem("accessToken");
 
   const getCoachDetails = useCallback(async () => {
-    const response = await fetch(URL_ADDRESS + `user/coachDetails/${id}`, {
+    const response = await fetch(import.meta.env.VITE_API_URL + `user/coachDetails/${id}`, {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       method: "GET",
     });
@@ -64,7 +59,7 @@ const Complaint = () => {
 
   const submitComplaint = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const response = await fetch(URL_ADDRESS + "complaint", {
+    const response = await fetch(import.meta.env.VITE_API_URL + "complaint", {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -77,7 +72,7 @@ const Complaint = () => {
     });
     if (response.status === 201) {
       toast.success("Skundas pateiktas sėkmingai!");
-      navigate("/");
+      navigate("/allCoaches");
     } else {
       toast.error("Įvyko klaida");
     }
@@ -92,7 +87,7 @@ const Complaint = () => {
           </Center>
         ) : (
           <>
-            <Heading textAlign="center">Skundo pateikimo forma</Heading>
+            <Heading textAlign="center">Trenerio skundas: {coach}</Heading>
             <Flex
               mt={10}
               p={5}
@@ -104,7 +99,7 @@ const Complaint = () => {
               flexDirection="column"
               gap={5}
             >
-              <Heading size="md">{coach}</Heading>
+              <Heading size="md">Skundo aprašymas</Heading>
               <Textarea
                 onChange={onComplaintChange}
                 placeholder="Skundo aprašymas"
@@ -123,27 +118,7 @@ const Complaint = () => {
         )}
       </Container>
 
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Skundo pateikimas</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>Ar tikrai norite pateikti skundą?</ModalBody>
-
-          <ModalFooter>
-            <Button mr={3} onClick={onClose}>
-              Ne
-            </Button>
-            <Button
-              onClick={submitComplaint}
-              backgroundColor="#1E99D6"
-              color="white"
-            >
-              Taip
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <ModalWindow title="Skundo pateikimas" text="Ar tikrai norite pateikti skundą?" isOpen={isOpen} onClose={onClose} onClick={submitComplaint} />
     </>
   );
 };

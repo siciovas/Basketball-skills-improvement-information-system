@@ -10,6 +10,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using Newtonsoft.Json.Converters;
+using Quartz;
+using Basketball.Infrastructure.Jobs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +24,17 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
 
+builder.Services.AddQuartz(options =>
+{
+    var jobKey = JobKey.Create(nameof(OrderExpirationJob));
+    options.AddJob<OrderExpirationJob>(jobKey)
+    .AddTrigger(trigger =>
+        trigger
+            .ForJob(jobKey)
+            .WithSimpleSchedule(schedule => schedule.WithIntervalInHours(120).RepeatForever()));
+});
+
+builder.Services.AddQuartzHostedService();
 
 builder.Services.AddSwaggerGen(option =>
 {
@@ -67,7 +80,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: "Cors",
         builder =>
         {
-            builder.AllowAnyOrigin().AllowAnyHeader();
+            builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
         });
 });
 
@@ -78,6 +91,9 @@ builder.Services.AddScoped<IExerciseService, ExerciseService>();
 builder.Services.AddScoped<ITrainingPlanService, TrainingPlanService>();
 builder.Services.AddScoped<IFeedbackService, FeedbackService>();
 builder.Services.AddScoped<ISkillService, SkillService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IStatisticsService, StatisticsService>();
+builder.Services.AddScoped<IExerciseFlowService, ExerciseFlowService>();
 builder.Services.AddScoped<IPasswordRecoveryService, PasswordRecoveryService>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -86,6 +102,10 @@ builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
 builder.Services.AddScoped<ITrainingPlanRepository, TrainingPlanRepository>();
 builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
 builder.Services.AddScoped<ISkillRepository, SkillRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IExerciseFlowRepository, ExerciseFlowRepository>();
+
+builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IPasswordRecoveryRepository, PasswordRecoveryRepository>();
 
 builder.Services.AddAuthorization();

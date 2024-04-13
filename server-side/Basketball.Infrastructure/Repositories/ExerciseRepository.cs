@@ -5,14 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Basketball.Infrastructure.Repositories
 {
-    public class ExerciseRepository : IExerciseRepository
+    public class ExerciseRepository(DatabaseContext db) : IExerciseRepository
     {
-        private readonly DatabaseContext _db;
-
-        public ExerciseRepository(DatabaseContext db)
-        {
-            _db = db;
-        }
+        private readonly DatabaseContext _db = db;
 
         public async Task<Exercise> Create(Exercise exercise)
         {
@@ -31,15 +26,16 @@ namespace Basketball.Infrastructure.Repositories
         public async Task<List<Exercise>> GetAll(Guid coachId)
         {
             var exercise = await _db.Exercises
-                .Where(x => x.CoachId == coachId)
-                .ToListAsync();
+                                    .Include(x => x.Skills)
+                                    .Where(e => e.CoachId == coachId)
+                                    .ToListAsync();
 
             return exercise;
         }
 
         public async Task<Exercise?> GetById(Guid id)
         {
-            return await _db.Exercises.FirstOrDefaultAsync(x => x.Id == id);
+            return await _db.Exercises.FirstOrDefaultAsync(e => e.Id == id);
         }
 
         public async Task<Exercise> Update(Exercise exercise)

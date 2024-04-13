@@ -1,19 +1,19 @@
 ﻿using Basketball.Core.Dtos;
 using Basketball.Core.Dtos.Post;
+using Basketball.Core.Email;
 using Basketball.Core.Interfaces.Repositories;
 using Basketball.Core.Interfaces.Services;
 using Basketball.Domain.Data.Entities;
 
 namespace Basketball.Services
 {
-    public class ComplaintService : IComplaintService
+    public class ComplaintService(IComplaintRepository complaintRepository, IEmailService emailService,
+                                  IConfiguration configuration) : IComplaintService
     {
-        private readonly IComplaintRepository _complaintRepository;
+        private readonly IComplaintRepository _complaintRepository = complaintRepository;
+        private readonly IEmailService _emailService = emailService;
+        private readonly IConfiguration _configuration = configuration;
 
-        public ComplaintService(IComplaintRepository complaintRepository)
-        {
-            _complaintRepository = complaintRepository;
-        }
         public async Task<ComplaintDto> Create(ComplaintPostDto complaintDto)
         {
             var newComplaint = new Complaint
@@ -25,6 +25,17 @@ namespace Basketball.Services
             };
 
             var createdComplaint = await _complaintRepository.Create(newComplaint);
+
+            var emailTemplate = EmailTemplates.Templates["CoachComplaint"];
+
+            var emailData = new EmailData
+            {
+                Subject = emailTemplate[0],
+                Recipients = ["ignasilin@gmail.com"],
+                Content = string.Format(emailTemplate[1], createdComplaint.Coach.Name, createdComplaint.Coach.Surname, $"{_configuration["AppUrl"]}/manageCoach/{createdComplaint.Coach.Id}")
+            };
+
+            _ = Task.Run(() => _emailService.SendEmail(emailData));
 
             return new ComplaintDto
             {

@@ -6,26 +6,20 @@ using Basketball.Domain.Data.Entities;
 
 namespace Basketball.Services
 {
-    public class SkillService : ISkillService
+    public class SkillService(ISkillRepository skillRepository, IExerciseRepository exerciseRepository) : ISkillService
     {
-        private readonly ISkillRepository _skillRepository;
-        private readonly IExerciseRepository _exerciseRepository;
+        private readonly ISkillRepository _skillRepository = skillRepository;
+        private readonly IExerciseRepository _exerciseRepository = exerciseRepository;
 
-        public SkillService(ISkillRepository skillRepository, IExerciseRepository exerciseRepository)
-        {
-            _skillRepository = skillRepository;
-            _exerciseRepository = exerciseRepository;
-        }
         public async Task<SkillDto> Create(SkillPostDto skill, Guid coachId)
         {
-            var exercisesTasks = new List<Task<Exercise>>();
+            var exercises = new List<Exercise>();
 
             foreach (var id in skill.Exercises)
             {
-                exercisesTasks.Add(_exerciseRepository.GetById(id)!);
+                var exercise = await _exerciseRepository.GetById(id);
+                exercises.Add(exercise!);
             }
-
-            var exercises = await Task.WhenAll(exercisesTasks);
 
             var newSkill = new Skill
             {
@@ -40,7 +34,7 @@ namespace Basketball.Services
             return new SkillDto
             {
                 Id = createdSkill.Id,
-                Title = createdSkill.Title,
+                Name = createdSkill.Title,
                 Description = createdSkill.Description,
             };
         }
@@ -59,8 +53,9 @@ namespace Basketball.Services
             return exercises.Select(x => new SkillDto
             {
                 Id = x.Id,
-                Title = x.Title,
+                Name = x.Title,
                 Description = x.Description,
+                IsUsed = x.TrainingPlans.Count > 0
             }).ToList();
         }
 
@@ -71,8 +66,13 @@ namespace Basketball.Services
             return new SkillDto
             {
                 Id = id,
-                Title = skill!.Title,
-                Description = skill.Description
+                Name = skill!.Title,
+                Description = skill.Description,
+                Exercises = skill.Exercises.Select(e => new ExerciseDto
+                {
+                    Id = e.Id,
+                    Name = e.Name,
+                }).ToList(),
             };
         }
 
@@ -85,14 +85,13 @@ namespace Basketball.Services
 
         public async Task<SkillDto> Update(SkillPostDto skillDto, Guid id)
         {
-            var exercisesTasks = new List<Task<Exercise>>();
+            var exercises = new List<Exercise>();
 
             foreach (var exerciseId in skillDto.Exercises)
             {
-                exercisesTasks.Add(_exerciseRepository.GetById(exerciseId)!);
+                var exercise = await _exerciseRepository.GetById(exerciseId);
+                exercises.Add(exercise!);
             }
-
-            var exercises = await Task.WhenAll(exercisesTasks);
 
             var skill = await _skillRepository.GetById(id);
             skill!.Title = skillDto.Title;
@@ -104,7 +103,7 @@ namespace Basketball.Services
             return new SkillDto
             {
                 Id = updatedSkill.Id,
-                Title = updatedSkill.Title,
+                Name = updatedSkill.Title,
                 Description = updatedSkill.Description,
             };
         }

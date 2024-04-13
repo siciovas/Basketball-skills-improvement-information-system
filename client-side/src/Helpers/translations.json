@@ -1,0 +1,23 @@
+{
+    "coachStatus": "Statusas",
+    "description": "Aprašymas",
+    "education": "Išsilavinimas",
+    "experience": "Patirtis",
+    "footSize": "Pėdos dydis",
+    "height": "Ūgis",
+    "metabolicAge": "Metabolinis amžius",
+    "rating": "Reitingas",
+    "specialization": "Specializacija",
+    "weight": "Svoris",
+    "pending": "Laukiama patvirtinimo",
+    "approved": "Patvirtintas",
+    "rejected": "Atšauktas",
+    "blocked": "Užblokuotas",
+    "student": "Krepšininkas",
+    "admin": "Administratorius",
+    "coach": "Treneris",
+    "higher": "Aukštasis išsilavinimas",
+    "higherUniversity": "Aukštasis universitetinis išsilavinimas",
+    "higherCollege": "Aukštasis koleginis išsilavinimas",
+    "secondary": "Vidurinis išsilavinimas"
+}

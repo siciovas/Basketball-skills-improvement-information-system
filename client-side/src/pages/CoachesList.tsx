@@ -14,13 +14,15 @@ import {
   Center,
 } from "@chakra-ui/react";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
-import { URL_ADDRESS, Unauthorized } from "../Helpers/constants";
+import { Unauthorized } from "../Helpers/constants";
 import toast from "react-hot-toast";
 import { Coach } from "../Types/types";
 import eventBus from "../Helpers/eventBus";
 import CoachFilter from "../components/CoachFilter";
 import Container from "../components/Container";
 import { useNavigate } from "react-router-dom";
+import translations from "../Helpers/translations.json";
+import CoachSort from "../components/CoachSort";
 
 interface FilterProps {
   from: Date | undefined;
@@ -28,24 +30,38 @@ interface FilterProps {
   status: string[];
 }
 
+interface SortProps {
+  date: boolean | undefined;
+  rating: boolean | undefined;
+}
+
 const CoachesList = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [coaches, setCoaches] = useState<Coach[]>([]);
+  const token = localStorage.getItem("accessToken");
   const [filterData, setFilterData] = useState<FilterProps>({
     from: undefined,
     to: undefined,
     status: [],
   });
+  const [sortData, setSortData] = useState<SortProps>({
+    date: true,
+    rating: undefined,
+  });
 
   const navigate = useNavigate();
 
   const getCoachesList = useCallback(async () => {
-    const response = await fetch(URL_ADDRESS + "user/getCoaches", {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "GET",
-    });
+    const response = await fetch(
+      import.meta.env.VITE_API_URL + "user/getCoaches",
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        method: "GET",
+      }
+    );
     if (response.status === 401) {
       eventBus.dispatch("logOut", Unauthorized);
     } else if (response.status === 200) {
@@ -70,7 +86,16 @@ const CoachesList = () => {
       ...filterData,
       [e.target.name]: e.target.value ? new Date(e.target.value) : undefined,
     });
-    console.log(e.target.value);
+  };
+
+  const handleSortChange = (value: string | string[]) => {
+    const name = (value as string).split(";")[0];
+    const data = (value as string).split(";")[1];
+    if (name === "rating") {
+      setSortData({ rating: Boolean(parseInt(data)), date: undefined });
+    } else {
+      setSortData({ date: Boolean(parseInt(data)), rating: undefined });
+    }
   };
 
   return (
@@ -85,10 +110,13 @@ const CoachesList = () => {
             <Heading size="xl">Trenerių sąrašas</Heading>
           </Flex>
           <Box overflowX="auto" maxWidth="100%" mt={5}>
-            <CoachFilter
-              onFilterStatusChange={handleFilterChange}
-              onDateRangeChange={handleDateRangeChange}
-            />
+            <Flex justify="flex-end" mb={5}>
+              <CoachFilter
+                onFilterStatusChange={handleFilterChange}
+                onDateRangeChange={handleDateRangeChange}
+              />
+              <CoachSort onSortChange={handleSortChange} />
+            </Flex>
             <Table variant="striped">
               <Thead>
                 <Tr>
@@ -115,6 +143,17 @@ const CoachesList = () => {
                         ? new Date(x.registerDate) <= filterData.to
                         : true)
                   )
+                  .sort((a, b) =>
+                    sortData.date !== undefined
+                      ? sortData.date
+                        ? new Date(b.registerDate).getTime() -
+                          new Date(a.registerDate).getTime()
+                        : new Date(a.registerDate).getTime() -
+                          new Date(b.registerDate).getTime()
+                      : sortData.rating
+                      ? b.rating - a.rating
+                      : a.rating - b.rating
+                  )
                   .map((coach) => (
                     <Tr>
                       <Td>
@@ -127,7 +166,13 @@ const CoachesList = () => {
                         <Text>{coach.rating}</Text>
                       </Td>
                       <Td>
-                        <Text>{coach.coachStatus}</Text>
+                        <Text>
+                          {
+                            translations[
+                              coach.coachStatus.toLowerCase() as keyof typeof translations
+                            ]
+                          }
+                        </Text>
                       </Td>
                       <Td>
                         <Text>{coach.registerDate}</Text>

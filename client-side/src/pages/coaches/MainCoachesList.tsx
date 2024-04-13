@@ -15,31 +15,60 @@ import {
   Spinner,
   Center,
 } from "@chakra-ui/react";
-import React, { useCallback, useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import Container from "../../components/Container";
 import { Coach } from "../../Types/types";
 import toast from "react-hot-toast";
-import { URL_ADDRESS, Unauthorized } from "../../Helpers/constants";
+import { Unauthorized } from "../../Helpers/constants";
 import eventBus from "../../Helpers/eventBus";
 import { useNavigate } from "react-router-dom";
+import Pagination from "../../components/Pagination";
 
 const MainCoachesList = () => {
   const [coaches, setCoaches] = useState<Coach[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const token = localStorage.getItem("accessToken");
+  const [sortData, setSortData] = useState({
+    sort: "mostPopular",
+    page: 5,
+  });
+  const [pages, setPages] = useState({
+    total: 0,
+    currentPage: 0,
+    pageNumbers: [],
+  });
 
   const navigate = useNavigate();
 
+  const handleFilter = (value: string | string[]) => {
+    setSortData({ ...sortData, sort: value as string });
+  };
+
+  const handlePage = (e: ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    setSortData({ ...sortData, page: parseInt(value) });
+  };
+
+  const handlePaginate = (page: number) => {
+    setPages({ ...pages, currentPage: page });
+  };
+
   const getCoachesList = useCallback(async () => {
-    const response = await fetch(URL_ADDRESS + "user/getCoaches", {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "GET",
-    });
+    const response = await fetch(
+      import.meta.env.VITE_API_URL + "user/getCoaches",
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        method: "GET",
+      }
+    );
     if (response.status === 401) {
       eventBus.dispatch("logOut", Unauthorized);
     } else if (response.status === 200) {
       const coaches = await response.json();
+      setPages({ ...pages, total: Math.ceil(coaches.length / sortData.page) });
       setCoaches(coaches);
       setIsLoading(false);
     } else {
@@ -63,7 +92,12 @@ const MainCoachesList = () => {
           <HStack justifyContent="end" spacing={10}>
             <Flex>
               <Menu closeOnSelect={false}>
-                <MenuButton as={Button} border="solid" borderColor="#9e9d9d" backgroundColor="#E2E2E2">
+                <MenuButton
+                  as={Button}
+                  border="solid"
+                  borderColor="#9e9d9d"
+                  backgroundColor="#E2E2E2"
+                >
                   <Box className="fa-solid fa-filter"></Box>
                 </MenuButton>
                 <MenuList
@@ -72,15 +106,22 @@ const MainCoachesList = () => {
                   border="solid"
                   borderColor="#9e9d9d"
                 >
-                  <MenuOptionGroup type="checkbox" onChange={() => {}}>
-                    <MenuItemOption value="rejected" backgroundColor="#E2E2E2">
+                  <MenuOptionGroup
+                    type="radio"
+                    value={sortData.sort}
+                    onChange={handleFilter}
+                  >
+                    <MenuItemOption
+                      value="bestRating"
+                      backgroundColor="#E2E2E2"
+                    >
                       Geriausiai įvertinti
                     </MenuItemOption>
-                    <MenuItemOption value="approved" backgroundColor="#E2E2E2">
+                    <MenuItemOption
+                      value="mostPopular"
+                      backgroundColor="#E2E2E2"
+                    >
                       Populiariausi
-                    </MenuItemOption>
-                    <MenuItemOption value="pending" backgroundColor="#E2E2E2">
-                      Daugiausiai planų
                     </MenuItemOption>
                   </MenuOptionGroup>
                 </MenuList>
@@ -88,9 +129,10 @@ const MainCoachesList = () => {
             </Flex>
             <Select
               w={20}
-              defaultValue={10}
+              value={sortData.page}
               border="solid"
               borderColor="#9e9d9d"
+              onChange={handlePage}
             >
               <option value="10" style={{ backgroundColor: "#E2E2E2" }}>
                 10
@@ -105,63 +147,78 @@ const MainCoachesList = () => {
           </HStack>
 
           <SimpleGrid columns={3} spacing={10} mt={10}>
-            {coaches.map((coach) => {
-              return (
-                <Box
-                  border="solid"
-                  borderColor="#9e9d9d"
-                  boxShadow="dark-lg"
-                  minH={60}
-                  p={2}
-                >
-                  <Flex dir="column" pos="relative" gap={3}>
-                    <Box alignSelf="center" h={40} w={60}>
-                      <Image
-                        w="100%"
-                        h="100%"
-                        src="https://m.basketnews.lt/paveikslelis-25361-crop700x700.jpg"
-                      ></Image>
-                    </Box>
-                    <Flex flexDir="column" gap={2} w="100%">
-                      <Heading size="sm">{coach.fullName}</Heading>
-                      <Box>{coach.specialization}</Box>
-                      <Box minH={12} wordBreak="break-word">
-                        {coach.description ?? "Aprašymo nėra"}
+            {coaches
+              .sort((a, b) =>
+                sortData.sort === "mostPopular"
+                  ? b.clientsCount - a.clientsCount
+                  : b.rating - a.rating
+              )
+              .slice(
+                (pages.currentPage + 1) * sortData.page - sortData.page,
+                (pages.currentPage + 1) * sortData.page
+              )
+              .map((coach) => {
+                return (
+                  <Box
+                    border="solid"
+                    borderColor="#9e9d9d"
+                    boxShadow="dark-lg"
+                    minH={60}
+                    p={2}
+                  >
+                    <Flex dir="column" pos="relative" gap={3}>
+                      <Box alignSelf="center" h={60} w={60} ml={5}>
+                        <Image
+                          w="100%"
+                          h="100%"
+                          src={"data:image/jpeg;base64," + coach.avatar}
+                        ></Image>
                       </Box>
-                      <Flex backgroundColor="gray.200" gap={5} px={2}>
-                        <Flex flexDir="column" alignItems="center">
-                          <Box>Planai</Box>
-                          <Box fontWeight="bold">
-                            {coach.trainingPlansCount}
-                          </Box>
+                      <Flex flexDir="column" gap={2} w="100%">
+                        <Heading size="sm">{coach.fullName}</Heading>
+                        <Box>{coach.specialization}</Box>
+                        <Box minH={12} wordBreak="break-word">
+                          {coach.description ?? "Aprašymo nėra"}
+                        </Box>
+                        <Flex backgroundColor="gray.200" gap={5} px={2}>
+                          <Flex flexDir="column" alignItems="center">
+                            <Box>Planai</Box>
+                            <Box fontWeight="bold">
+                              {coach.trainingPlansCount}
+                            </Box>
+                          </Flex>
+                          <Flex flexDir="column" alignItems="center">
+                            <Box>Klientai</Box>
+                            <Box fontWeight="bold">{coach.clientsCount}</Box>
+                          </Flex>
+                          <Flex flexDir="column" alignItems="center">
+                            <Box>Reitingas</Box>
+                            <Box fontWeight="bold">{coach.rating}</Box>
+                          </Flex>
                         </Flex>
-                        <Flex flexDir="column" alignItems="center">
-                          <Box>Klientai</Box>
-                          <Box fontWeight="bold">90</Box>
-                        </Flex>
-                        <Flex flexDir="column" alignItems="center">
-                          <Box>Reitingas</Box>
-                          <Box fontWeight="bold">{coach.rating}</Box>
-                        </Flex>
+                        <Button
+                          borderRadius="3xl"
+                          color="white"
+                          backgroundColor="#1E99D6"
+                          alignSelf="end"
+                          w={32}
+                          textTransform="uppercase"
+                          fontSize="small"
+                          onClick={() => navigate(`/coachDetails/${coach.id}`)}
+                        >
+                          Sužinoti daugiau
+                        </Button>
                       </Flex>
-                      <Button
-                        borderRadius="3xl"
-                        color="white"
-                        backgroundColor="#1E99D6"
-                        alignSelf="end"
-                        w={32}
-                        textTransform="uppercase"
-                        fontSize="small"
-                        onClick={() => navigate(`/coachDetails/${coach.id}`)}
-                      >
-                        Sužinoti daugiau
-                      </Button>
                     </Flex>
-                  </Flex>
-                </Box>
-              );
-            })}
+                  </Box>
+                );
+              })}
           </SimpleGrid>
+          <Pagination
+            pageCount={pages.total}
+            currentPage={pages.currentPage}
+            onPageChange={handlePaginate}
+          />
         </>
       )}
     </Container>

@@ -9,25 +9,20 @@ namespace Basketball.Controllers
 {
     [ApiController]
     [Route("api/complaint")]
-    public class ComplaintController : ControllerBase
+    public class ComplaintController(IComplaintService complaintService) : ControllerBase
     {
-        private readonly IComplaintService _complaintService;
-
-        public ComplaintController(IComplaintService complaintService)
-        {
-            _complaintService = complaintService;
-        }
+        private readonly IComplaintService _complaintService = complaintService;
 
         [HttpPost]
         [Authorize(Roles = "Student")]
-        public async Task<IActionResult> Post(ComplaintPostDto complaintDto)
+        public async Task<IActionResult> Create(ComplaintPostDto complaintDto)
         {
             var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
             complaintDto.StudentId = userId;
 
             var complaint = await _complaintService.Create(complaintDto);
 
-            return CreatedAtAction(nameof(Post), complaint);
+            return CreatedAtAction(nameof(Create), complaint);
         }
 
         [HttpDelete("{id}")]

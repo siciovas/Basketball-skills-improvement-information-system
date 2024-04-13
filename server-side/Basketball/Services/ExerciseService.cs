@@ -1,4 +1,5 @@
-﻿using Basketball.Core.Dtos;
+﻿using Azure.Storage.Blobs;
+using Basketball.Core.Dtos;
 using Basketball.Core.Dtos.Post;
 using Basketball.Core.Interfaces.Repositories;
 using Basketball.Core.Interfaces.Services;
@@ -6,22 +7,25 @@ using Basketball.Domain.Data.Entities;
 
 namespace Basketball.Services
 {
-    public class ExerciseService : IExerciseService
+    public class ExerciseService(IExerciseRepository exerciseRepository, IConfiguration configuration) : IExerciseService
     {
-        private readonly IExerciseRepository _exerciseRepository;
+        private readonly IExerciseRepository _exerciseRepository = exerciseRepository;
+        private readonly IConfiguration _configuration = configuration;
 
-        public ExerciseService(IExerciseRepository exerciseRepository)
-        {
-            _exerciseRepository = exerciseRepository;
-        }
         public async Task<ExerciseDto> Create(ExercisePostDto exerciseDto, Guid coachId)
         {
+            var container = new BlobContainerClient(_configuration["ConnectionStrings:StorageConnectionString"], "videos");
+            var blob = container.GetBlobClient($"{exerciseDto.Name}.mp4");
+
+            await blob.UploadAsync(exerciseDto.ExerciseVideo.OpenReadStream());
+
             var newExercise = new Exercise
             {
                 Name = exerciseDto.Name,
                 Description = exerciseDto.Description,
                 Difficulty = exerciseDto.Difficulty,
-                CoachId = coachId
+                CoachId = coachId,
+                ExerciseBlobUrl = blob.Uri.ToString()
             };
 
             var createdExercise = await _exerciseRepository.Create(newExercise);
@@ -30,8 +34,6 @@ namespace Basketball.Services
             {
                 Id = createdExercise.Id,
                 Name = createdExercise.Name,
-                Description = createdExercise.Description,
-                Difficulty = createdExercise.Difficulty,
             };
         }
 
@@ -50,21 +52,20 @@ namespace Basketball.Services
             {
                 Id = x.Id,
                 Name = x.Name,
-                Description = x.Description,
-                Difficulty = x.Difficulty
+                IsUsed = x.Skills.Count > 0,
             }).ToList();
         }
 
         public async Task<ExerciseDto> GetById(Guid id)
         {
             var exercise = await _exerciseRepository.GetById(id);
-
             return new ExerciseDto
             {
                 Id = id,
                 Name = exercise!.Name,
-                Description = exercise.Description,
-                Difficulty = exercise.Difficulty,
+                Description = exercise!.Description,
+                Difficulty = exercise!.Difficulty,
+                ExerciseVideoName = exercise.ExerciseBlobUrl.Split("/").Last()
             };
         }
 
@@ -77,11 +78,20 @@ namespace Basketball.Services
 
         public async Task<ExerciseDto> Update(ExercisePostDto exerciseDto, Guid id, Guid coachId)
         {
+            var container = new BlobContainerClient(_configuration["ConnectionStrings:StorageConnectionString"], "videos");
+            var blob = container.GetBlobClient($"{exerciseDto.Name}.mp4");
+
+            if (exerciseDto.ExerciseVideo != null)
+            {
+                await blob.UploadAsync(exerciseDto.ExerciseVideo.OpenReadStream(), overwrite: true);
+            } 
+
             var exercise = await _exerciseRepository.GetById(id);
             exercise!.Name = exerciseDto.Name;
             exercise.Description = exerciseDto.Description;
             exercise.Difficulty = exerciseDto.Difficulty;
             exercise.CoachId = coachId;
+            exercise.ExerciseBlobUrl = exerciseDto.ExerciseVideo != null ? blob.Uri.ToString() : exercise.ExerciseBlobUrl;
 
             var updatedExercise = await _exerciseRepository.Update(exercise);
 
@@ -89,8 +99,6 @@ namespace Basketball.Services
             {
                 Id = updatedExercise.Id,
                 Name = updatedExercise.Name,
-                Description = updatedExercise.Description,
-                Difficulty = updatedExercise.Difficulty,
             };
         }
     }

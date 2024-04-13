@@ -7,14 +7,9 @@ using Basketball.Domain.Data.Entities;
 
 namespace Basketball.Services
 {
-    public class FeedbackService : IFeedbackService
+    public class FeedbackService(IFeedbackRepository feedbackRepository) : IFeedbackService
     {
-        private readonly IFeedbackRepository _feedbackRepository;
-
-        public FeedbackService(IFeedbackRepository feedbackRepository)
-        {
-            _feedbackRepository = feedbackRepository;
-        }
+        private readonly IFeedbackRepository _feedbackRepository = feedbackRepository;
 
         public async Task<FeedbackDto> Create(FeedbackPostDto feedback, Guid studentId)
         {
@@ -70,7 +65,7 @@ namespace Basketball.Services
 
         public async Task<FeedbackDto?> GetById(Guid id)
         {
-            var feedback =  await _feedbackRepository.GetById(id);
+            var feedback = await _feedbackRepository.GetById(id);
 
             return new FeedbackDto
             {

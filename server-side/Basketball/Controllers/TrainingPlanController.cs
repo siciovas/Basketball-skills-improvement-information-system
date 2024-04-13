@@ -8,14 +8,9 @@ namespace Basketball.Controllers
 {
     [ApiController]
     [Route("api/trainingPlan")]
-    public class TrainingPlanController : ControllerBase
+    public class TrainingPlanController(ITrainingPlanService trainingPlanService) : ControllerBase
     {
-        private readonly ITrainingPlanService _trainingPlanService;
-
-        public TrainingPlanController(ITrainingPlanService trainingPlanService)
-        {
-            _trainingPlanService = trainingPlanService;
-        }
+        private readonly ITrainingPlanService _trainingPlanService = trainingPlanService;
 
         [HttpGet]
         [Authorize]
@@ -47,10 +42,9 @@ namespace Basketball.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles = "Coach")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var trainingPlan =  await _trainingPlanService.GetById(id);
+            var trainingPlan = await _trainingPlanService.GetById(id);
 
             return Ok(trainingPlan);
         }

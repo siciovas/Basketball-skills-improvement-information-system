@@ -10,7 +10,6 @@ import {
 import Container from "../components/Container";
 import { ChangeEvent, FormEvent, useState } from "react";
 import toast from "react-hot-toast";
-import { URL_ADDRESS } from "../Helpers/constants";
 import { useNavigate } from "react-router-dom";
 import eventBus from "../Helpers/eventBus";
 
@@ -28,7 +27,7 @@ const Login = () => {
 
   const Login = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    const response = await fetch(URL_ADDRESS + "user/login", {
+    const response = await fetch(import.meta.env.VITE_API_URL + "user/login", {
       headers: {
         "Content-Type": "application/json",
       },
@@ -93,8 +92,10 @@ const Login = () => {
             <Button
               type="submit"
               w="100%"
-              background="blue.500"
-              textColor="white"
+              backgroundColor="#1E99D6"
+              color="white"
+              borderRadius="2xl"
+              textTransform="uppercase"
             >
               <Box pos="absolute" w="100%" textAlign="left" ml={5}>
                 <i className="fa fa-solid fa-lock" />

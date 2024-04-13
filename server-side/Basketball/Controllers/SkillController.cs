@@ -8,14 +8,9 @@ namespace Basketball.Controllers
 {
     [ApiController]
     [Route("api/skill")]
-    public class SkillController : ControllerBase
+    public class SkillController(ISkillService skillService) : ControllerBase
     {
-        private readonly ISkillService _skillService;
-
-        public SkillController(ISkillService skillService)
-        {
-            _skillService = skillService;
-        }
+        private readonly ISkillService _skillService = skillService;
 
         [HttpGet]
         [Authorize(Roles = "Coach")]
@@ -30,13 +25,13 @@ namespace Basketball.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Coach")]
-        public async Task<IActionResult> Post(SkillPostDto skillDto)
+        public async Task<IActionResult> Create(SkillPostDto skillDto)
         {
             var coachId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
 
             var skill = await _skillService.Create(skillDto, coachId);
 
-            return CreatedAtAction(nameof(Post), skill);
+            return CreatedAtAction(nameof(Create), skill);
         }
 
         [HttpDelete("{id}")]

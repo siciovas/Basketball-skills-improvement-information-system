@@ -6,16 +6,10 @@ using Basketball.Domain.Data.Entities;
 
 namespace Basketball.Services
 {
-    public class TrainingPlanService : ITrainingPlanService
+    public class TrainingPlanService(ITrainingPlanRepository trainingPlanRepository, ISkillRepository skillRepository) : ITrainingPlanService
     {
-        private readonly ITrainingPlanRepository _trainingPlanRepository;
-        private readonly ISkillRepository _skillRepository;
-
-        public TrainingPlanService(ITrainingPlanRepository trainingPlanRepository, ISkillRepository skillRepository)
-        {
-            _trainingPlanRepository = trainingPlanRepository;
-            _skillRepository = skillRepository;
-        }
+        private readonly ITrainingPlanRepository _trainingPlanRepository = trainingPlanRepository;
+        private readonly ISkillRepository _skillRepository = skillRepository;
 
         public async Task<TrainingPlanDto> Create(TrainingPlanPostDto trainingPlan, Guid coachId)
         {
@@ -97,6 +91,12 @@ namespace Basketball.Services
         {
             var trainingPlan = await _trainingPlanRepository.GetById(id);
 
+            var skills = trainingPlan!.Skills.Select(x => new TrainingPlanSkillDto
+            {
+                Name = x.Title,
+                Exercises = x.Exercises.Select(e => e.Name).ToList(),
+            }).ToList();
+
             return new TrainingPlanDto
             {
                 Id = trainingPlan!.Id,
@@ -105,7 +105,8 @@ namespace Basketball.Services
                 Price = trainingPlan.Price,
                 IsActive = trainingPlan.IsActive,
                 Version = trainingPlan.Version,
-                Coach = string.Format("{0} {1}", trainingPlan.Coach.Name, trainingPlan.Coach.Surname)
+                Coach = string.Format("{0} {1}", trainingPlan.Coach.Name, trainingPlan.Coach.Surname),
+                Skills = skills
             };
         }
 

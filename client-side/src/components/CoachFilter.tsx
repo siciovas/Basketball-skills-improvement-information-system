@@ -20,7 +20,12 @@ const CoachFilter = ({ onFilterStatusChange, onDateRangeChange }: Props) => {
   return (
     <Flex justifyContent="end" mr={5}>
       <Menu closeOnSelect={false}>
-        <MenuButton as={Button} border="solid" borderColor="#9e9d9d" backgroundColor="#E2E2E2">
+        <MenuButton
+          as={Button}
+          border="solid"
+          borderColor="#9e9d9d"
+          backgroundColor="#E2E2E2"
+        >
           <Box className="fa-solid fa-filter"></Box>
         </MenuButton>
         <MenuList minWidth="240px" backgroundColor="#E2E2E2">
@@ -30,16 +35,16 @@ const CoachFilter = ({ onFilterStatusChange, onDateRangeChange }: Props) => {
             onChange={onFilterStatusChange}
           >
             <MenuItemOption backgroundColor="#E2E2E2" value="rejected">
-              Rejected
+              Atšauktas
             </MenuItemOption>
             <MenuItemOption backgroundColor="#E2E2E2" value="approved">
-              Approved
+              Patvirtintas
             </MenuItemOption>
             <MenuItemOption backgroundColor="#E2E2E2" value="pending">
-              Pending
+              Laukiama patvirtinimo
             </MenuItemOption>
             <MenuItemOption backgroundColor="#E2E2E2" value="blocked">
-              Blocked
+              Užblokuotas
             </MenuItemOption>
           </MenuOptionGroup>
           <MenuDivider />

@@ -1,4 +1,5 @@
 ﻿using Basketball.Domain.Data.Entities.Enums;
+using System;
 
 namespace Basketball.Core.Dtos
 {
@@ -6,7 +7,9 @@ namespace Basketball.Core.Dtos
     {
         public required Guid Id { get; set; }
         public required string Name { get; set; }
-        public required string Description { get; set; }
+        public string? Description { get; set; }
         public Difficulty Difficulty { get; set; }
+        public bool IsUsed { get; set; }
+        public string? ExerciseVideoName { get; set; }
     }
 }

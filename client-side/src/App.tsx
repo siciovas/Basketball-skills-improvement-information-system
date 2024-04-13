@@ -15,6 +15,21 @@ import eventBus from "./Helpers/eventBus";
 import CoachesList from "./pages/CoachesList";
 import ManageCoach from "./pages/coaches/details/ManageCoach";
 import Complaint from "./pages/Complaint";
+import Checkout from "./pages/Checkout";
+import AboutUs from "./pages/AboutUs";
+import Profile from "./pages/profile/Profile";
+import EditProfile from "./pages/profile/EditProfile";
+import PayseraSuccessfulPayment from "./pages/PayseraSuccessfulPayment";
+import HomePage from "./pages/HomePage";
+import TrainingPlan from "./pages/TrainingPlan";
+import AllOrders from "./pages/AllOrders";
+import MyOrders from "./pages/MyOrders";
+import Exercises from "./pages/Exercises";
+import Skills from "./pages/Skills";
+import ViewOrderedPlan from "./pages/ViewOrderedPlan";
+import Finance from "./pages/Finance";
+import TrainingPlans from "./pages/TrainingPlans";
+import ExerciseFlow from "./pages/ExerciseFlow";
 
 function App() {
   const navigate = useNavigate();
@@ -44,15 +59,33 @@ function App() {
       <Toaster />
       <Navbar />
       <Routes>
+        <Route path="/" element={<HomePage />} />
         <Route path="login" element={<Login />} />
         <Route path="recover" element={<PasswordRecovery />} />
         <Route path="newPassword" element={<NewPassword />} />
         <Route path="register" element={<Register />} />
+        <Route path="aboutUs" element={<AboutUs />} />
         <Route path="allCoaches" element={<MainCoachesList />} />
         <Route path="coachDetails/:id" element={<CoachDetails />} />
         <Route path="manageCoaches" element={<CoachesList />} />
         <Route path="manageCoach/:id" element={<ManageCoach />} />
         <Route path="complaint/:id" element={<Complaint />} />
+        <Route path="checkout/:id" element={<Checkout />} />
+        <Route path="profile" element={<Profile />} />
+        <Route path="editProfile" element={<EditProfile />} />
+        <Route path="trainingPlan/:id" element={<TrainingPlan />} />
+        <Route
+          path="successfulPayment"
+          element={<PayseraSuccessfulPayment />}
+        />
+        <Route path="allOrders" element={<AllOrders />} />
+        <Route path="myOrders" element={<MyOrders />} />
+        <Route path="exercises" element={<Exercises />} />
+        <Route path="skills" element={<Skills />} />
+        <Route path="viewOrderedPlan/:id" element={<ViewOrderedPlan />} />
+        <Route path="finance" element={<Finance />} />
+        <Route path="trainingPlans" element={<TrainingPlans />} />
+        <Route path="exerciseFlow" element={<ExerciseFlow />} />
       </Routes>
       <Footer />
     </>

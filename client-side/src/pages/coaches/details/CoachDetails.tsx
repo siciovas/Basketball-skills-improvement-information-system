@@ -12,28 +12,62 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
-import { URL_ADDRESS, Unauthorized } from "../../../Helpers/constants";
+import { Unauthorized } from "../../../Helpers/constants";
 import eventBus from "../../../Helpers/eventBus";
+import translations from "../../../Helpers/translations.json";
 import { CoachProfile } from "../../../Types/types";
+import Pagination from "../../../components/Pagination";
 
 const CoachDetails = () => {
   const [coach, setCoach] = useState<CoachProfile>();
+  const [canUserReport, setCanUserReport] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const { id } = useParams();
+  const token = localStorage.getItem("accessToken");
+  const [pages, setPages] = useState({
+    total: 0,
+    currentPage: 0,
+    pageNumbers: [],
+  });
+
+  const itemsPerPage = 9;
+
+  const handlePaginate = (page: number) => {
+    setPages({ ...pages, currentPage: page });
+  };
 
   const getCoachDetails = useCallback(async () => {
-    const response = await fetch(URL_ADDRESS + `user/coachDetails/${id}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "GET",
-    });
+    const response = await fetch(
+      import.meta.env.VITE_API_URL + `user/coachDetails/${id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        method: "GET",
+      }
+    );
     if (response.status === 401) {
       eventBus.dispatch("logOut", Unauthorized);
     } else if (response.status === 200) {
       const coach = await response.json();
-      console.log(coach);
+      const hasPlanResponse = await fetch(
+        import.meta.env.VITE_API_URL + `order/hasUserTrainingPlan/${coach.id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          method: "GET",
+        }
+      );
+      const canReport = await hasPlanResponse.json();
+      setCanUserReport(canReport);
+      setPages({
+        ...pages,
+        total: Math.ceil(coach.trainingPlans.length / itemsPerPage),
+      });
       setCoach(coach);
       setIsLoading(false);
     } else {
@@ -64,7 +98,7 @@ const CoachDetails = () => {
                   <Image
                     w="100%"
                     h="100%"
-                    src="https://m.basketnews.lt/paveikslelis-25361-crop700x700.jpg"
+                    src={"data:image/jpeg;base64," + coach?.avatar}
                   ></Image>
                 </Box>
                 <Flex flexDir="column" justifyContent="space-between">
@@ -75,7 +109,7 @@ const CoachDetails = () => {
                       Planai <b>{coach?.trainingPlansCount}</b>
                     </Box>
                     <Box>
-                      Klientai <b>120</b>
+                      Klientai <b>{coach?.clientsCount}</b>
                     </Box>
                     <Box>
                       Patirtis <b>{coach?.experience}m</b>
@@ -96,7 +130,11 @@ const CoachDetails = () => {
                     </Box>
                     <Box>
                       <Box className="fa-solid fa-graduation-cap" mr={1} />
-                      {coach?.education}
+                      {
+                        translations[
+                          coach?.education.toLowerCase() as keyof typeof translations
+                        ]
+                      }
                     </Box>
                   </Flex>
                 </Flex>
@@ -117,6 +155,17 @@ const CoachDetails = () => {
                     />
                     {coach?.rating}
                   </Box>
+                  {canUserReport && (
+                    <Button
+                      textTransform="uppercase"
+                      background="red.500"
+                      textColor="white"
+                      borderRadius="2xl"
+                      onClick={() => navigate(`/complaint/${coach?.id}`)}
+                    >
+                      PRANEŠTI
+                    </Button>
+                  )}
                 </Flex>
               </Flex>
               <Box ml={5} my={5}>
@@ -126,34 +175,47 @@ const CoachDetails = () => {
             <Box mt={5}>
               <Heading size="sm">Trenerio siūlomi treniruočių planai</Heading>
               <SimpleGrid mt={5} columns={3} spacing={10}>
-                {coach?.trainingPlans.map((trainingPlan) => {
-                  return (
-                    <Box backgroundColor="#E2E2E2" p={5}>
-                      <Flex flexDirection="column" gap={5}>
-                        <Box fontSize="larger" fontWeight="bold">
-                          {trainingPlan.title}
-                        </Box>
-                        <Box fontSize="larger" fontWeight="bold">
-                          {trainingPlan.price} Eur
-                        </Box>
-                        <Flex flexDirection="column" gap={3}>
-                          <Box>{trainingPlan.shortDescription}</Box>
+                {coach?.trainingPlans
+                  .slice(
+                    (pages.currentPage + 1) * itemsPerPage - itemsPerPage,
+                    (pages.currentPage + 1) * itemsPerPage
+                  )
+                  .map((trainingPlan) => {
+                    return (
+                      <Box backgroundColor="#E2E2E2" p={5}>
+                        <Flex flexDirection="column" gap={5}>
+                          <Box fontSize="larger" fontWeight="bold">
+                            {trainingPlan.title}
+                          </Box>
+                          <Box fontSize="larger" fontWeight="bold">
+                            {trainingPlan.price} Eur
+                          </Box>
+                          <Flex flexDirection="column" gap={3}>
+                            <Box>{trainingPlan.shortDescription}</Box>
+                          </Flex>
                         </Flex>
-                      </Flex>
-                      <Button
-                        w="100%"
-                        backgroundColor="#1E99D6"
-                        color="white"
-                        borderRadius="2xl"
-                        mt={10}
-                        textTransform="uppercase"
-                      >
-                        Plačiau
-                      </Button>
-                    </Box>
-                  );
-                })}
+                        <Button
+                          w="100%"
+                          backgroundColor="#1E99D6"
+                          color="white"
+                          borderRadius="2xl"
+                          mt={10}
+                          textTransform="uppercase"
+                          onClick={() =>
+                            navigate(`/trainingPlan/${trainingPlan.id}`)
+                          }
+                        >
+                          Plačiau
+                        </Button>
+                      </Box>
+                    );
+                  })}
               </SimpleGrid>
+              <Pagination
+                pageCount={pages.total}
+                currentPage={pages.currentPage}
+                onPageChange={handlePaginate}
+              />
             </Box>
           </Box>
         </>

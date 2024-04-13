@@ -1,5 +1,3 @@
-export const URL_ADDRESS = "https://localhost:7160/api/";
-
 export const COACH_ROLE = "Coach";
 export const STUDENT_ROLE = "Student";
 export const ADMIN_ROLE = "Admin";
@@ -10,3 +8,18 @@ export const APPROVED = "Approved";
 export const REJECTED = "Rejected";
 export const PENDING = "Pending";
 export const BLOCKED = "Blocked";
+
+export const CHARTMONTHS = [
+  "Sausis",
+  "Vasaris",
+  "Kovas",
+  "Balandis",
+  "Gegužė",
+  "Birželis",
+  "Liepa",
+  "Rugpjūtis",
+  "Rugsėjis",
+  "Spalis",
+  "Lapkritis",
+  "Gruodis",
+];
