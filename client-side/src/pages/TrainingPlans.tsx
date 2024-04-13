@@ -25,6 +25,7 @@ import eventBus from "../Helpers/eventBus";
 import toast from "react-hot-toast";
 import { Unauthorized } from "../Helpers/constants";
 import { TrainingPlanView } from "../Types/types";
+import Pagination from "../components/Pagination";
 
 interface Filter {
   isPublic: boolean | undefined;
@@ -39,6 +40,11 @@ const TrainingPlans = () => {
   const [filterData, setFilterData] = useState<Filter>({
     isPublic: undefined,
     page: 10,
+  });
+  const [pages, setPages] = useState({
+    total: 0,
+    currentPage: 0,
+    pageNumbers: [],
   });
   const [trainingPlanId, setTrainingPlanId] = useState<string | undefined>();
 
@@ -59,6 +65,10 @@ const TrainingPlans = () => {
     setFilterData({ ...filterData, page: parseInt(value) });
   };
 
+  const handlePaginate = (page: number) => {
+    setPages({ ...pages, currentPage: page });
+  };
+
   const getTrainingPlansList = useCallback(async () => {
     const response = await fetch(
       import.meta.env.VITE_API_URL + "trainingPlan/my",
@@ -72,6 +82,10 @@ const TrainingPlans = () => {
       eventBus.dispatch("logOut", Unauthorized);
     } else if (response.status === 200) {
       const trainingPlans = await response.json();
+      setPages({
+        ...pages,
+        total: Math.ceil(trainingPlans.length / filterData.page),
+      });
       setTrainingPlans(trainingPlans);
       setIsLoading(false);
     } else {
@@ -170,7 +184,10 @@ const TrainingPlans = () => {
                   ? x.isActive
                   : !x.isActive
               )
-              .slice(0, filterData.page)
+              .slice(
+                (pages.currentPage + 1) * filterData.page - filterData.page,
+                (pages.currentPage + 1) * filterData.page
+              )
               .map((trainingPlan) => {
                 return (
                   <Flex
@@ -217,6 +234,11 @@ const TrainingPlans = () => {
                   </Flex>
                 );
               })}
+            <Pagination
+              pageCount={pages.total}
+              currentPage={pages.currentPage}
+              onPageChange={handlePaginate}
+            />
           </>
         )}
       </Container>

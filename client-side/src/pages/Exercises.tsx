@@ -26,6 +26,7 @@ import toast from "react-hot-toast";
 import { Unauthorized } from "../Helpers/constants";
 import { GenericExerciseSkillInfo } from "../Types/types";
 import ExerciseForm from "../components/forms/ExerciseForm";
+import Pagination from "../components/Pagination";
 
 export interface Filter {
   isUsed: boolean | undefined;
@@ -41,6 +42,11 @@ const Exercises = () => {
     isUsed: undefined,
     page: 10,
   });
+  const [pages, setPages] = useState({
+    total: 0,
+    currentPage: 0,
+    pageNumbers: [],
+  });
   const [exerciseId, setExerciseId] = useState<string | undefined>();
 
   const onFormOpen = (exerciseId: string | undefined) => {
@@ -53,6 +59,10 @@ const Exercises = () => {
       ...filterData,
       isUsed: value === "all" ? undefined : value === "used" ? true : false,
     });
+  };
+
+  const handlePaginate = (page: number) => {
+    setPages({ ...pages, currentPage: page });
   };
 
   const handlePageSize = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -70,6 +80,10 @@ const Exercises = () => {
       eventBus.dispatch("logOut", Unauthorized);
     } else if (response.status === 200) {
       const exercises = await response.json();
+      setPages({
+        ...pages,
+        total: Math.ceil(exercises.length / filterData.page),
+      });
       setExercises(exercises);
       setIsLoading(false);
     } else {
@@ -171,7 +185,10 @@ const Exercises = () => {
                   ? x.isUsed
                   : !x.isUsed
               )
-              .slice(0, filterData.page)
+              .slice(
+                (pages.currentPage + 1) * filterData.page - filterData.page,
+                (pages.currentPage + 1) * filterData.page
+              )
               .map((exercise) => {
                 return (
                   <Flex
@@ -218,6 +235,11 @@ const Exercises = () => {
                   </Flex>
                 );
               })}
+            <Pagination
+              pageCount={pages.total}
+              currentPage={pages.currentPage}
+              onPageChange={handlePaginate}
+            />
           </>
         )}
       </Container>

@@ -22,6 +22,7 @@ import toast from "react-hot-toast";
 import { Unauthorized } from "../../Helpers/constants";
 import eventBus from "../../Helpers/eventBus";
 import { useNavigate } from "react-router-dom";
+import Pagination from "../../components/Pagination";
 
 const MainCoachesList = () => {
   const [coaches, setCoaches] = useState<Coach[]>([]);
@@ -29,7 +30,12 @@ const MainCoachesList = () => {
   const token = localStorage.getItem("accessToken");
   const [sortData, setSortData] = useState({
     sort: "mostPopular",
-    page: 10,
+    page: 5,
+  });
+  const [pages, setPages] = useState({
+    total: 0,
+    currentPage: 0,
+    pageNumbers: [],
   });
 
   const navigate = useNavigate();
@@ -41,6 +47,10 @@ const MainCoachesList = () => {
   const handlePage = (e: ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
     setSortData({ ...sortData, page: parseInt(value) });
+  };
+
+  const handlePaginate = (page: number) => {
+    setPages({ ...pages, currentPage: page });
   };
 
   const getCoachesList = useCallback(async () => {
@@ -58,6 +68,7 @@ const MainCoachesList = () => {
       eventBus.dispatch("logOut", Unauthorized);
     } else if (response.status === 200) {
       const coaches = await response.json();
+      setPages({ ...pages, total: Math.ceil(coaches.length / sortData.page) });
       setCoaches(coaches);
       setIsLoading(false);
     } else {
@@ -142,7 +153,10 @@ const MainCoachesList = () => {
                   ? b.clientsCount - a.clientsCount
                   : b.rating - a.rating
               )
-              .slice(0, sortData.page)
+              .slice(
+                (pages.currentPage + 1) * sortData.page - sortData.page,
+                (pages.currentPage + 1) * sortData.page
+              )
               .map((coach) => {
                 return (
                   <Box
@@ -200,6 +214,11 @@ const MainCoachesList = () => {
                 );
               })}
           </SimpleGrid>
+          <Pagination
+            pageCount={pages.total}
+            currentPage={pages.currentPage}
+            onPageChange={handlePaginate}
+          />
         </>
       )}
     </Container>

@@ -16,6 +16,7 @@ import { Unauthorized } from "../../../Helpers/constants";
 import eventBus from "../../../Helpers/eventBus";
 import translations from "../../../Helpers/translations.json";
 import { CoachProfile } from "../../../Types/types";
+import Pagination from "../../../components/Pagination";
 
 const CoachDetails = () => {
   const [coach, setCoach] = useState<CoachProfile>();
@@ -24,6 +25,17 @@ const CoachDetails = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const token = localStorage.getItem("accessToken");
+  const [pages, setPages] = useState({
+    total: 0,
+    currentPage: 0,
+    pageNumbers: [],
+  });
+
+  const itemsPerPage = 9;
+
+  const handlePaginate = (page: number) => {
+    setPages({ ...pages, currentPage: page });
+  };
 
   const getCoachDetails = useCallback(async () => {
     const response = await fetch(
@@ -52,6 +64,10 @@ const CoachDetails = () => {
       );
       const canReport = await hasPlanResponse.json();
       setCanUserReport(canReport);
+      setPages({
+        ...pages,
+        total: Math.ceil(coach.trainingPlans.length / itemsPerPage),
+      });
       setCoach(coach);
       setIsLoading(false);
     } else {
@@ -159,37 +175,47 @@ const CoachDetails = () => {
             <Box mt={5}>
               <Heading size="sm">Trenerio siūlomi treniruočių planai</Heading>
               <SimpleGrid mt={5} columns={3} spacing={10}>
-                {coach?.trainingPlans.map((trainingPlan) => {
-                  return (
-                    <Box backgroundColor="#E2E2E2" p={5}>
-                      <Flex flexDirection="column" gap={5}>
-                        <Box fontSize="larger" fontWeight="bold">
-                          {trainingPlan.title}
-                        </Box>
-                        <Box fontSize="larger" fontWeight="bold">
-                          {trainingPlan.price} Eur
-                        </Box>
-                        <Flex flexDirection="column" gap={3}>
-                          <Box>{trainingPlan.shortDescription}</Box>
+                {coach?.trainingPlans
+                  .slice(
+                    (pages.currentPage + 1) * itemsPerPage - itemsPerPage,
+                    (pages.currentPage + 1) * itemsPerPage
+                  )
+                  .map((trainingPlan) => {
+                    return (
+                      <Box backgroundColor="#E2E2E2" p={5}>
+                        <Flex flexDirection="column" gap={5}>
+                          <Box fontSize="larger" fontWeight="bold">
+                            {trainingPlan.title}
+                          </Box>
+                          <Box fontSize="larger" fontWeight="bold">
+                            {trainingPlan.price} Eur
+                          </Box>
+                          <Flex flexDirection="column" gap={3}>
+                            <Box>{trainingPlan.shortDescription}</Box>
+                          </Flex>
                         </Flex>
-                      </Flex>
-                      <Button
-                        w="100%"
-                        backgroundColor="#1E99D6"
-                        color="white"
-                        borderRadius="2xl"
-                        mt={10}
-                        textTransform="uppercase"
-                        onClick={() =>
-                          navigate(`/trainingPlan/${trainingPlan.id}`)
-                        }
-                      >
-                        Plačiau
-                      </Button>
-                    </Box>
-                  );
-                })}
+                        <Button
+                          w="100%"
+                          backgroundColor="#1E99D6"
+                          color="white"
+                          borderRadius="2xl"
+                          mt={10}
+                          textTransform="uppercase"
+                          onClick={() =>
+                            navigate(`/trainingPlan/${trainingPlan.id}`)
+                          }
+                        >
+                          Plačiau
+                        </Button>
+                      </Box>
+                    );
+                  })}
               </SimpleGrid>
+              <Pagination
+                pageCount={pages.total}
+                currentPage={pages.currentPage}
+                onPageChange={handlePaginate}
+              />
             </Box>
           </Box>
         </>

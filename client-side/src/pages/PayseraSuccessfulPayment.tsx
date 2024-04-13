@@ -9,7 +9,6 @@ const PayseraSuccessfulPayment = () => {
   const [searchParams] = useSearchParams();
 
   const completeOrder = useCallback(async () => {
-    console.log(searchParams.get("ordernumber"));
     const response = await fetch(
       `${import.meta.env.VITE_API_URL}order/${searchParams.get("ordernumber")}`,
       {

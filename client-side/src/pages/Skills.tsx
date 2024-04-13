@@ -28,6 +28,7 @@ import { GenericExerciseSkillInfo } from "../Types/types";
 import { Filter } from "./Exercises";
 import ExerciseForm from "../components/forms/ExerciseForm";
 import SkillForm from "../components/forms/SkillForm";
+import Pagination from "../components/Pagination";
 
 const Skills = () => {
   const exerciseModal = useDisclosure();
@@ -39,6 +40,12 @@ const Skills = () => {
   const [filterData, setFilterData] = useState<Filter>({
     isUsed: undefined,
     page: 10,
+  });
+
+  const [pages, setPages] = useState({
+    total: 0,
+    currentPage: 0,
+    pageNumbers: [],
   });
   const [skillId, setSkillId] = useState<string | undefined>();
 
@@ -71,6 +78,10 @@ const Skills = () => {
     setFilterData({ ...filterData, page: parseInt(value) });
   };
 
+  const handlePaginate = (page: number) => {
+    setPages({ ...pages, currentPage: page });
+  };
+
   const getSkillsList = useCallback(async () => {
     const response = await fetch(import.meta.env.VITE_API_URL + "skill", {
       headers: {
@@ -81,6 +92,10 @@ const Skills = () => {
       eventBus.dispatch("logOut", Unauthorized);
     } else if (response.status === 200) {
       const skills = await response.json();
+      setPages({
+        ...pages,
+        total: Math.ceil(skills.length / filterData.page),
+      });
       setSkills(skills);
       setIsLoading(false);
     } else {
@@ -182,7 +197,10 @@ const Skills = () => {
                   ? x.isUsed
                   : !x.isUsed
               )
-              .slice(0, filterData.page)
+              .slice(
+                (pages.currentPage + 1) * filterData.page - filterData.page,
+                (pages.currentPage + 1) * filterData.page
+              )
               .map((skill) => {
                 return (
                   <Flex
@@ -229,6 +247,11 @@ const Skills = () => {
                   </Flex>
                 );
               })}
+            <Pagination
+              pageCount={pages.total}
+              currentPage={pages.currentPage}
+              onPageChange={handlePaginate}
+            />
           </>
         )}
       </Container>
