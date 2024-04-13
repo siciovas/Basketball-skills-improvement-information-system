@@ -1,22 +1,15 @@
 ﻿using Basketball.Core.Dtos;
 using Basketball.Core.Interfaces.Services;
-using Basketball.Domain.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Basketball.Controllers
 {
     [ApiController]
     [Route("api/passwordRecovery")]
-    public class PasswordRecoveryController : ControllerBase
+    public class PasswordRecoveryController(IPasswordRecoveryService passwordRecoveryService, IUserService userService) : ControllerBase
     {
-        private readonly IPasswordRecoveryService _passwordRecoveryService;
-        private readonly IUserService _userService;
-
-        public PasswordRecoveryController(IPasswordRecoveryService passwordRecoveryService, IUserService userService)
-        {
-            _passwordRecoveryService = passwordRecoveryService;
-            _userService = userService;
-        }
+        private readonly IPasswordRecoveryService _passwordRecoveryService = passwordRecoveryService;
+        private readonly IUserService _userService = userService;
 
         [HttpPost]
         public async Task<IActionResult> Post(PasswordRecoveryDto passwordRecoveryDto)
@@ -33,12 +26,18 @@ namespace Basketball.Controllers
             return CreatedAtAction(nameof(Post), createdPasswordRecovery);
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> Delete(Guid id)
+        [HttpPost]
+        [Route("newPassword/{id}")]
+        public async Task<IActionResult> CreateNewPassword(NewPasswordRecoveryDto passwordRecoveryDto, Guid id)
         {
-            await _passwordRecoveryService.Delete(id);
+            if(passwordRecoveryDto.Password != passwordRecoveryDto.ConfirmPassword)
+            {
+                return BadRequest("Slaptažodžiai nesutampa");
+            }
 
-            return NoContent();
+            await _passwordRecoveryService.CreateNewPassword(passwordRecoveryDto.Password, id);
+
+            return Ok();
         }
     }
 }

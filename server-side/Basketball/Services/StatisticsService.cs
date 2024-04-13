@@ -1,9 +1,6 @@
 ﻿using Basketball.Core.Dtos;
 using Basketball.Core.Interfaces.Repositories;
 using Basketball.Core.Interfaces.Services;
-using Basketball.Domain.Data.Entities.Enums;
-using Basketball.Infrastructure.Repositories;
-using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Basketball.Services
 {

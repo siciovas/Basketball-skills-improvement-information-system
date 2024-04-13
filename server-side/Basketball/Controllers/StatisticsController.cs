@@ -1,8 +1,6 @@
 ﻿using Basketball.Core.Interfaces.Services;
-using Basketball.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace Basketball.Controllers
 {

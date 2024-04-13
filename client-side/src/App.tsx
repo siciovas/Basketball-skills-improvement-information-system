@@ -62,7 +62,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="login" element={<Login />} />
         <Route path="recover" element={<PasswordRecovery />} />
-        <Route path="newPassword" element={<NewPassword />} />
+        <Route path="newPassword/:id" element={<NewPassword />} />
         <Route path="register" element={<Register />} />
         <Route path="aboutUs" element={<AboutUs />} />
         <Route path="allCoaches" element={<MainCoachesList />} />

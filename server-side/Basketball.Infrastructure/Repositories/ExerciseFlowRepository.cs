@@ -1,11 +1,6 @@
 ﻿using Basketball.Core.Interfaces.Repositories;
 using Basketball.Domain.Data.Entities;
 using Basketball.Infrastructure.Database;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Basketball.Infrastructure.Repositories
 {

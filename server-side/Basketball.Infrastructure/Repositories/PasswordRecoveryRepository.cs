@@ -2,22 +2,12 @@
 using Basketball.Domain.Data.Entities;
 using Basketball.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Basketball.Infrastructure.Repositories
 {
-    public class PasswordRecoveryRepository : IPasswordRecoveryRepository
+    public class PasswordRecoveryRepository(DatabaseContext db) : IPasswordRecoveryRepository
     {
-        private readonly DatabaseContext _db;
-
-        public PasswordRecoveryRepository(DatabaseContext db)
-        {
-            _db = db;
-        }
+        private readonly DatabaseContext _db = db;
 
         public async Task<PasswordRecovery> Create(PasswordRecovery passwordRecovery)
         {
