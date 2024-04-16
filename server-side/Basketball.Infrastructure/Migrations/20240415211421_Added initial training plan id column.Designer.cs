@@ -3,6 +3,7 @@ using System;
 using Basketball.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Basketball.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20240415211421_Added initial training plan id column")]
+    partial class Addedinitialtrainingplanidcolumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,7 +47,7 @@ namespace Basketball.Infrastructure.Migrations
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("Complaints", (string)null);
+                    b.ToTable("Complaints");
                 });
 
             modelBuilder.Entity("Basketball.Domain.Data.Entities.Exercise", b =>
@@ -75,7 +78,7 @@ namespace Basketball.Infrastructure.Migrations
 
                     b.HasIndex("CoachId");
 
-                    b.ToTable("Exercises", (string)null);
+                    b.ToTable("Exercises");
                 });
 
             modelBuilder.Entity("Basketball.Domain.Data.Entities.ExerciseProgress", b =>
@@ -105,7 +108,7 @@ namespace Basketball.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ExerciseProgresses", (string)null);
+                    b.ToTable("ExerciseProgresses");
                 });
 
             modelBuilder.Entity("Basketball.Domain.Data.Entities.ExerciseSkill", b =>
@@ -120,7 +123,7 @@ namespace Basketball.Infrastructure.Migrations
 
                     b.HasIndex("SkillId");
 
-                    b.ToTable("ExerciseSkill", (string)null);
+                    b.ToTable("ExerciseSkill");
                 });
 
             modelBuilder.Entity("Basketball.Domain.Data.Entities.Feedback", b =>
@@ -148,7 +151,7 @@ namespace Basketball.Infrastructure.Migrations
 
                     b.HasIndex("TrainingPlanId");
 
-                    b.ToTable("Feedbacks", (string)null);
+                    b.ToTable("Feedbacks");
                 });
 
             modelBuilder.Entity("Basketball.Domain.Data.Entities.Order", b =>
@@ -181,7 +184,7 @@ namespace Basketball.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("Basketball.Domain.Data.Entities.PasswordRecovery", b =>
@@ -195,7 +198,7 @@ namespace Basketball.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PasswordRecovery", (string)null);
+                    b.ToTable("PasswordRecovery");
                 });
 
             modelBuilder.Entity("Basketball.Domain.Data.Entities.Skill", b =>
@@ -219,7 +222,7 @@ namespace Basketball.Infrastructure.Migrations
 
                     b.HasIndex("CoachId");
 
-                    b.ToTable("Skills", (string)null);
+                    b.ToTable("Skills");
                 });
 
             modelBuilder.Entity("Basketball.Domain.Data.Entities.TrainingPlan", b =>
@@ -262,7 +265,7 @@ namespace Basketball.Infrastructure.Migrations
 
                     b.HasIndex("InitialTrainingPlanId");
 
-                    b.ToTable("TrainingPlans", (string)null);
+                    b.ToTable("TrainingPlans");
                 });
 
             modelBuilder.Entity("Basketball.Domain.Data.Entities.TrainingPlanSkill", b =>
@@ -277,7 +280,7 @@ namespace Basketball.Infrastructure.Migrations
 
                     b.HasIndex("TrainingPlanId");
 
-                    b.ToTable("TrainingPlanSkill", (string)null);
+                    b.ToTable("TrainingPlanSkill");
                 });
 
             modelBuilder.Entity("Basketball.Domain.Data.Entities.User", b =>
@@ -353,7 +356,7 @@ namespace Basketball.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Basketball.Domain.Data.Entities.Complaint", b =>

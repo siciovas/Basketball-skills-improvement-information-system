@@ -1,5 +1,4 @@
-﻿using Basketball.Core.Dtos;
-using Basketball.Core.Email;
+﻿using Basketball.Core.Email;
 using Basketball.Core.Interfaces.Repositories;
 using Basketball.Core.Interfaces.Services;
 using Basketball.Domain.Data.Entities;
