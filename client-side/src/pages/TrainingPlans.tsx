@@ -26,6 +26,7 @@ import toast from "react-hot-toast";
 import { Unauthorized } from "../Helpers/constants";
 import { TrainingPlanView } from "../Types/types";
 import Pagination from "../components/Pagination";
+import TrainingPlanForm from "../components/forms/TrainingPlanForm";
 
 interface Filter {
   isPublic: boolean | undefined;
@@ -94,6 +95,9 @@ const TrainingPlans = () => {
   }, []);
 
   useEffect(() => {
+    eventBus.on("triggerTrainingPlanCreated", () => {
+      getTrainingPlansList();
+    });
     getTrainingPlansList();
   }, [getTrainingPlansList]);
 
@@ -249,7 +253,12 @@ const TrainingPlans = () => {
         <ModalOverlay />
         <ModalContent>
           <ModalCloseButton />
-          <ModalBody>{trainingPlanId}</ModalBody>
+          <ModalBody>
+            <TrainingPlanForm
+              onClose={trainingPlanModal.onClose}
+              trainingPlanId={trainingPlanId}
+            />
+          </ModalBody>
         </ModalContent>
       </Modal>
     </>

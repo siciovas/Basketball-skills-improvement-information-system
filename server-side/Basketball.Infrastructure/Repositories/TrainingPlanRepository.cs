@@ -32,6 +32,8 @@ namespace Basketball.Infrastructure.Repositories
         {
             return await _db.TrainingPlans
                             .Include(t => t.Coach)
+                            .GroupBy(t => t.InitialTrainingPlanId)
+                            .Select(g => g.OrderByDescending(t => t.Version).FirstOrDefault()!)
                             .ToListAsync();
         }
 
@@ -39,7 +41,9 @@ namespace Basketball.Infrastructure.Repositories
         {
             return await _db.TrainingPlans
                             .Include(t => t.Coach)
-                            .Where(t => t.CoachId == coachId)
+                            .Where(t => t.CoachId == coachId && t.IsActive)
+                            .GroupBy(t => t.InitialTrainingPlanId)
+                            .Select(g => g.OrderByDescending(t => t.Version).FirstOrDefault()!)
                             .ToListAsync();
         }
 
@@ -48,7 +52,6 @@ namespace Basketball.Infrastructure.Repositories
             return await _db.TrainingPlans
                             .Include(t => t.Coach)
                             .Include(s => s.Skills)
-                            .ThenInclude(e => e.Exercises)
                             .FirstOrDefaultAsync(t => t.Id == id);
         }
 
@@ -56,18 +59,14 @@ namespace Basketball.Infrastructure.Repositories
         {
             return await _db.TrainingPlans
                             .Where(t => ids.Contains(t.CoachId))
-                            .Select(t => t.CoachId)
-                            .GroupBy(t => t)
+                            .Where(x => x.Version == 1 && x.IsActive)
+                            .GroupBy(x => x.CoachId)
                             .Select(t => new { t.Key, Count = t.Count() })
                             .ToDictionaryAsync(kvp => kvp.Key, kvp => kvp.Count);
         }
 
         public async Task<TrainingPlan> Update(TrainingPlan trainingPlan)
         {
-            _db.TrainingPlanSkill
-               .Where(t => t.TrainingPlanId == trainingPlan.Id)
-               .ExecuteDelete();
-
             var updatedPlan = _db.Update(trainingPlan);
 
             _db.Entry(updatedPlan.Entity)
@@ -82,6 +81,7 @@ namespace Basketball.Infrastructure.Repositories
         public async Task<int> GetAllCount()
         {
             return await _db.TrainingPlans
+                            .Where(x => x.Version == 1 && x.IsActive)
                             .CountAsync();
         }
     }

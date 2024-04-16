@@ -30,7 +30,7 @@ const MainCoachesList = () => {
   const token = localStorage.getItem("accessToken");
   const [sortData, setSortData] = useState({
     sort: "mostPopular",
-    page: 5,
+    page: 10,
   });
   const [pages, setPages] = useState({
     total: 0,

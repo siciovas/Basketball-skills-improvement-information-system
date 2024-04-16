@@ -1,4 +1,5 @@
 ﻿using Basketball.Core.Dtos.Post;
+using Basketball.Core.Dtos.Update;
 using Basketball.Core.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -62,7 +63,7 @@ namespace Basketball.Controllers
 
         [HttpPut("{id}")]
         [Authorize(Roles = "Coach")]
-        public async Task<IActionResult> Update(TrainingPlanPostDto trainingPlan, Guid id)
+        public async Task<IActionResult> Update(TrainingPlanUpdateDto trainingPlan, Guid id)
         {
             var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
 

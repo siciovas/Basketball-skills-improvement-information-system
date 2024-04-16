@@ -178,3 +178,8 @@ export interface TrainingPlanView {
   price: number;
   isActive: boolean;
 }
+
+export interface GenericSkillInfo {
+  id: string;
+  name: string;
+}
