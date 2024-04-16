@@ -249,13 +249,16 @@ const TrainingPlanForm = ({ onClose, trainingPlanId }: Props) => {
             {formState.skills.map((skill) => {
               return <Box>{skills.find((x) => x.id === skill)?.name}</Box>;
             })}
-            <Checkbox
-              mt={5}
-              isChecked={isNewVersion}
-              onChange={() => setIsNewVersion(!isNewVersion)}
-            >
-              Ar tai nauja versija?
-            </Checkbox>
+            {trainingPlanId && (
+              <Checkbox
+                mt={5}
+                isChecked={isNewVersion}
+                onChange={() => setIsNewVersion(!isNewVersion)}
+              >
+                Ar tai nauja versija?
+              </Checkbox>
+            )}
+
             <Button
               backgroundColor="#1E99D6"
               color="white"
