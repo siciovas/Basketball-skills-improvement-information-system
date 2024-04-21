@@ -152,13 +152,13 @@ const ExerciseForm = ({ onClose, exerciseId }: Props) => {
               onChange={onChange}
               value={formState.name}
             />
-            <FormLabel>Aprašymas</FormLabel>
+            <FormLabel mt={5}>Aprašymas</FormLabel>
             <Textarea
               name="description"
               onChange={onChange}
               value={formState.description}
             ></Textarea>
-            <FormLabel>Sudėtingumas</FormLabel>
+            <FormLabel mt={5}>Sudėtingumas</FormLabel>
             <Select
               mb={5}
               name="difficulty"

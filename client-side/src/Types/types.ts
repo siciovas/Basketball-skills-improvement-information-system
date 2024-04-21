@@ -23,6 +23,7 @@ export interface CoachProfile extends Coach {
 
 export interface TrainingPlanSummary {
   id: string;
+  avatar: Blob;
   title: string;
   price: number;
   shortDescription: string;

@@ -191,13 +191,13 @@ const SkillForm = ({ addNewExercise, onClose, skillId }: Props) => {
               onChange={onFormChange}
               value={formState.title}
             />
-            <FormLabel>Aprašymas</FormLabel>
+            <FormLabel mt={5}>Aprašymas</FormLabel>
             <Textarea
               name="description"
               onChange={onFormChange}
               value={formState.description}
             ></Textarea>
-            <FormLabel>Įtraukti pratimą</FormLabel>
+            <FormLabel mt={5}>Įtraukti pratimą</FormLabel>
             <Flex gap={5}>
               <Menu closeOnSelect={false}>
                 <MenuButton width="60%" as={Button}>

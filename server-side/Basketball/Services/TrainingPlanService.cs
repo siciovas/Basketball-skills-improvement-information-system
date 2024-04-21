@@ -26,9 +26,11 @@ namespace Basketball.Services
 
             var newTrainingPlan = new TrainingPlan
             {
+                Avatar = trainingPlan.Avatar,
                 Title = trainingPlan.Title,
                 Description = trainingPlan.Description,
                 ShortDescription = trainingPlan.ShortDescription,
+                ExpirationDate = trainingPlan.ExpirationDate,
                 Price = trainingPlan.Price,
                 IsActive = trainingPlan.IsActive,
                 Version = 1,
@@ -37,7 +39,7 @@ namespace Basketball.Services
             };
 
             var createdTrainingPlan = await _trainingPlanRepository.Create(newTrainingPlan);
-            for(int i = 0; i < skills.Count; i++)
+            for (int i = 0; i < skills.Count; i++)
             {
                 skillsOrders.Add(new SkillsOrder
                 {
@@ -54,9 +56,11 @@ namespace Basketball.Services
             return new TrainingPlanDto
             {
                 Id = createdTrainingPlan.Id,
+                Avatar = createdTrainingPlan.Avatar,
                 Title = createdTrainingPlan.Title,
                 Description = createdTrainingPlan.Description,
                 ShortDescription = createdTrainingPlan.ShortDescription,
+                ExpirationDate = createdTrainingPlan.ExpirationDate,
                 Price = createdTrainingPlan.Price,
                 IsActive = createdTrainingPlan.IsActive,
                 Version = createdTrainingPlan.Version,
@@ -78,9 +82,11 @@ namespace Basketball.Services
             return allPlans.Select(x => new TrainingPlanDto
             {
                 Id = x.Id,
+                Avatar = x.Avatar,
                 Title = x.Title,
                 Description = x.Description,
                 ShortDescription = x.ShortDescription,
+                ExpirationDate = x.ExpirationDate,
                 Price = x.Price,
                 IsActive = x.IsActive,
                 Version = x.Version,
@@ -95,9 +101,11 @@ namespace Basketball.Services
             return allPlans.Select(x => new TrainingPlanDto
             {
                 Id = x.Id,
+                Avatar = x.Avatar,
                 Title = x.Title,
                 Description = x.Description,
                 ShortDescription = x.ShortDescription,
+                ExpirationDate = x.ExpirationDate,
                 Price = x.Price,
                 IsActive = x.IsActive,
                 Version = x.Version,
@@ -121,9 +129,11 @@ namespace Basketball.Services
             return new TrainingPlanDto
             {
                 Id = trainingPlan!.Id,
+                Avatar = trainingPlan.Avatar,
                 Title = trainingPlan.Title,
                 Description = trainingPlan.Description,
                 ShortDescription = trainingPlan.ShortDescription,
+                ExpirationDate = trainingPlan.ExpirationDate,
                 Price = trainingPlan.Price,
                 IsActive = trainingPlan.IsActive,
                 Version = trainingPlan.Version,
@@ -155,9 +165,11 @@ namespace Basketball.Services
             {
                 trainingPlan = new TrainingPlan
                 {
+                    Avatar = trainingPlanDto.Avatar,
                     Title = trainingPlanDto.Title,
                     Description = trainingPlanDto.Description,
                     ShortDescription = trainingPlanDto.ShortDescription,
+                    ExpirationDate = trainingPlanDto.ExpirationDate,
                     Price = trainingPlanDto.Price,
                     IsActive = trainingPlanDto.IsActive,
                     Version = trainingPlan!.Version + 1,
@@ -168,9 +180,11 @@ namespace Basketball.Services
             }
             else
             {
+                trainingPlan!.Avatar = trainingPlanDto.Avatar;
                 trainingPlan!.Title = trainingPlanDto.Title;
                 trainingPlan.Description = trainingPlanDto.Description;
                 trainingPlan.ShortDescription = trainingPlanDto.ShortDescription;
+                trainingPlan.ExpirationDate = trainingPlanDto.ExpirationDate;
                 trainingPlan.Price = trainingPlanDto.Price;
                 trainingPlan.IsActive = trainingPlanDto.IsActive;
                 trainingPlan.Skills = skills;
@@ -193,7 +207,8 @@ namespace Basketball.Services
             if (trainingPlanDto.IsNewVersion)
             {
                 await _trainingPlanRepository.AddSkillsOrders(skillsOrders);
-            } else
+            }
+            else
             {
                 await _trainingPlanRepository.UpdateSkillsOrders(skillsOrders);
             }
@@ -201,9 +216,11 @@ namespace Basketball.Services
             return new TrainingPlanDto
             {
                 Id = updatedTrainingPlan.Id,
+                Avatar = updatedTrainingPlan.Avatar,
                 Title = updatedTrainingPlan.Title,
                 Description = updatedTrainingPlan.Description,
                 ShortDescription = updatedTrainingPlan.ShortDescription,
+                ExpirationDate = updatedTrainingPlan.ExpirationDate,
                 Price = updatedTrainingPlan.Price,
                 IsActive = updatedTrainingPlan.IsActive,
                 Version = updatedTrainingPlan.Version,

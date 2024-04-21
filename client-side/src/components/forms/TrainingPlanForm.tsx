@@ -15,6 +15,7 @@ import {
   Box,
   Switch,
   Checkbox,
+  Image,
 } from "@chakra-ui/react";
 import {
   ChangeEvent,
@@ -38,9 +39,11 @@ interface Props {
 const TrainingPlanForm = ({ onClose, trainingPlanId }: Props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [formState, setFormState] = useState({
+    avatar: "",
     title: "",
     description: "",
     shortDescription: "",
+    expirationDate: 0,
     price: 0,
     isActive: false,
     skills: [] as string[],
@@ -128,9 +131,11 @@ const TrainingPlanForm = ({ onClose, trainingPlanId }: Props) => {
     } else if (response.status === 200) {
       const trainingPlan = await response.json();
       setFormState({
+        avatar: trainingPlan.avatar,
         title: trainingPlan.title,
         description: trainingPlan.description,
         shortDescription: trainingPlan.shortDescription,
+        expirationDate: trainingPlan.expirationDate,
         price: trainingPlan.price,
         isActive: trainingPlan.isActive,
         skills: trainingPlan.skills.map((skill: GenericSkillInfo) => {
@@ -180,13 +185,38 @@ const TrainingPlanForm = ({ onClose, trainingPlanId }: Props) => {
     }
   };
 
+  const onAvatarChange = async (
+    e: ChangeEvent<HTMLInputElement>
+  ): Promise<void> => {
+    if (e.target.files) {
+      const file = e.target.files[0];
+      const test = new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = (event) => {
+          if (event.target) {
+            resolve(event.target.result);
+          }
+        };
+
+        reader.onerror = (err) => {
+          reject(err);
+        };
+
+        reader.readAsDataURL(file);
+      });
+      const temp = (await test) as string;
+      setFormState({ ...formState, [e.target.name]: temp.split(",")[1] });
+    }
+  };
+
   useEffect(() => {
     if (trainingPlanId !== undefined) {
       getTrainingPlan();
     } else {
       getSkillsList();
     }
-  }, [getSkillsList]);
+  }, []);
 
   return (
     <>
@@ -202,6 +232,27 @@ const TrainingPlanForm = ({ onClose, trainingPlanId }: Props) => {
                 ? "Treniruočių plano redagavimas"
                 : "Naujas treniruočių planas"}
             </Heading>
+            <FormLabel mt={5}>Nuotrauka</FormLabel>
+            {formState.avatar && (
+              <Box h={40} w={60}>
+                <Image
+                  w="100%"
+                  h="100%"
+                  src={"data:image/jpeg;base64," + formState?.avatar}
+                />
+              </Box>
+            )}
+            <Flex>
+              <input
+                onChange={(e) => {
+                  onAvatarChange(e);
+                }}
+                className="form-control"
+                type="file"
+                id="formFile"
+                name="avatar"
+              />
+            </Flex>
             <FormLabel mt={5}>Pavadinimas</FormLabel>
             <Input
               type="text"
@@ -209,21 +260,30 @@ const TrainingPlanForm = ({ onClose, trainingPlanId }: Props) => {
               onChange={onFormChange}
               value={formState.title}
             />
-            <FormLabel>Aprašymas</FormLabel>
+            <FormLabel mt={5}>Aprašymas</FormLabel>
             <Textarea
               name="description"
               onChange={onFormChange}
               value={formState.description}
             ></Textarea>
-            <FormLabel>Trumpasis aprašymas</FormLabel>
+            <FormLabel mt={5}>Trumpasis aprašymas</FormLabel>
             <Textarea
               name="shortDescription"
               onChange={onFormChange}
               value={formState.shortDescription}
             ></Textarea>
+            <FormLabel mt={5}>Plano įvykdymo terminas (dienomis)</FormLabel>
+            <Flex flexDir="column" w="53%">
+              <Input
+                type="number"
+                name="expirationDate"
+                onChange={onFormChange}
+                value={formState.expirationDate}
+              ></Input>
+            </Flex>
             <Flex justifyContent="space-between" alignItems="center" mt={2}>
               <Box>
-                <FormLabel m={0}>Kaina</FormLabel>
+                <FormLabel mt={5}>Kaina</FormLabel>
                 <Input
                   type="number"
                   name="price"
@@ -232,7 +292,7 @@ const TrainingPlanForm = ({ onClose, trainingPlanId }: Props) => {
                 ></Input>
               </Box>
               <Box>
-                <FormLabel m={0}>Aktyvus</FormLabel>
+                <FormLabel mt={5}>Aktyvus</FormLabel>
                 <Switch
                   size="lg"
                   colorScheme="blue"
@@ -241,7 +301,7 @@ const TrainingPlanForm = ({ onClose, trainingPlanId }: Props) => {
                 />
               </Box>
             </Flex>
-            <FormLabel>Įtraukti įgūdį</FormLabel>
+            <FormLabel mt={5}>Įtraukti įgūdį</FormLabel>
             <Flex gap={5}>
               <Menu closeOnSelect={false}>
                 <MenuButton width="60%" as={Button}>
