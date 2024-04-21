@@ -3,6 +3,7 @@ using System;
 using Basketball.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Basketball.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20240421122202_commissionFee table")]
+    partial class commissionFeetable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -140,22 +143,6 @@ namespace Basketball.Infrastructure.Migrations
                     b.ToTable("ExerciseSkill");
                 });
 
-            modelBuilder.Entity("Basketball.Domain.Data.Entities.ExercisesOrder", b =>
-                {
-                    b.Property<Guid>("SkillId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("ExerciseId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
-
-                    b.HasKey("SkillId", "ExerciseId");
-
-                    b.ToTable("ExercisesOrders");
-                });
-
             modelBuilder.Entity("Basketball.Domain.Data.Entities.Feedback", b =>
                 {
                     b.Property<Guid>("Id")
@@ -193,8 +180,8 @@ namespace Basketball.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<decimal?>("CommissionFee")
-                        .HasColumnType("decimal(65,30)");
+                    b.Property<int?>("CommissionFee")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsPaid")
                         .HasColumnType("tinyint(1)");
@@ -258,22 +245,6 @@ namespace Basketball.Infrastructure.Migrations
                     b.ToTable("Skills");
                 });
 
-            modelBuilder.Entity("Basketball.Domain.Data.Entities.SkillsOrder", b =>
-                {
-                    b.Property<Guid>("TrainingPlanId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("SkillId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
-
-                    b.HasKey("TrainingPlanId", "SkillId");
-
-                    b.ToTable("SkillsOrders");
-                });
-
             modelBuilder.Entity("Basketball.Domain.Data.Entities.TrainingPlan", b =>
                 {
                     b.Property<Guid>("Id")
@@ -293,8 +264,8 @@ namespace Basketball.Infrastructure.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(65,30)");
+                    b.Property<double>("Price")
+                        .HasColumnType("double");
 
                     b.Property<string>("ShortDescription")
                         .IsRequired()

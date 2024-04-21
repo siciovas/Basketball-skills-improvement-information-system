@@ -56,7 +56,7 @@ namespace Basketball.Services
                 Id = createdTrainingPlan.Id,
                 Title = createdTrainingPlan.Title,
                 Description = createdTrainingPlan.Description,
-                ShortDescription= createdTrainingPlan.ShortDescription,
+                ShortDescription = createdTrainingPlan.ShortDescription,
                 Price = createdTrainingPlan.Price,
                 IsActive = createdTrainingPlan.IsActive,
                 Version = createdTrainingPlan.Version,
@@ -113,8 +113,9 @@ namespace Basketball.Services
 
             var skills = skillsOrders.OrderBy(x => x.Order).Select(x => new TrainingPlanSkillDto
             {
-                Id = x.SkillId,
-                Name = trainingPlan!.Skills.Where(t => t.Id == x.SkillId).First().Title
+                Id = x.Id,
+                Name = trainingPlan!.Skills.Where(t => t.Id == x.SkillId).First().Title,
+                Exercises = x.Exercises.Select(e => e.Name).ToList(),
             }).ToList();
 
             return new TrainingPlanDto
@@ -164,7 +165,8 @@ namespace Basketball.Services
                     InitialTrainingPlanId = trainingPlan.InitialTrainingPlanId,
                     Skills = skills
                 };
-            } else
+            }
+            else
             {
                 trainingPlan!.Title = trainingPlanDto.Title;
                 trainingPlan.Description = trainingPlanDto.Description;

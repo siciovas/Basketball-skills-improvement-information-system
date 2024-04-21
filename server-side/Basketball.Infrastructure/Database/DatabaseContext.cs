@@ -16,6 +16,7 @@ namespace Basketball.Infrastructure.Database
         public DbSet<Order> Orders { get; set; }
         public DbSet<ExerciseProgress> ExerciseProgresses { get; set; }
         public DbSet<PasswordRecovery> PasswordRecovery { get; set; }
+        public DbSet<CommissionFee> CommissionFees { get; set; }
         public DbSet<SkillsOrder> SkillsOrders { get; set; }
         public DbSet<ExercisesOrder> ExercisesOrders { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
