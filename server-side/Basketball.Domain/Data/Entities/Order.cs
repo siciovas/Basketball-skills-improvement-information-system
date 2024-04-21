@@ -10,6 +10,6 @@
         public Guid UserId { get; set; }
         public TrainingPlan TrainingPlan { get; set; } = null!;
         public Guid TrainingPlanId { get; set; }
-        public int? CommissionFee { get; set; }
+        public decimal? CommissionFee { get; set; }
     }
 }

@@ -52,7 +52,7 @@ namespace Basketball.Services
                 .Where(x => x.OrderDate.Year == DateTime.Now.Year),
                 month => month,
                 coach => coach.OrderDate.Month,
-                (month, coachGroup) => new { Month = month, Count = coachGroup.Sum(x => x.Price * (x.CommissionFee / 100m)) })
+                (month, coachGroup) => new { Month = month, Count = coachGroup.Sum(x => x.CommissionFee) })
                 .OrderBy(x => x.Month)
                 .ToDictionary(x => x.Month, x => x.Count);
 
@@ -92,7 +92,7 @@ namespace Basketball.Services
                 .Where(x => x.OrderDate.Year == DateTime.Now.Year),
                 month => month,
                 coach => coach.OrderDate.Month,
-                (month, coachGroup) => new { Month = month, Count = coachGroup.Sum(x => x.Price * (x.CommissionFee / 100m)) })
+                (month, coachGroup) => new { Month = month, Count = coachGroup.Sum(x => x.CommissionFee) })
                 .OrderBy(x => x.Month)
                 .ToDictionary(x => x.Month, x => x.Count);
 
@@ -109,7 +109,7 @@ namespace Basketball.Services
         private static Dictionary<int, int> GetCumulativeCounts(Dictionary<int, int> groupedItems)
         {
             int cumulativeCount = 0;
-            Dictionary<int, int> cumulativeCounts = new Dictionary<int, int>();
+            Dictionary<int, int> cumulativeCounts = [];
             foreach (var item in groupedItems)
             {
                 cumulativeCount += item.Value;

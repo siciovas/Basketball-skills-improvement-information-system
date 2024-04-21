@@ -190,3 +190,8 @@ export interface GenericSkillInfo {
   id: string;
   name: string;
 }
+
+export interface CommissionFeeDto {
+  value: number;
+  isActive: boolean;
+}
