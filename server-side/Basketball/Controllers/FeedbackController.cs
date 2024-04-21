@@ -22,6 +22,15 @@ namespace Basketball.Controllers
             return Ok(feedbacks);
         }
 
+        [HttpGet("fourBest/{id}")]
+        [Authorize]
+        public async Task<IActionResult> GetFourBest(Guid id)
+        {
+            var feedbacks = await _feedbackService.GetFourBest(id);
+
+            return Ok(feedbacks);
+        }
+
         [HttpGet("trainingPlan/{id}")]
         [Authorize]
         public async Task<IActionResult> GetAllFeedbacksByTrainingPlanId(Guid id)

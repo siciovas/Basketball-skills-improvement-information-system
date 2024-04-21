@@ -49,6 +49,16 @@ namespace Basketball.Infrastructure.Repositories
                             .FirstOrDefaultAsync(f => f.Id == id);
         }
 
+        public async Task<List<Feedback>> GetAllForCoach(Guid id)
+        {
+            return await _db.Feedbacks
+                            .Include(t => t.TrainingPlan)
+                            .ThenInclude(u => u.Coach)
+                            .Include(u => u.Student)
+                            .Where(u => u.TrainingPlan.Coach.Id == id)
+                            .ToListAsync();
+        }
+
         public async Task<Feedback> Update(Feedback feedback)
         {
             var updatedFeedback = _db.Update(feedback);
