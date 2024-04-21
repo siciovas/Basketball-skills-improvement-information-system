@@ -274,6 +274,15 @@ const CoachDetails = () => {
                           <Box fontSize="larger" fontWeight="bold">
                             {trainingPlan.title}
                           </Box>
+                          <Box h={40} w={60}>
+                            <Image
+                              w="100%"
+                              h="100%"
+                              src={
+                                "data:image/jpeg;base64," + trainingPlan.avatar
+                              }
+                            />
+                          </Box>
                           <Box fontSize="larger" fontWeight="bold">
                             {trainingPlan.price} Eur
                           </Box>

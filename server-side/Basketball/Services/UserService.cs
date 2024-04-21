@@ -181,6 +181,7 @@ namespace Basketball.Services
                 TrainingPlans = trainingPlans.Select(x => new TrainingPlanSummaryDto
                 {
                     Id = x.Id,
+                    Avatar = x.Avatar,
                     Title = x.Title,
                     Price = x.Price,
                     ShortDescription = x.ShortDescription
