@@ -8,14 +8,14 @@ import {
   Heading,
   Spinner,
 } from "@chakra-ui/react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, MouseEvent } from "react";
 import eventBus from "../../Helpers/eventBus";
 import { Unauthorized } from "../../Helpers/constants";
 import toast from "react-hot-toast";
-import { Counts } from "../../Types/types";
-import CommissionFee from "../CommissionFee";
+import { CommissionFeeDto, Counts } from "../../Types/types";
 import BarChart from "../Chart/BarChart";
 import { ExtractDataToArray } from "../Chart/ExtractDataToArray";
+import CommissionFee from "../CommissionFee";
 
 const AdminHomePage = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -23,6 +23,7 @@ const AdminHomePage = () => {
   const [counts, setCounts] = useState<Counts>();
 
   const getCounts = useCallback(async () => {
+    setIsLoading(true);
     const response = await fetch(
       import.meta.env.VITE_API_URL + "statistics/counts",
       {
@@ -43,6 +44,33 @@ const AdminHomePage = () => {
       toast.error("Netikėta klaida!");
     }
   }, []);
+
+  const updateCommissionFee = async (
+    e: MouseEvent<HTMLButtonElement>,
+    commissionFee: CommissionFeeDto
+  ) => {
+    e.preventDefault();
+    const response = await fetch(
+      import.meta.env.VITE_API_URL + "commissionFee",
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        method: "PUT",
+        body: JSON.stringify({
+          isActive: commissionFee.isActive,
+          value: commissionFee.value,
+        }),
+      }
+    );
+    if (response.status === 200) {
+      toast.success("Komisinis mokestis atnaujintas!");
+      await getCounts();
+    } else {
+      toast.error("Netikėta klaida!");
+    }
+  };
 
   useEffect(() => {
     getCounts();
@@ -144,7 +172,7 @@ const AdminHomePage = () => {
               </Flex>
             </GridItem>
             <GridItem colSpan={2}>
-              <CommissionFee />
+              <CommissionFee updateCommissionFee={updateCommissionFee} />
             </GridItem>
             <GridItem colSpan={2}>
               <BarChart

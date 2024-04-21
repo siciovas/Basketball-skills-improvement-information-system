@@ -38,8 +38,8 @@ const PayseraSuccessfulPayment = () => {
         </Center>
       ) : (
         <>
-          <Flex justify={"center"} align={"center"} mt={10}>
-            <Heading size={"md"}>Užsakymas patvirtintas!</Heading>
+          <Flex justify="center" align="center" mt={10}>
+            <Heading size="md">Užsakymas patvirtintas!</Heading>
           </Flex>
           <Box className="wrapper">
             <svg
@@ -61,7 +61,7 @@ const PayseraSuccessfulPayment = () => {
               />
             </svg>
           </Box>
-          <Flex justifyContent={"center"}>
+          <Flex justifyContent="center" mb={14}>
             <Heading mt={15} size="md">
               {`Užsakymas ${searchParams.get("ordernumber")}`}
             </Heading>

@@ -28,7 +28,8 @@ namespace Basketball.Infrastructure.Migrations
                 table: "TrainingPlans",
                 column: "InitialTrainingPlanId",
                 principalTable: "TrainingPlans",
-                principalColumn: "Id");
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
         }
 
         /// <inheritdoc />

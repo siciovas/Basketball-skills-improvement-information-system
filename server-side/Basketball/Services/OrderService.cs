@@ -7,23 +7,26 @@ using Basketball.Domain.Data.Entities;
 
 namespace Basketball.Services
 {
-    public class OrderService(IOrderRepository orderRepository, ITrainingPlanRepository trainingPlanRepository) : IOrderService
+    public class OrderService(IOrderRepository orderRepository, ITrainingPlanRepository trainingPlanRepository,
+                              ICommissionFeeRepository commissionFeeRepository) : IOrderService
     {
         private readonly IOrderRepository _orderRepository = orderRepository;
         private readonly ITrainingPlanRepository _trainingPlanRepository = trainingPlanRepository;
+        private readonly ICommissionFeeRepository _commissionFeeRepository = commissionFeeRepository;
 
         public async Task<Guid> Create(OrderPostDto orderDto, Guid userId)
         {
             var trainingPlan = await _trainingPlanRepository.GetById(orderDto.TrainingPlanId);
+            var commissionFee = await _commissionFeeRepository.Get();
 
             var newOrder = new Order
             {
                 Id = Guid.NewGuid(),
                 OrderDate = DateTime.Now,
-                Price = (decimal)trainingPlan!.Price,
+                Price = trainingPlan!.Price,
                 TrainingPlanId = orderDto.TrainingPlanId,
                 UserId = userId,
-                CommissionFee = null,
+                CommissionFee = commissionFee.IsActive ? commissionFee.Value * 0.01m * trainingPlan.Price : null,
             };
 
             var createdOrder = await _orderRepository.Create(newOrder);

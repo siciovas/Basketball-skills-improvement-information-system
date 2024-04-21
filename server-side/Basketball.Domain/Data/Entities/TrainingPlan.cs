@@ -9,7 +9,7 @@ namespace Basketball.Domain.Data.Entities
         public required string Description { get; set; }
         [MaxLength(40)]
         public required string ShortDescription { get; set; }
-        public double Price { get; set; }
+        public decimal Price { get; set; }
         public bool IsActive { get; set; }
         public int Version { get; set; }
         public Guid CoachId { get; set; }
