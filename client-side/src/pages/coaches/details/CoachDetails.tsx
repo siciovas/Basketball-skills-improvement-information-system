@@ -28,17 +28,29 @@ import eventBus from "../../../Helpers/eventBus";
 import translations from "../../../Helpers/translations.json";
 import { CoachProfile, Feedback } from "../../../Types/types";
 import FeedbackForm from "../../../components/forms/FeedbackForm";
-
+import Pagination from "../../../components/Pagination";
 const stars = ["", "", "", "", ""];
 
 const CoachDetails = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [coach, setCoach] = useState<CoachProfile>();
   const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
+  const [canUserReport, setCanUserReport] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const { id } = useParams();
   const token = localStorage.getItem("accessToken");
+  const [pages, setPages] = useState({
+    total: 0,
+    currentPage: 0,
+    pageNumbers: [],
+  });
+
+  const itemsPerPage = 9;
+
+  const handlePaginate = (page: number) => {
+    setPages({ ...pages, currentPage: page });
+  };
 
   const getCoachDetails = useCallback(async () => {
     const response = await fetch(
@@ -55,6 +67,22 @@ const CoachDetails = () => {
       eventBus.dispatch("logOut", Unauthorized);
     } else if (response.status === 200) {
       const coach = await response.json();
+      const hasPlanResponse = await fetch(
+        import.meta.env.VITE_API_URL + `order/hasUserTrainingPlan/${coach.id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          method: "GET",
+        }
+      );
+      const canReport = await hasPlanResponse.json();
+      setCanUserReport(canReport);
+      setPages({
+        ...pages,
+        total: Math.ceil(coach.trainingPlans.length / itemsPerPage),
+      });
       setCoach(coach);
       setIsLoading(false);
     } else {
@@ -175,61 +203,71 @@ const CoachDetails = () => {
                     >
                       TEST: Rašyti atsiliepima
                     </Button>
-                    <Button
-                      textTransform="uppercase"
-                      background="red.500"
-                      textColor="white"
-                      borderRadius="2xl"
-                      onClick={() => navigate(`/complaint/${coach?.id}`)}
-                    >
-                      PRANEŠTI
-                    </Button>
+                    {canUserReport && (
+                      <Button
+                        textTransform="uppercase"
+                        background="red.500"
+                        textColor="white"
+                        borderRadius="2xl"
+                        onClick={() => navigate(`/complaint/${coach?.id}`)}
+                      >
+                        PRANEŠTI
+                      </Button>
+                    )}
                   </Flex>
                 </Flex>
                 <Box ml={5} my={5}>
                   {coach?.description}
                 </Box>
               </Box>
-              <Box mt={5}>
-                <Heading size="sm">Atsiliepimai</Heading>
-                <Accordion allowToggle mt={5} mb={5}>
-                  {feedbacks.map((feedback, index) => {
-                    return (
-                      <AccordionItem>
-                        <h2>
-                          <AccordionButton>
-                            <Box as="span" flex="1" textAlign="left">
-                              {++index}. Atsiliepimas
-                            </Box>
-                            <AccordionIcon />
-                          </AccordionButton>
-                        </h2>
-                        <AccordionPanel pb={4}>
-                          <Flex>
-                            {stars.map((_, index) => {
-                              return (
-                                <Box
-                                  className={`fa-${
-                                    feedback.rating >= index + 1
-                                      ? "solid"
-                                      : "regular"
-                                  } fa-star`}
-                                ></Box>
-                              );
-                            })}
-                          </Flex>
-                          <Box mt={2}>{feedback.feedbackText}</Box>
-                          <Box mt={2} fontWeight="bold">
-                            {feedback.student}
+            </Box>
+            <Box mt={5}>
+              <Heading size="sm">Atsiliepimai</Heading>
+              <Accordion allowToggle mt={5} mb={5}>
+                {feedbacks.map((feedback, index) => {
+                  return (
+                    <AccordionItem>
+                      <h2>
+                        <AccordionButton>
+                          <Box as="span" flex="1" textAlign="left">
+                            {++index}. Atsiliepimas
                           </Box>
-                        </AccordionPanel>
-                      </AccordionItem>
-                    );
-                  })}
-                </Accordion>
-                <Heading size="sm">Trenerio siūlomi treniruočių planai</Heading>
-                <SimpleGrid mt={5} columns={3} spacing={10}>
-                  {coach?.trainingPlans.map((trainingPlan) => {
+                          <AccordionIcon />
+                        </AccordionButton>
+                      </h2>
+                      <AccordionPanel pb={4}>
+                        <Flex>
+                          {stars.map((_, index) => {
+                            return (
+                              <Box
+                                className={`fa-${
+                                  feedback.rating >= index + 1
+                                    ? "solid"
+                                    : "regular"
+                                } fa-star`}
+                              ></Box>
+                            );
+                          })}
+                        </Flex>
+                        <Box mt={2}>{feedback.feedbackText}</Box>
+                        <Box mt={2} fontWeight="bold">
+                          {feedback.student}
+                        </Box>
+                      </AccordionPanel>
+                    </AccordionItem>
+                  );
+                })}
+              </Accordion>
+            </Box>
+            <Box mt={5}>
+              <Heading size="sm">Trenerio siūlomi treniruočių planai</Heading>
+              <SimpleGrid mt={5} columns={3} spacing={10}>
+                {coach?.trainingPlans
+                  .slice(
+                    (pages.currentPage + 1) * itemsPerPage - itemsPerPage,
+                    (pages.currentPage + 1) * itemsPerPage
+                  )
+                  .map((trainingPlan) => {
                     return (
                       <Box backgroundColor="#E2E2E2" p={5}>
                         <Flex flexDirection="column" gap={5}>
@@ -259,8 +297,12 @@ const CoachDetails = () => {
                       </Box>
                     );
                   })}
-                </SimpleGrid>
-              </Box>
+              </SimpleGrid>
+              <Pagination
+                pageCount={pages.total}
+                currentPage={pages.currentPage}
+                onPageChange={handlePaginate}
+              />
             </Box>
           </>
         )}

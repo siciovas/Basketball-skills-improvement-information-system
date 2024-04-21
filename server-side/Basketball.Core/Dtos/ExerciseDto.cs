@@ -1,5 +1,4 @@
 ﻿using Basketball.Domain.Data.Entities.Enums;
-using System;
 
 namespace Basketball.Core.Dtos
 {

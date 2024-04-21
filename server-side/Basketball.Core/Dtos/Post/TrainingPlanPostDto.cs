@@ -7,7 +7,6 @@
         public required string ShortDescription { get; set; }
         public double Price { get; set; }
         public bool IsActive { get; set; }
-        public int Version { get; set; }
         public required List<Guid> Skills { get; set; }
     }
 }

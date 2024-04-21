@@ -1,6 +1,6 @@
 ﻿namespace Basketball.Core.Dtos
 {
-    public class AdminHomeDataDto
+    public class CoachHomeDataDto
     {
         public List<HomeData> TrainingPlans { get; set; } = [];
         public List<HomeData> Skills { get; set; } = [];

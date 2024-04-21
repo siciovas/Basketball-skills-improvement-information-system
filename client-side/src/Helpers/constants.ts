@@ -8,3 +8,18 @@ export const APPROVED = "Approved";
 export const REJECTED = "Rejected";
 export const PENDING = "Pending";
 export const BLOCKED = "Blocked";
+
+export const CHARTMONTHS = [
+  "Sausis",
+  "Vasaris",
+  "Kovas",
+  "Balandis",
+  "Gegužė",
+  "Birželis",
+  "Liepa",
+  "Rugpjūtis",
+  "Rugsėjis",
+  "Spalis",
+  "Lapkritis",
+  "Gruodis",
+];

@@ -21,10 +21,12 @@ import { useNavigate } from "react-router";
 import { CoachHomePageDto } from "../../Types/types";
 import toast from "react-hot-toast";
 import { Unauthorized } from "../../Helpers/constants";
+import TrainingPlanForm from "../forms/TrainingPlanForm";
 
 const CoachHomePage = () => {
   const exerciseModal = useDisclosure();
   const skillModal = useDisclosure();
+  const trainingPlanModal = useDisclosure();
   const [isExerciseFromSkill, setIsExerciseFromSkill] = useState(false);
   const [homePageData, setHomePageData] = useState<CoachHomePageDto>();
   const [isLoading, setIsLoading] = useState(true);
@@ -90,7 +92,11 @@ const CoachHomePage = () => {
             </Heading>
             <Box className="fa-solid fa-list-check fa-8x" my={2} />
             <Flex flexDirection="column" gap={5} w="70%">
-              <Button backgroundColor="#1E99D6" color="white">
+              <Button
+                backgroundColor="#1E99D6"
+                color="white"
+                onClick={trainingPlanModal.onOpen}
+              >
                 Naujas planas
               </Button>
               {homePageData?.trainingPlans.map((plan) => {
@@ -105,7 +111,11 @@ const CoachHomePage = () => {
                   </Button>
                 );
               })}
-              <Button backgroundColor="#1E99D6" color="white">
+              <Button
+                backgroundColor="#1E99D6"
+                color="white"
+                onClick={() => navigate("/trainingPlans")}
+              >
                 Visi planai
               </Button>
             </Flex>
@@ -175,7 +185,7 @@ const CoachHomePage = () => {
                 color="white"
                 onClick={exerciseModal.onOpen}
               >
-                Naujas planas
+                Naujas pratimas
               </Button>
               {homePageData?.exercises.map((exercise) => {
                 return (
@@ -205,7 +215,7 @@ const CoachHomePage = () => {
         <ModalContent>
           <ModalCloseButton />
           <ModalBody>
-            <ExerciseForm onClose={onExerciseClose}/>
+            <ExerciseForm onClose={onExerciseClose} />
           </ModalBody>
         </ModalContent>
       </Modal>
@@ -218,6 +228,18 @@ const CoachHomePage = () => {
               onClose={skillModal.onClose}
               addNewExercise={addNewExercise}
             />
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+      <Modal
+        isOpen={trainingPlanModal.isOpen}
+        onClose={trainingPlanModal.onClose}
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalCloseButton />
+          <ModalBody>
+            <TrainingPlanForm onClose={trainingPlanModal.onClose} />
           </ModalBody>
         </ModalContent>
       </Modal>

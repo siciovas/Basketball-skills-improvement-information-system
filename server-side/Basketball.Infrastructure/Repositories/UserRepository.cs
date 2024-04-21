@@ -80,11 +80,11 @@ namespace Basketball.Infrastructure.Repositories
                             .SingleAsync();
         }
 
-        public async Task<int> GetAllByRoleCount(Role role)
+        public async Task<List<User>> GetAllStudents()
         {
             return await _db.Users
-                            .Where(u => u.Role == role)
-                            .CountAsync();
+                            .Where(u => u.Role == Role.Student)
+                            .ToListAsync();
         }
     }
 }

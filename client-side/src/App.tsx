@@ -27,6 +27,9 @@ import MyOrders from "./pages/MyOrders";
 import Exercises from "./pages/Exercises";
 import Skills from "./pages/Skills";
 import ViewOrderedPlan from "./pages/ViewOrderedPlan";
+import Finance from "./pages/Finance";
+import TrainingPlans from "./pages/TrainingPlans";
+import ExerciseFlow from "./pages/ExerciseFlow";
 
 function App() {
   const navigate = useNavigate();
@@ -59,7 +62,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="login" element={<Login />} />
         <Route path="recover" element={<PasswordRecovery />} />
-        <Route path="newPassword" element={<NewPassword />} />
+        <Route path="newPassword/:id" element={<NewPassword />} />
         <Route path="register" element={<Register />} />
         <Route path="aboutUs" element={<AboutUs />} />
         <Route path="allCoaches" element={<MainCoachesList />} />
@@ -80,6 +83,9 @@ function App() {
         <Route path="exercises" element={<Exercises />} />
         <Route path="skills" element={<Skills />} />
         <Route path="viewOrderedPlan/:id" element={<ViewOrderedPlan />} />
+        <Route path="finance" element={<Finance />} />
+        <Route path="trainingPlans" element={<TrainingPlans />} />
+        <Route path="exerciseFlow" element={<ExerciseFlow />} />
       </Routes>
       <Footer />
     </>

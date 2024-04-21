@@ -20,8 +20,7 @@ namespace Basketball.Core.Interfaces.Services
         Task UpdatePassword(Guid id, PasswordDto passwordDto);
         Task Delete(Guid id);
         Task<MeDto> GetMe(Guid id);
-        Task<CountsDto> GetCountsForAdmin();
-        Task<AdminHomeDataDto> GetHomeData(Guid coachId);
+        Task<CoachHomeDataDto> GetHomeData(Guid coachId);
 
     }
 }

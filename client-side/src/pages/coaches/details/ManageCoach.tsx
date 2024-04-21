@@ -60,7 +60,6 @@ const ManageCoach = () => {
     } else if (response.status === 200) {
       const coach = await response.json();
       await getCoachComplaints();
-      console.log(coach);
       setCoach(coach);
       setIsLoading(false);
     } else {

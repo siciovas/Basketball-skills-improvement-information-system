@@ -289,29 +289,13 @@ namespace Basketball.Services
             };
         }
 
-        public async Task<CountsDto> GetCountsForAdmin()
-        {
-            var coaches = await _userRepository.GetAllByRoleCount(Role.Coach);
-            var students = await _userRepository.GetAllByRoleCount(Role.Student);
-            var trainingPlans = await _trainingPlanRepository.GetAllCount();
-            var orders = await _orderRepository.GetAllCount();
-
-            return new CountsDto
-            {
-                Coaches = coaches,
-                Students = students,
-                TrainingPlans = trainingPlans,
-                Orders = orders
-            };
-        }
-
-        public async Task<AdminHomeDataDto> GetHomeData(Guid coachId)
+        public async Task<CoachHomeDataDto> GetHomeData(Guid coachId)
         {
             var trainingPlans = await _trainingPlanRepository.GetAllByCoachId(coachId);
             var skills = await _skillRepository.GetAll(coachId);
             var exercises = await _exerciseRepository.GetAll(coachId);
 
-            return new AdminHomeDataDto
+            return new CoachHomeDataDto
             {
                 TrainingPlans = trainingPlans.Select(x => new HomeData
                 {
