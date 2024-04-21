@@ -16,6 +16,8 @@ namespace Basketball.Infrastructure.Database
         public DbSet<Order> Orders { get; set; }
         public DbSet<ExerciseProgress> ExerciseProgresses { get; set; }
         public DbSet<PasswordRecovery> PasswordRecovery { get; set; }
+        public DbSet<SkillsOrder> SkillsOrders { get; set; }
+        public DbSet<ExercisesOrder> ExercisesOrders { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Skill>()
@@ -27,6 +29,12 @@ namespace Basketball.Infrastructure.Database
                 .HasMany(e => e.Skills)
                 .WithMany(e => e.TrainingPlans)
                 .UsingEntity<TrainingPlanSkill>();
+
+            modelBuilder.Entity<SkillsOrder>()
+                .HasKey(x => new { x.TrainingPlanId, x.SkillId });
+
+            modelBuilder.Entity<ExercisesOrder>()
+                .HasKey(x => new { x.SkillId, x.ExerciseId });
         }
     }
 }

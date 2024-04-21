@@ -15,11 +15,13 @@ namespace Basketball.Services
         public async Task<TrainingPlanDto> Create(TrainingPlanPostDto trainingPlan, Guid coachId)
         {
             var skills = new List<Skill>();
+            var skillsOrders = new List<SkillsOrder>();
 
             foreach (var id in trainingPlan.Skills)
             {
                 var skill = await _skillRepository.GetById(id);
                 skills.Add(skill!);
+
             }
 
             var newTrainingPlan = new TrainingPlan
@@ -35,6 +37,16 @@ namespace Basketball.Services
             };
 
             var createdTrainingPlan = await _trainingPlanRepository.Create(newTrainingPlan);
+            for(int i = 0; i < skills.Count; i++)
+            {
+                skillsOrders.Add(new SkillsOrder
+                {
+                    TrainingPlanId = createdTrainingPlan.Id,
+                    SkillId = skills[i].Id,
+                    Order = i + 1
+                });
+            }
+            await _trainingPlanRepository.AddSkillsOrders(skillsOrders);
             createdTrainingPlan.InitialTrainingPlanId = createdTrainingPlan.Id;
 
             await _trainingPlanRepository.Update(createdTrainingPlan);
@@ -97,10 +109,12 @@ namespace Basketball.Services
         {
             var trainingPlan = await _trainingPlanRepository.GetById(id);
 
-            var skills = trainingPlan!.Skills.Select(x => new TrainingPlanSkillDto
+            var skillsOrders = await _trainingPlanRepository.GetSkillOrderByPlanId(id);
+
+            var skills = skillsOrders.OrderBy(x => x.Order).Select(x => new TrainingPlanSkillDto
             {
-                Id = x.Id,
-                Name = x.Title,
+                Id = x.SkillId,
+                Name = trainingPlan!.Skills.Where(t => t.Id == x.SkillId).First().Title
             }).ToList();
 
             return new TrainingPlanDto
@@ -127,6 +141,7 @@ namespace Basketball.Services
         public async Task<TrainingPlanDto> Update(TrainingPlanUpdateDto trainingPlanDto, Guid id)
         {
             var skills = new List<Skill>();
+            var skillsOrders = new List<SkillsOrder>();
 
             foreach (var skillId in trainingPlanDto.Skills)
             {
@@ -162,6 +177,24 @@ namespace Basketball.Services
             var updatedTrainingPlan = trainingPlanDto.IsNewVersion
                 ? await _trainingPlanRepository.Create(trainingPlan)
                 : await _trainingPlanRepository.Update(trainingPlan);
+
+            for (int i = 0; i < skills.Count; i++)
+            {
+                skillsOrders.Add(new SkillsOrder
+                {
+                    TrainingPlanId = updatedTrainingPlan.Id,
+                    SkillId = skills[i].Id,
+                    Order = i + 1
+                });
+            }
+
+            if (trainingPlanDto.IsNewVersion)
+            {
+                await _trainingPlanRepository.AddSkillsOrders(skillsOrders);
+            } else
+            {
+                await _trainingPlanRepository.UpdateSkillsOrders(skillsOrders);
+            }
 
             return new TrainingPlanDto
             {

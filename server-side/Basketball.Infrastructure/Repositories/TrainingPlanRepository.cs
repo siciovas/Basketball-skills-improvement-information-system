@@ -84,5 +84,22 @@ namespace Basketball.Infrastructure.Repositories
                             .Where(x => x.Version == 1 && x.IsActive)
                             .CountAsync();
         }
+
+        public async Task AddSkillsOrders(List<SkillsOrder> skillsOrder)
+        {
+            _db.SkillsOrders.AddRange(skillsOrder);
+            await _db.SaveChangesAsync();
+        }
+
+        public async Task UpdateSkillsOrders(List<SkillsOrder> skillsOrder)
+        {
+            _db.SkillsOrders.UpdateRange(skillsOrder);
+            await _db.SaveChangesAsync();
+        }
+
+        public async Task<List<SkillsOrder>> GetSkillOrderByPlanId(Guid planId)
+        {
+            return await _db.SkillsOrders.Where(x => x.TrainingPlanId == planId).ToListAsync();
+        }
     }
 }
