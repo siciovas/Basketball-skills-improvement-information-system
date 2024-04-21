@@ -3,6 +3,7 @@ using Basketball.Core.Dtos.Post;
 using Basketball.Core.Interfaces.Repositories;
 using Basketball.Core.Interfaces.Services;
 using Basketball.Domain.Data.Entities;
+using Basketball.Infrastructure.Repositories;
 
 namespace Basketball.Services
 {
@@ -14,6 +15,7 @@ namespace Basketball.Services
         public async Task<SkillDto> Create(SkillPostDto skill, Guid coachId)
         {
             var exercises = new List<Exercise>();
+            var skillsOrders = new List<ExercisesOrder>();
 
             foreach (var id in skill.Exercises)
             {
@@ -30,6 +32,16 @@ namespace Basketball.Services
             };
 
             var createdSkill = await _skillRepository.Create(newSkill);
+            for (int i = 0; i < exercises.Count; i++)
+            {
+                skillsOrders.Add(new ExercisesOrder
+                {
+                    ExerciseId = exercises[i].Id,
+                    SkillId = createdSkill.Id,
+                    Order = i + 1
+                });
+            }
+            await _skillRepository.AddExercisesOrders(skillsOrders);
 
             return new SkillDto
             {
@@ -63,16 +75,20 @@ namespace Basketball.Services
         {
             var skill = await _skillRepository.GetById(id);
 
+            var exercisesOrders = await _skillRepository.GetExerciseOrderBySkillId(id);
+
+            var exercises = exercisesOrders.OrderBy(x => x.Order).Select(x => new ExerciseDto
+            {
+                Id = x.ExerciseId,
+                Name = skill!.Exercises.Where(t => t.Id == x.ExerciseId).First().Name
+            }).ToList();
+
             return new SkillDto
             {
                 Id = id,
                 Name = skill!.Title,
                 Description = skill.Description,
-                Exercises = skill.Exercises.Select(e => new ExerciseDto
-                {
-                    Id = e.Id,
-                    Name = e.Name,
-                }).ToList(),
+                Exercises = exercises,
             };
         }
 
@@ -86,6 +102,7 @@ namespace Basketball.Services
         public async Task<SkillDto> Update(SkillPostDto skillDto, Guid id)
         {
             var exercises = new List<Exercise>();
+            var skillsOrders = new List<ExercisesOrder>();
 
             foreach (var exerciseId in skillDto.Exercises)
             {
@@ -99,6 +116,16 @@ namespace Basketball.Services
             skill.Exercises = exercises;
 
             var updatedSkill = await _skillRepository.Update(skill);
+            for (int i = 0; i < exercises.Count; i++)
+            {
+                skillsOrders.Add(new ExercisesOrder
+                {
+                    ExerciseId = exercises[i].Id,
+                    SkillId = updatedSkill.Id,
+                    Order = i + 1
+                });
+            }
+            await _skillRepository.UpdateExercisesOrders(skillsOrders);
 
             return new SkillDto
             {

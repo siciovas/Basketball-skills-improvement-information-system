@@ -11,6 +11,9 @@ namespace Basketball.Core.Interfaces.Repositories
         Task Delete(TrainingPlan trainingPlan);
         Task<TrainingPlan> Update(TrainingPlan trainingPlan);
         Task<Dictionary<Guid, int>> GetTrainingPlansCountByCoachId(List<Guid> ids);
-        public Task<int> GetAllCount();
+        Task<int> GetAllCount();
+        Task AddSkillsOrders(List<SkillsOrder> skillsOrder);
+        Task UpdateSkillsOrders(List<SkillsOrder> skillsOrder);
+        Task<List<SkillsOrder>> GetSkillOrderByPlanId(Guid planId);
     }
 }

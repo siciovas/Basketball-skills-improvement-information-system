@@ -22,6 +22,7 @@ import {
   useCallback,
   useEffect,
   useState,
+  DragEvent,
 } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -47,8 +48,35 @@ const TrainingPlanForm = ({ onClose, trainingPlanId }: Props) => {
   const [isNewVersion, setIsNewVersion] = useState(false);
   const [skills, setSkills] = useState<GenericSkillInfo[]>([]);
   const token = localStorage.getItem("accessToken");
+  const [draggingItem, setDraggingItem] = useState<string | null>(null);
 
   const navigate = useNavigate();
+
+  const handleDragStart = (e: DragEvent<HTMLDivElement>, item: string) => {
+    setDraggingItem(item);
+    e.dataTransfer.setData("text/plain", "");
+  };
+
+  const handleDragEnd = () => {
+    setDraggingItem(null);
+  };
+
+  const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (targetItem: string) => {
+    if (!draggingItem) return;
+
+    const currentIndex = formState.skills.indexOf(draggingItem);
+    const targetIndex = formState.skills.indexOf(targetItem);
+    if (currentIndex !== -1 && targetIndex !== -1) {
+      const copyFormState = { ...formState };
+      copyFormState.skills.splice(currentIndex, 1);
+      copyFormState.skills.splice(targetIndex, 0, draggingItem);
+      setFormState({ ...formState, skills: copyFormState.skills });
+    }
+  };
 
   const onSkillChange = (value: string | string[]) => {
     setFormState({ ...formState, ["skills"]: value as string[] });
@@ -246,8 +274,24 @@ const TrainingPlanForm = ({ onClose, trainingPlanId }: Props) => {
             <Heading size="sm" mb={5} mt={5}>
               Pridėti įgūdžiai:
             </Heading>
+            <Box>Keiskite įgūdžių eiliškumą, keičiant jų padėtį.</Box>
             {formState.skills.map((skill) => {
-              return <Box>{skills.find((x) => x.id === skill)?.name}</Box>;
+              return (
+                <Box
+                  borderWidth="thick"
+                  px={2}
+                  mt={2}
+                  border="solid"
+                  cursor="pointer"
+                  draggable
+                  onDragStart={(e) => handleDragStart(e, skill)}
+                  onDragEnd={handleDragEnd}
+                  onDragOver={handleDragOver}
+                  onDrop={() => handleDrop(skill)}
+                >
+                  {skills.find((x) => x.id === skill)?.name}
+                </Box>
+              );
             })}
             {trainingPlanId && (
               <Checkbox

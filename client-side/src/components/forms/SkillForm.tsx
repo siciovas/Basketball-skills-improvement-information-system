@@ -20,6 +20,7 @@ import {
   useCallback,
   useEffect,
   useState,
+  DragEvent,
 } from "react";
 import toast from "react-hot-toast";
 import { Unauthorized } from "../../Helpers/constants";
@@ -42,7 +43,34 @@ const SkillForm = ({ addNewExercise, onClose, skillId }: Props) => {
     description: "",
     exercises: [] as string[],
   });
+  const [draggingItem, setDraggingItem] = useState<string | null>(null);
   const navigate = useNavigate();
+
+  const handleDragStart = (e: DragEvent<HTMLDivElement>, item: string) => {
+    setDraggingItem(item);
+    e.dataTransfer.setData("text/plain", "");
+  };
+
+  const handleDragEnd = () => {
+    setDraggingItem(null);
+  };
+
+  const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (targetItem: string) => {
+    if (!draggingItem) return;
+
+    const currentIndex = formState.exercises.indexOf(draggingItem);
+    const targetIndex = formState.exercises.indexOf(targetItem);
+    if (currentIndex !== -1 && targetIndex !== -1) {
+      const copyFormState = { ...formState };
+      copyFormState.exercises.splice(currentIndex, 1);
+      copyFormState.exercises.splice(targetIndex, 0, draggingItem);
+      setFormState({ ...formState, exercises: copyFormState.exercises });
+    }
+  };
 
   const onExerciseChange = (value: string | string[]) => {
     setFormState({ ...formState, ["exercises"]: value as string[] });
@@ -212,9 +240,23 @@ const SkillForm = ({ addNewExercise, onClose, skillId }: Props) => {
             <Heading size="sm" mb={5} mt={5}>
               Pridėti pratimai:
             </Heading>
+            <Box>Keiskite pratimų eiliškumą, keičiant jų padėtį.</Box>
             {formState.exercises.map((exercise) => {
               return (
-                <Box>{exercises.find((x) => x.id === exercise)?.name}</Box>
+                <Box
+                  borderWidth="thick"
+                  px={2}
+                  mt={2}
+                  border="solid"
+                  cursor="pointer"
+                  draggable
+                  onDragStart={(e) => handleDragStart(e, exercise)}
+                  onDragEnd={handleDragEnd}
+                  onDragOver={handleDragOver}
+                  onDrop={() => handleDrop(exercise)}
+                >
+                  {exercises.find((x) => x.id === exercise)?.name}
+                </Box>
               );
             })}
             <Button
