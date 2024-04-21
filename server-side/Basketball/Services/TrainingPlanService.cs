@@ -113,9 +113,9 @@ namespace Basketball.Services
 
             var skills = skillsOrders.OrderBy(x => x.Order).Select(x => new TrainingPlanSkillDto
             {
-                Id = x.Id,
+                Id = trainingPlan!.Skills.Where(t => t.Id == x.SkillId).First().Id,
                 Name = trainingPlan!.Skills.Where(t => t.Id == x.SkillId).First().Title,
-                Exercises = x.Exercises.Select(e => e.Name).ToList(),
+                Exercises = trainingPlan!.Skills.Where(t => t.Id == x.SkillId).First().Exercises.Select(e => e.Name).ToList(),
             }).ToList();
 
             return new TrainingPlanDto
