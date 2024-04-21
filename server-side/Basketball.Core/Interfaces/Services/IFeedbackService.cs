@@ -13,5 +13,6 @@ namespace Basketball.Core.Interfaces.Services
         Task Delete(Guid id);
         Task<FeedbackDto> Update(FeedbackUpdateDto feedback, Guid id);
         Task<bool> IsFeedbackOwnedByStudent(Guid studentId, Guid id);
+        Task<List<FeedbackDto>> GetFourBest(Guid id);
     }
 }

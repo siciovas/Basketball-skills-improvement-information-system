@@ -18,7 +18,8 @@ namespace Basketball.Services
                 FeedbackText = feedback.FeedbackText,
                 Date = DateOnly.FromDateTime(DateTime.Now),
                 StudentId = studentId,
-                TrainingPlanId = feedback.TrainingPlanId
+                TrainingPlanId = feedback.TrainingPlanId,
+                Rating = feedback.Rating,
             });
 
             return new FeedbackDto
@@ -26,7 +27,8 @@ namespace Basketball.Services
                 Id = createdFeedback.Id,
                 FeedbackText = createdFeedback.FeedbackText,
                 Date = createdFeedback.Date,
-                Student = string.Format("{0} {1}", createdFeedback.Student.Name, createdFeedback.Student.Surname)
+                Rating = createdFeedback.Rating,
+                Student = string.Format("{0}", createdFeedback.Student.Name)
             };
         }
 
@@ -46,7 +48,8 @@ namespace Basketball.Services
                 Id = x.Id,
                 FeedbackText = x.FeedbackText,
                 Date = x.Date,
-                Student = string.Format("{0} {1}", x.Student.Name, x.Student.Surname)
+                Rating = x.Rating,
+                Student = string.Format("{0}", x.Student.Name)
             }).ToList();
         }
 
@@ -59,7 +62,8 @@ namespace Basketball.Services
                 Id = x.Id,
                 FeedbackText = x.FeedbackText,
                 Date = x.Date,
-                Student = string.Format("{0} {1}", x.Student.Name, x.Student.Surname)
+                Rating = x.Rating,
+                Student = string.Format("{0}", x.Student.Name)
             }).ToList();
         }
 
@@ -72,7 +76,8 @@ namespace Basketball.Services
                 Id = feedback!.Id,
                 FeedbackText = feedback.FeedbackText,
                 Date = feedback.Date,
-                Student = string.Format("{0} {1}", feedback.Student.Name, feedback.Student.Surname)
+                Rating = feedback.Rating,
+                Student = string.Format("{0}", feedback.Student.Name)
             };
         }
 
@@ -88,6 +93,7 @@ namespace Basketball.Services
             var feedback = await _feedbackRepository.GetById(id);
             feedback!.FeedbackText = feedbackDto.FeedbackText;
             feedback.Date = DateOnly.FromDateTime(DateTime.Now);
+            feedback.Rating = feedbackDto.Rating;
 
             var updatedFeedback = await _feedbackRepository.Update(feedback);
 
@@ -96,8 +102,25 @@ namespace Basketball.Services
                 Id = updatedFeedback!.Id,
                 FeedbackText = updatedFeedback.FeedbackText,
                 Date = updatedFeedback.Date,
-                Student = string.Format("{0} {1}", updatedFeedback.Student.Name, updatedFeedback.Student.Surname)
+                Rating = updatedFeedback.Rating,
+                Student = string.Format("{0}", updatedFeedback.Student.Name)
             };
+        }
+
+        public async Task<List<FeedbackDto>> GetFourBest(Guid id)
+        {
+            var feedbacks = await _feedbackRepository.GetAllForCoach(id);
+
+            var sortedFeedbacks = feedbacks.OrderByDescending(x => x.Rating).ToList();
+
+            return sortedFeedbacks.Take(4).Select(x => new FeedbackDto
+            {
+                Id = x.Id,
+                Date = x.Date,
+                FeedbackText = x.FeedbackText,
+                Rating = x.Rating,
+                Student = string.Format("{0}", x.Student.Name),
+            }).ToList();
         }
     }
 }

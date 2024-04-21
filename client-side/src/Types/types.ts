@@ -165,6 +165,13 @@ export interface HomeData {
   name: string;
 }
 
+export interface Feedback {
+  id: string;
+  feedbackText: string;
+  date: string;
+  rating: number;
+  student: string;
+}
 export interface Statistics {
   registeredCoaches: { [key: number]: number };
   registeredStudents: { [key: number]: number };
