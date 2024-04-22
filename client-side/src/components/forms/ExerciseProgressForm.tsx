@@ -22,12 +22,14 @@ interface Props {
   trainingPlanId: string;
   exerciseId: string;
   onClose: () => void;
+  skillId: string;
 }
 
 const ExerciseProgressForm = ({
   trainingPlanId,
   exerciseId,
   onClose,
+  skillId,
 }: Props) => {
   const [fileState, setFileState] = useState<File>();
   const [isLoading, setIsLoading] = useState(false);
@@ -48,6 +50,7 @@ const ExerciseProgressForm = ({
     formData.append("exerciseProgressVideo", fileState as Blob);
     formData.append("trainingPlanId", trainingPlanId);
     formData.append("exerciseId", exerciseId);
+    formData.append("skillId", skillId);
 
     const response = await fetch(
       `${import.meta.env.VITE_API_URL}exerciseFlow/uploadExerciseProgress`,
@@ -63,7 +66,7 @@ const ExerciseProgressForm = ({
     if (response.status === 201 || response.status === 200) {
       setIsLoading(false);
       onClose();
-      navigate("/exerciseFlow");
+      navigate(`/trainingPlanExecution/${trainingPlanId}`);
       toast.success("Pratimo progresas sėkmingai įkeltas");
     } else {
       toast.error("Klaida");
@@ -79,7 +82,7 @@ const ExerciseProgressForm = ({
       ) : (
         <form>
           <Flex flexDir="column">
-            <FormLabel>Mokomasis video</FormLabel>
+            <FormLabel>Progreso įkėlimas</FormLabel>
             <Box>
               <input
                 onChange={handleFileChange}

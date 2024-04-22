@@ -29,7 +29,7 @@ import Skills from "./pages/Skills";
 import ViewOrderedPlan from "./pages/ViewOrderedPlan";
 import Finance from "./pages/Finance";
 import TrainingPlans from "./pages/TrainingPlans";
-import ExerciseFlow from "./pages/ExerciseFlow";
+import TrainingPlanExecution from "./pages/TrainingPlanExecution";
 
 function App() {
   const navigate = useNavigate();
@@ -85,7 +85,10 @@ function App() {
         <Route path="viewOrderedPlan/:id" element={<ViewOrderedPlan />} />
         <Route path="finance" element={<Finance />} />
         <Route path="trainingPlans" element={<TrainingPlans />} />
-        <Route path="exerciseFlow" element={<ExerciseFlow />} />
+        <Route
+          path="trainingPlanExecution/:id"
+          element={<TrainingPlanExecution />}
+        />
       </Routes>
       <Footer />
     </>

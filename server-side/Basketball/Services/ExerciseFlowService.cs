@@ -16,6 +16,12 @@ namespace Basketball.Services
             var container = new BlobContainerClient(_configuration["ConnectionStrings:StorageConnectionString"], "progressvideos");
             var blob = container.GetBlobClient($"progress_{Guid.NewGuid()}_{progressDto.ExerciseProgressVideo.FileName}.mp4");
 
+            var progress = await _exerciseFlowRepository.GetProgress(userId, progressDto.TrainingPlanId, progressDto.SkillId, progressDto.ExerciseId);
+            if(progress != null)
+            {
+                await _exerciseFlowRepository.DeleteProgress(progress);
+            }
+
             await blob.UploadAsync(progressDto.ExerciseProgressVideo.OpenReadStream());
 
             var newExerciseProgress = new ExerciseProgress
@@ -23,6 +29,7 @@ namespace Basketball.Services
                 ExerciseId = progressDto.ExerciseId,
                 TrainingPlanId = progressDto.TrainingPlanId,
                 UserId = userId,
+                SkillId = progressDto.SkillId,
                 ProgressVideoUrl = blob.Uri.ToString()
             };
 
