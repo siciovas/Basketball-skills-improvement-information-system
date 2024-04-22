@@ -23,3 +23,9 @@ export const CHARTMONTHS = [
   "Lapkritis",
   "Gruodis",
 ];
+
+export const STATUSCOLORS = {
+  laukiama: "orange",
+  patvirtinta: "#63A103",
+  atmesta: "red",
+};

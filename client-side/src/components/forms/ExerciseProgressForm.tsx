@@ -16,7 +16,6 @@ import {
 } from "@chakra-ui/react";
 import { useState, ChangeEvent, MouseEvent } from "react";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 
 interface Props {
   trainingPlanId: string;
@@ -34,7 +33,6 @@ const ExerciseProgressForm = ({
   const [fileState, setFileState] = useState<File>();
   const [isLoading, setIsLoading] = useState(false);
   const token = localStorage.getItem("accessToken");
-  const navigate = useNavigate();
   const confirmationModal = useDisclosure();
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -45,6 +43,7 @@ const ExerciseProgressForm = ({
 
   const onSubmit = async (e: MouseEvent<HTMLButtonElement>) => {
     setIsLoading(true);
+    confirmationModal.onClose();
     e.preventDefault();
     const formData = new FormData();
     formData.append("exerciseProgressVideo", fileState as Blob);
@@ -66,7 +65,7 @@ const ExerciseProgressForm = ({
     if (response.status === 201 || response.status === 200) {
       setIsLoading(false);
       onClose();
-      navigate(`/trainingPlanExecution/${trainingPlanId}`);
+      window.location.reload();
       toast.success("Pratimo progresas sėkmingai įkeltas");
     } else {
       toast.error("Klaida");

@@ -218,4 +218,18 @@ export interface ExerciseExecutionDto {
   grade: number | null;
   isLocked: boolean;
   exerciseVideoUrl: string;
+  comment: string;
+}
+
+export interface Submissions {
+  student: string;
+  submittedExercises: SubmittedExercise[];
+}
+
+export interface SubmittedExercise {
+  id: string;
+  title: string;
+  videoUrl: string;
+  comment: string | null;
+  grade: number | null;
 }

@@ -1,4 +1,5 @@
-﻿using Basketball.Core.Dtos.Post;
+﻿using Basketball.Core.Dtos;
+using Basketball.Core.Dtos.Post;
 using Basketball.Core.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +24,24 @@ namespace Basketball.Controllers
             var exerciseUrl = await _exerciseFlowService.UploadExerciseProgress(uploadExerciseProgressPostDto, userId);
 
             return CreatedAtAction(nameof(UploadExerciseProgress), exerciseUrl);
+        }
+
+        [HttpGet("getExercisesForEvaluation/{trainingPlanId}/{userId}")]
+        [Authorize]
+        public async Task<IActionResult> GetExercisesForEvaluation(Guid trainingPlanId, Guid userId)
+        {
+            var exercises = await _exerciseFlowService.GetExercisesForEvaluation(userId, trainingPlanId);
+
+            return Ok(exercises);
+        }
+
+        [HttpPut("evaluate/{id}")]
+        [Authorize]
+        public async Task<IActionResult> EvaluateExercise(Guid id, EvaluationDto evaluationDto)
+        {
+            var updatedExercise = await _exerciseFlowService.EvaluateExercise(id, evaluationDto);
+
+            return Ok(updatedExercise);
         }
     }
 }

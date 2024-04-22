@@ -33,7 +33,6 @@ const TrainingPlanExecution = () => {
   const { id } = useParams();
   const token = localStorage.getItem("accessToken");
   const [trainingPlan, setTrainingPlan] = useState<TrainingPlanExecutionDto>();
-  const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [exerciseId, setExerciseId] = useState<string | null>(null);
   const [skillId, setSkillId] = useState<string | null>(null);
 
@@ -58,14 +57,6 @@ const TrainingPlanExecution = () => {
       toast.error("Netikėta klaida!");
     }
   }, []);
-
-  const handleVideoShow = async (videoUrl: string) => {
-    setVideoUrl(null);
-    const response = await fetch(videoUrl);
-    const blob = await response.blob();
-    const blobUrl = URL.createObjectURL(blob);
-    setVideoUrl(blobUrl);
-  };
 
   const handleProgressUpload = (exerciseId: string, skillId: string) => {
     setExerciseId(exerciseId);
@@ -129,11 +120,7 @@ const TrainingPlanExecution = () => {
                                 : exercise.isLocked;
                             return (
                               <AccordionItem isDisabled={isDisabled}>
-                                <AccordionButton
-                                  onClick={() =>
-                                    handleVideoShow(exercise.exerciseVideoUrl)
-                                  }
-                                >
+                                <AccordionButton>
                                   <Flex
                                     color={isDisabled ? "black" : "#1E99D6"}
                                     alignItems="center"
@@ -148,42 +135,44 @@ const TrainingPlanExecution = () => {
                                   <Box as="span" flex="1" textAlign="left">
                                     {exercise.description}
                                   </Box>
-                                  {!videoUrl ? (
-                                    <Center>
-                                      <Spinner size="xl" textAlign="center" />
-                                    </Center>
-                                  ) : (
-                                    <Box mt={5}>
-                                      <ReactPlayer
-                                        controls={true}
-                                        url={videoUrl}
-                                      />
-                                      <Flex flexDirection="column">
-                                        <Flex gap={3}>
-                                          <Box fontWeight="bold">
-                                            Pratimo statusas:
-                                          </Box>
-                                          <Box>
-                                            {exercise.grade
-                                              ? exercise.grade > 4
-                                                ? "Užskaitytas"
-                                                : "Neužskaitytas"
-                                              : "Laukiama"}
-                                          </Box>
-                                        </Flex>
-                                        <Flex gap={3}>
-                                          <Box fontWeight="bold">
-                                            Pratimo įvertis:
-                                          </Box>
-                                          <Box>
-                                            {exercise.grade &&
-                                              (exercise.grade > 4
-                                                ? exercise.grade
-                                                : "")}
-                                          </Box>
-                                        </Flex>
+                                  <Box mt={5}>
+                                    <ReactPlayer
+                                      controls={true}
+                                      url={exercise.exerciseVideoUrl}
+                                    />
+                                    <Flex flexDirection="column">
+                                      <Flex gap={3}>
+                                        <Box fontWeight="bold">
+                                          Pratimo statusas:
+                                        </Box>
+                                        <Box>
+                                          {exercise.grade
+                                            ? exercise.grade > 4
+                                              ? "Užskaitytas"
+                                              : "Neužskaitytas"
+                                            : "Laukiama"}
+                                        </Box>
                                       </Flex>
+                                      <Flex gap={3}>
+                                        <Box fontWeight="bold">
+                                          Pratimo įvertis:
+                                        </Box>
+                                        <Box>
+                                          {exercise.grade &&
+                                            (exercise.grade > 4
+                                              ? exercise.grade
+                                              : "")}
+                                        </Box>
+                                      </Flex>
+                                      <Flex flexDirection="column">
+                                        <Box fontWeight="bold">Komentaras</Box>
+                                        <Box>{exercise.comment}</Box>
+                                      </Flex>
+                                    </Flex>
+                                    {(exercise.grade === null ||
+                                      exercise.grade < 5) && (
                                       <Button
+                                        mt={3}
                                         borderRadius="full"
                                         backgroundColor="#1E99D6"
                                         color="white"
@@ -197,8 +186,8 @@ const TrainingPlanExecution = () => {
                                       >
                                         Įkelti progresą
                                       </Button>
-                                    </Box>
-                                  )}
+                                    )}
+                                  </Box>
                                 </AccordionPanel>
                               </AccordionItem>
                             );

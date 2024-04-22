@@ -14,5 +14,6 @@ namespace Basketball.Core.Dtos
         public int? Grade { get; set; }
         public bool IsLocked { get; set; }
         public required string ExerciseVideoUrl { get; set; }
+        public string? Comment { get; set; }
     }
 }
