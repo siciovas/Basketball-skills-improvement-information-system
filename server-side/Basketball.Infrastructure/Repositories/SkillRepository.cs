@@ -54,14 +54,15 @@ namespace Basketball.Infrastructure.Repositories
             return updatedSkill.Entity;
         }
 
-        public async Task UpdateExercisesOrders(List<ExercisesOrder> exercisesOrder)
-        {
-            _db.ExercisesOrders.UpdateRange(exercisesOrder);
-            await _db.SaveChangesAsync();
-        }
         public async Task AddExercisesOrders(List<ExercisesOrder> exercisesOrder)
         {
             _db.ExercisesOrders.AddRange(exercisesOrder);
+            await _db.SaveChangesAsync();
+        }
+
+        public async Task DeleteExerciseOrders(List<ExercisesOrder> exercisesOrder)
+        {
+            _db.ExercisesOrders.RemoveRange(exercisesOrder);
             await _db.SaveChangesAsync();
         }
     }

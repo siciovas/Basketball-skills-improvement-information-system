@@ -92,15 +92,15 @@ namespace Basketball.Infrastructure.Repositories
             await _db.SaveChangesAsync();
         }
 
-        public async Task UpdateSkillsOrders(List<SkillsOrder> skillsOrder)
-        {
-            _db.SkillsOrders.UpdateRange(skillsOrder);
-            await _db.SaveChangesAsync();
-        }
-
         public async Task<List<SkillsOrder>> GetSkillOrderByPlanId(Guid planId)
         {
             return await _db.SkillsOrders.Where(x => x.TrainingPlanId == planId).ToListAsync();
+        }
+
+        public async Task DeleteExerciseOrders(List<SkillsOrder> skillsOrder)
+        {
+            _db.SkillsOrders.RemoveRange(skillsOrder);
+            await _db.SaveChangesAsync();
         }
     }
 }

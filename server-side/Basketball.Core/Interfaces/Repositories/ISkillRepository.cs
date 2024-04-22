@@ -10,7 +10,7 @@ namespace Basketball.Core.Interfaces.Repositories
         Task<Skill> Update(Skill exercise);
         Task Delete(Skill exercise);
         Task AddExercisesOrders(List<ExercisesOrder> exercisesOrder);
-        Task UpdateExercisesOrders(List<ExercisesOrder> exercisesOrder);
         Task<List<ExercisesOrder>> GetExerciseOrderBySkillId(Guid skillId);
+        Task DeleteExerciseOrders(List<ExercisesOrder> exercisesOrder);
     }
 }

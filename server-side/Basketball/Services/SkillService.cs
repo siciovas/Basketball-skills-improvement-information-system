@@ -125,7 +125,12 @@ namespace Basketball.Services
                     Order = i + 1
                 });
             }
-            await _skillRepository.UpdateExercisesOrders(skillsOrders);
+
+            var exercisesOrders = await _skillRepository.GetExerciseOrderBySkillId(id);
+
+            await _skillRepository.DeleteExerciseOrders(exercisesOrders);
+
+            await _skillRepository.AddExercisesOrders(skillsOrders);
 
             return new SkillDto
             {

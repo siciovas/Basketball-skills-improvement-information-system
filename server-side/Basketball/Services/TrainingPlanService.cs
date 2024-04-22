@@ -211,7 +211,11 @@ namespace Basketball.Services
             }
             else
             {
-                await _trainingPlanRepository.UpdateSkillsOrders(skillsOrders);
+                var existingSkillsOrders = await _trainingPlanRepository.GetSkillOrderByPlanId(id);
+
+                await _trainingPlanRepository.DeleteExerciseOrders(existingSkillsOrders);
+
+                await _trainingPlanRepository.AddSkillsOrders(skillsOrders);
             }
 
             return new TrainingPlanDto
