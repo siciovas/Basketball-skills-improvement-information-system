@@ -31,6 +31,7 @@ import Finance from "./pages/Finance";
 import TrainingPlans from "./pages/TrainingPlans";
 import TrainingPlanExecution from "./pages/TrainingPlanExecution";
 import ExercisesEvaluation from "./pages/ExercisesEvaluation";
+import MyPlans from "./pages/MyPlans";
 
 function App() {
   const navigate = useNavigate();
@@ -94,6 +95,7 @@ function App() {
           path="exercisesEvaluation/:userId/:trainingPlanId"
           element={<ExercisesEvaluation />}
         />
+        <Route path="myPlans" element={<MyPlans />} />
       </Routes>
       <Footer />
     </>

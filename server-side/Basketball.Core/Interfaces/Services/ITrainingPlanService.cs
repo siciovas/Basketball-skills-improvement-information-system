@@ -14,5 +14,6 @@ namespace Basketball.Core.Interfaces.Services
         Task<TrainingPlanDto> Update(TrainingPlanUpdateDto trainingPlan, Guid id);
         Task<bool> IsTrainingPlanOwnedByCoachId(Guid id, Guid coachId);
         Task<TrainingPlanExecutionDto> GetTrainingPlanForExecutionById(Guid id, Guid userId);
+        Task<List<MyPlansDto>> GetMyPlans(Guid userId);
     }
 }

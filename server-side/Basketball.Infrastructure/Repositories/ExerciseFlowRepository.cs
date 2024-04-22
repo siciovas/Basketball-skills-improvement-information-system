@@ -9,6 +9,15 @@ namespace Basketball.Infrastructure.Repositories
     {
         private readonly DatabaseContext _db = db;
 
+        public async Task<string> UploadExerciseProgressUrl(ExerciseProgress exerciseProgress)
+        {
+            var createdProgress = _db.Add(exerciseProgress);
+
+            await _db.SaveChangesAsync();
+
+            return createdProgress.Entity.ProgressVideoUrl;
+        }
+
         public async Task DeleteProgress(ExerciseProgress progress)
         {
             _db.ExerciseProgresses.Remove(progress);
@@ -38,13 +47,15 @@ namespace Basketball.Infrastructure.Repositories
             return updatedProgress.Entity;
         }
 
-        public async Task<string> UploadExerciseProgressUrl(ExerciseProgress exerciseProgress)
+        public async Task<Dictionary<Guid, int>> GetCounterByUserAndPositive(Guid userId)
         {
-            var createdProgress = _db.Add(exerciseProgress);
+            var exerciseProgress = await _db.ExerciseProgresses
+                                            .Where(x => x.UserId == userId
+                                                   && x.Grade > 4)
+                                            .GroupBy(x => x.TrainingPlanId)
+                                            .ToDictionaryAsync(x => x.Key, x => x.Count());
 
-            await _db.SaveChangesAsync();
-
-            return createdProgress.Entity.ProgressVideoUrl;
+            return exerciseProgress;
         }
     }
 }

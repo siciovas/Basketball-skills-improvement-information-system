@@ -10,5 +10,6 @@ namespace Basketball.Core.Interfaces.Repositories
         Task DeleteProgress(ExerciseProgress progress);
         Task<ExerciseProgress> GetProgressById(Guid id);
         Task<ExerciseProgress> Update(ExerciseProgress exerciseProgress);
+        Task<Dictionary<Guid, int>> GetCounterByUserAndPositive(Guid userId);
     }
 }
