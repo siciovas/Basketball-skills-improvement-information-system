@@ -7,10 +7,12 @@ using Basketball.Domain.Data.Entities;
 
 namespace Basketball.Services
 {
-    public class TrainingPlanService(ITrainingPlanRepository trainingPlanRepository, ISkillRepository skillRepository, IExerciseFlowRepository exerciseFlowRepository) : ITrainingPlanService
+    public class TrainingPlanService(ITrainingPlanRepository trainingPlanRepository, ISkillRepository skillRepository,
+                                     IOrderRepository orderRepository, IExerciseFlowRepository exerciseFlowRepository) : ITrainingPlanService
     {
         private readonly ITrainingPlanRepository _trainingPlanRepository = trainingPlanRepository;
         private readonly ISkillRepository _skillRepository = skillRepository;
+        private readonly IOrderRepository _orderRepository = orderRepository;
         private readonly IExerciseFlowRepository _exerciseFlowRepository = exerciseFlowRepository;
 
         public async Task<TrainingPlanDto> Create(TrainingPlanPostDto trainingPlan, Guid coachId)
@@ -260,6 +262,22 @@ namespace Basketball.Services
                     }).ToList(),
                 }).ToList(),
             };
+        }
+
+        public async Task<List<MyPlansDto>> GetMyPlans(Guid userId)
+        {
+            var orders = await _orderRepository.GetByUserId(userId);
+            var progressCounter = await _exerciseFlowRepository.GetCounterByUserAndPositive(userId);
+
+            return orders.Select(x => new MyPlansDto
+            {
+                Avatar = x.TrainingPlan.Avatar,
+                Name = x.TrainingPlan.Title,
+                CoachFullName = string.Format("{0} {1}", x.TrainingPlan.Coach.Name, x.TrainingPlan.Coach.Surname),
+                TrainingPlanId = x.TrainingPlanId,
+                ExpirationDate = x.OrderDate.AddDays(x.TrainingPlan.ExpirationDate),
+                ProgressCounter = ((progressCounter.TryGetValue(x.TrainingPlanId, out int count) ? count : 0 / x.TrainingPlan.Skills.Select(x => x.Exercises).Count()) * 100).ToString("F1")
+            }).ToList();
         }
     }
 }

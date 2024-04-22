@@ -87,5 +87,16 @@ namespace Basketball.Controllers
 
             return Ok(trainingPlan);
         }
+
+        [HttpGet("myPlans")]
+        [Authorize(Roles = "Student")]
+        public async Task<IActionResult> GetMyPlans()
+        {
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
+
+            var myPlans = await _trainingPlanService.GetMyPlans(userId);
+
+            return Ok(myPlans);
+        }
     }
 }

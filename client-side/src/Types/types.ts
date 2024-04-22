@@ -233,3 +233,11 @@ export interface SubmittedExercise {
   comment: string | null;
   grade: number | null;
 }
+export interface MyPlansDto {
+  avatar: string;
+  name: string;
+  coachFullName: string;
+  trainingPlanId: string;
+  expirationDate: Date;
+  progressCounter: string;
+}
