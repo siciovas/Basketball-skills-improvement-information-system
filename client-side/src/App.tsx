@@ -32,6 +32,7 @@ import TrainingPlans from "./pages/TrainingPlans";
 import TrainingPlanExecution from "./pages/TrainingPlanExecution";
 import ExercisesEvaluation from "./pages/ExercisesEvaluation";
 import MyPlans from "./pages/MyPlans";
+import ActiveClients from "./pages/ActiveClients";
 
 function App() {
   const navigate = useNavigate();
@@ -96,6 +97,7 @@ function App() {
           element={<ExercisesEvaluation />}
         />
         <Route path="myPlans" element={<MyPlans />} />
+        <Route path="activeClients" element={<ActiveClients />} />
       </Routes>
       <Footer />
     </>

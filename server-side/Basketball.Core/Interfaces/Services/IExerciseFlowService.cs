@@ -8,5 +8,6 @@ namespace Basketball.Core.Interfaces.Services
         Task<string> UploadExerciseProgress(UploadExerciseProgressPostDto progressDto, Guid userId);
         Task<ExerciseEvaluationDto> GetExercisesForEvaluation(Guid userId, Guid trainingPlanId);
         Task<EvaluationDto> EvaluateExercise(Guid id, EvaluationDto evaluationDto);
+        Task<List<ActiveClient>> GetActiveClients(Guid userId);
     }
 }

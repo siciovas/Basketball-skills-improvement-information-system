@@ -241,3 +241,12 @@ export interface MyPlansDto {
   expirationDate: Date;
   progressCounter: string;
 }
+
+export interface ActiveClient {
+  fullName: string;
+  trainingPlan: string;
+  trainingPlanId: string;
+  userId: string;
+  deadline: string;
+  isExistsNotEvaluatedExercises: boolean;
+}

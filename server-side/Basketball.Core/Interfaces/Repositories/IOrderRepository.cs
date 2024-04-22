@@ -13,5 +13,6 @@ namespace Basketball.Core.Interfaces.Repositories
         public Task RemoveExpiredOrders();
         public Task Remove(Order order);
         public Task<Dictionary<Guid, int>> GetClientsCount(List<Guid> coachesIds);
+        Task<List<Order>> GetActiveClients(Guid coachId);
     }
 }

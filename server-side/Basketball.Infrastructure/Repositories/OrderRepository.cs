@@ -95,5 +95,10 @@ namespace Basketball.Infrastructure.Repositories
                 .Select(t => new { t.Key, Count = t.Count() })
                 .ToDictionaryAsync(kvp => kvp.Key, kvp => kvp.Count);
         }
+
+        public async Task<List<Order>> GetActiveClients(Guid coachId)
+        {
+            return await _db.Orders.Include(x => x.User).Include(x => x.TrainingPlan).Where(x => x.TrainingPlan.CoachId == coachId).ToListAsync();
+        }
     }
 }

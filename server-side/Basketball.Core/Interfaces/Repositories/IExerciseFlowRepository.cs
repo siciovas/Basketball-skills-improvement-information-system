@@ -11,5 +11,6 @@ namespace Basketball.Core.Interfaces.Repositories
         Task<ExerciseProgress> GetProgressById(Guid id);
         Task<ExerciseProgress> Update(ExerciseProgress exerciseProgress);
         Task<Dictionary<Guid, int>> GetCounterByUserAndPositive(Guid userId);
+        Task<int> GetCounterByUserAndTrainingPlanAndNotEvaluated(Guid userId, Guid trainingPlanId);
     }
 }
