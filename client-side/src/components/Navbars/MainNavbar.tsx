@@ -17,7 +17,7 @@ const MainNavBar = () => {
       </Flex>
       <Flex gap={10} mr={5} alignItems="center">
         <Box cursor="pointer" onClick={() => navigate("/")}>
-          PAGRINDINIS
+          HOME PAGE
         </Box>
         <Box cursor="pointer" onClick={() => navigate("/allCoaches")}>
           TRENERIAI
