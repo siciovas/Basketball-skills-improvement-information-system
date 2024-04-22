@@ -78,5 +78,14 @@ namespace Basketball.Controllers
 
             return Ok(updatedTrainingPlan);
         }
+
+        [HttpGet("planExecution/{id}")]
+        public async Task<IActionResult> GetTrainingPlanForExecutionById(Guid id)
+        {
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
+            var trainingPlan = await _trainingPlanService.GetTrainingPlanForExecutionById(id, userId);
+
+            return Ok(trainingPlan);
+        }
     }
 }

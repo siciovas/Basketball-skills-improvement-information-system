@@ -3,6 +3,7 @@ using System;
 using Basketball.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Basketball.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20240421212659_Added grade")]
+    partial class Addedgrade
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -111,9 +114,6 @@ namespace Basketball.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<Guid>("SkillId")
-                        .HasColumnType("char(36)");
-
                     b.Property<Guid>("TrainingPlanId")
                         .HasColumnType("char(36)");
 
@@ -123,8 +123,6 @@ namespace Basketball.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ExerciseId");
-
-                    b.HasIndex("SkillId");
 
                     b.HasIndex("TrainingPlanId");
 
@@ -454,19 +452,13 @@ namespace Basketball.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Basketball.Domain.Data.Entities.Skill", "Skill")
-                        .WithMany()
-                        .HasForeignKey("SkillId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Basketball.Domain.Data.Entities.TrainingPlan", "TrainingPlan")
                         .WithMany()
                         .HasForeignKey("TrainingPlanId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Basketball.Domain.Data.Entities.User", "User")
+                    b.HasOne("Basketball.Domain.Data.Entities.User", "user")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -474,11 +466,9 @@ namespace Basketball.Infrastructure.Migrations
 
                     b.Navigation("Exercise");
 
-                    b.Navigation("Skill");
-
                     b.Navigation("TrainingPlan");
 
-                    b.Navigation("User");
+                    b.Navigation("user");
                 });
 
             modelBuilder.Entity("Basketball.Domain.Data.Entities.ExerciseSkill", b =>

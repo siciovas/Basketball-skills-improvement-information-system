@@ -7,10 +7,11 @@ using Basketball.Domain.Data.Entities;
 
 namespace Basketball.Services
 {
-    public class TrainingPlanService(ITrainingPlanRepository trainingPlanRepository, ISkillRepository skillRepository) : ITrainingPlanService
+    public class TrainingPlanService(ITrainingPlanRepository trainingPlanRepository, ISkillRepository skillRepository, IExerciseFlowRepository exerciseFlowRepository) : ITrainingPlanService
     {
         private readonly ITrainingPlanRepository _trainingPlanRepository = trainingPlanRepository;
         private readonly ISkillRepository _skillRepository = skillRepository;
+        private readonly IExerciseFlowRepository _exerciseFlowRepository = exerciseFlowRepository;
 
         public async Task<TrainingPlanDto> Create(TrainingPlanPostDto trainingPlan, Guid coachId)
         {
@@ -208,6 +209,34 @@ namespace Basketball.Services
                 IsActive = updatedTrainingPlan.IsActive,
                 Version = updatedTrainingPlan.Version,
                 Coach = string.Format("{0} {1}", updatedTrainingPlan.Coach.Name, updatedTrainingPlan.Coach.Surname)
+            };
+        }
+        public async Task<TrainingPlanExecutionDto> GetTrainingPlanForExecutionById(Guid id, Guid userId)
+        {
+            var trainingPlan = await _trainingPlanRepository.GetById(id);
+
+            var progress = await _exerciseFlowRepository.GetAllByUserIdAndTrainingPlanId(userId, trainingPlan!.Id);
+
+            return new TrainingPlanExecutionDto
+            {
+                Id = trainingPlan!.Id,
+                Coach = string.Format("{0} {1}", trainingPlan.Coach.Name, trainingPlan.Coach.Surname),
+                Title = trainingPlan.Title,
+                Skills = trainingPlan.Skills.Select(skill => new SkillExecutionDto
+                {
+                    Id = skill.Id,
+                    Description = skill.Description,
+                    Name = skill.Title,
+                    Exercises = skill.Exercises.Select(exercise => new ExerciseExecutionDto
+                    {
+                        Id = exercise.Id,
+                        Description = exercise.Description,
+                        Name = exercise.Name,
+                        ExerciseVideoUrl = exercise.ExerciseBlobUrl,
+                        Grade = progress.Where(x => x.TrainingPlanId == trainingPlan.Id && x.ExerciseId == exercise.Id && x.SkillId == skill.Id).FirstOrDefault()?.Grade,
+                        IsLocked = !progress.Exists(x => x.TrainingPlanId == trainingPlan.Id && x.ExerciseId == exercise.Id && x.SkillId == skill.Id && x.Grade != null && x.Grade > 4)
+                    }).ToList(),
+                }).ToList(),
             };
         }
     }

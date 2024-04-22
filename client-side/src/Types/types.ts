@@ -195,3 +195,26 @@ export interface CommissionFeeDto {
   value: number;
   isActive: boolean;
 }
+
+export interface TrainingPlanExecutionDto {
+  id: string;
+  title: string;
+  coach: string;
+  skills: SkillExecutionDto[];
+}
+
+export interface SkillExecutionDto {
+  id: string;
+  name: string;
+  description: string;
+  exercises: ExerciseExecutionDto[];
+}
+
+export interface ExerciseExecutionDto {
+  id: string;
+  name: string;
+  description: string;
+  grade: number | null;
+  isLocked: boolean;
+  exerciseVideoUrl: string;
+}
