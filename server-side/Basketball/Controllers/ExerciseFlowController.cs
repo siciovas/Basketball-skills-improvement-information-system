@@ -43,5 +43,15 @@ namespace Basketball.Controllers
 
             return Ok(updatedExercise);
         }
+
+        [HttpGet("activeClients")]
+        [Authorize(Roles = "Coach")]
+        public async Task<IActionResult> GetActiveClients()
+        {
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
+            var activeClients = await _exerciseFlowService.GetActiveClients(userId);
+
+            return Ok(activeClients);
+        }
     }
 }

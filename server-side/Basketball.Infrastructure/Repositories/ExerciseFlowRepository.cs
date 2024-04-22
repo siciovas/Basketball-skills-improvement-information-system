@@ -57,5 +57,15 @@ namespace Basketball.Infrastructure.Repositories
 
             return exerciseProgress;
         }
+
+        public async Task<int> GetCounterByUserAndTrainingPlanAndNotEvaluated(Guid userId, Guid trainingPlanId)
+        {
+            var count = await _db.ExerciseProgresses
+                                            .Where(x => x.UserId == userId
+                                                    && x.TrainingPlanId == trainingPlanId
+                                                    && x.Grade == null).CountAsync();
+
+            return count;
+        }
     }
 }

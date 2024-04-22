@@ -7,11 +7,12 @@ using Basketball.Domain.Data.Entities;
 
 namespace Basketball.Services
 {
-    public class ExerciseFlowService(IExerciseFlowRepository exerciseFlowRepository, IConfiguration configuration, IUserRepository userRepository) : IExerciseFlowService
+    public class ExerciseFlowService(IExerciseFlowRepository exerciseFlowRepository, IConfiguration configuration, IUserRepository userRepository, IOrderRepository orderRepository) : IExerciseFlowService
     {
         private readonly IExerciseFlowRepository _exerciseFlowRepository = exerciseFlowRepository;
         private readonly IConfiguration _configuration = configuration;
         private readonly IUserRepository _userRepository = userRepository;
+        private readonly IOrderRepository _orderRepository = orderRepository;
 
         public async Task<EvaluationDto> EvaluateExercise(Guid id, EvaluationDto evaluationDto)
         {
@@ -26,6 +27,28 @@ namespace Basketball.Services
                 Grade = (int)updated.Grade!,
                 Comment = evaluationDto.Comment,
             };
+        }
+
+        public async Task<List<ActiveClient>> GetActiveClients(Guid userId)
+        {
+            var notEvaluatedExercisesCounts = new Dictionary<Guid, int>();
+            var activeClients = await _orderRepository.GetActiveClients(userId);
+
+            foreach (var activeClient in activeClients)
+            {
+                var clientNotEvaluatedExercisesCount = await _exerciseFlowRepository.GetCounterByUserAndTrainingPlanAndNotEvaluated(activeClient.UserId, activeClient.TrainingPlanId);
+                notEvaluatedExercisesCounts.Add(activeClient.TrainingPlanId, clientNotEvaluatedExercisesCount);
+            }
+
+            return activeClients.Select(activeClient => new ActiveClient
+            {
+                FullName = string.Format("{0} {1}", activeClient.User.Name, activeClient.User.Surname),
+                TrainingPlan = activeClient.TrainingPlan.Title,
+                TrainingPlanId = activeClient.TrainingPlanId,
+                UserId = activeClient.UserId,
+                Deadline = activeClient.OrderDate.AddDays(activeClient.TrainingPlan.ExpirationDate),
+                IsExistsNotEvaluatedExercises = notEvaluatedExercisesCounts.TryGetValue(activeClient.TrainingPlanId, out int count) && count > 0
+            }).ToList();
         }
 
         public async Task<ExerciseEvaluationDto> GetExercisesForEvaluation(Guid userId, Guid trainingPlanId)
