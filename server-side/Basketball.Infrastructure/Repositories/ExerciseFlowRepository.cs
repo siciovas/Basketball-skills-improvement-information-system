@@ -17,12 +17,25 @@ namespace Basketball.Infrastructure.Repositories
 
         public async Task<List<ExerciseProgress>> GetAllByUserIdAndTrainingPlanId(Guid userId, Guid trainingPlanId)
         {
-            return await _db.ExerciseProgresses.Where(x => x.UserId == userId && x.TrainingPlanId == trainingPlanId).ToListAsync();
+            return await _db.ExerciseProgresses.Include(x => x.Exercise).Where(x => x.UserId == userId && x.TrainingPlanId == trainingPlanId).ToListAsync();
         }
 
         public async Task<ExerciseProgress?> GetProgress(Guid userId, Guid trainingPlanId, Guid skillId, Guid exerciseId)
         {
             return await _db.ExerciseProgresses.Where(x => x.UserId == userId && x.TrainingPlanId == trainingPlanId && x.SkillId == skillId && x.ExerciseId == exerciseId).FirstOrDefaultAsync();
+        }
+
+        public async Task<ExerciseProgress> GetProgressById(Guid id)
+        {
+            return await _db.ExerciseProgresses.FirstAsync(x => x.Id == id);
+        }
+
+        public async Task<ExerciseProgress> Update(ExerciseProgress exerciseProgress)
+        {
+            var updatedProgress = _db.ExerciseProgresses.Update(exerciseProgress);
+            await _db.SaveChangesAsync();
+
+            return updatedProgress.Entity;
         }
 
         public async Task<string> UploadExerciseProgressUrl(ExerciseProgress exerciseProgress)

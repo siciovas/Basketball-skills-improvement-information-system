@@ -250,8 +250,9 @@ namespace Basketball.Services
                         Description = exercise.Description,
                         Name = exercise.Name,
                         ExerciseVideoUrl = exercise.ExerciseBlobUrl,
-                        Grade = progress.Where(x => x.TrainingPlanId == trainingPlan.Id && x.ExerciseId == exercise.Id && x.SkillId == skill.Id).FirstOrDefault()?.Grade,
-                        IsLocked = !progress.Exists(x => x.TrainingPlanId == trainingPlan.Id && x.ExerciseId == exercise.Id && x.SkillId == skill.Id && x.Grade != null && x.Grade > 4)
+                        Grade = progress.Where(x => x.TrainingPlanId == trainingPlan.Id && x.ExerciseId == exercise.Id && x.SkillId == skill.Id).LastOrDefault()?.Grade,
+                        IsLocked = !progress.Exists(x => x.TrainingPlanId == trainingPlan.Id && x.ExerciseId == exercise.Id && x.SkillId == skill.Id && x.Grade != null && x.Grade > 4),
+                        Comment = progress.Where(x => x.TrainingPlanId == trainingPlan.Id && x.ExerciseId == exercise.Id && x.SkillId == skill.Id).LastOrDefault()?.Comment
                     }).ToList(),
                 }).ToList(),
             };

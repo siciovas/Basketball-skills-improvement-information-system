@@ -13,5 +13,6 @@
         public Skill Skill { get; set; } = null!;
         public string ProgressVideoUrl { get; set; } = null!;
         public int? Grade { get; set; }
+        public string? Comment { get; set; }
     }
 }
