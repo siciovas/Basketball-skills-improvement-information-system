@@ -100,5 +100,10 @@ namespace Basketball.Infrastructure.Repositories
         {
             return await _db.Orders.Include(x => x.User).Include(x => x.TrainingPlan).Where(x => x.TrainingPlan.CoachId == coachId).ToListAsync();
         }
+
+        public async Task<Order> GetByTrainingPlanAndUserId(Guid userId, Guid trainingPlanId)
+        {
+            return await _db.Orders.Include(x => x.TrainingPlan).FirstAsync(x => x.TrainingPlanId == trainingPlanId && x.UserId == userId);
+        }
     }
 }

@@ -108,47 +108,55 @@ const TrainingPlan = () => {
               Užsakyti
             </Button>
           </Flex>
-          <Heading size="md" mt={5}>
-            Treniruočių plano turinys
-          </Heading>
-          <Flex
-            boxShadow="dark-lg"
-            borderRadius="xl"
-            border="solid"
-            borderColor="#9e9d9d"
-            flexDirection="column"
-            gap={2}
-            p={5}
-            mt={5}
-          >
-            <Heading size="md">ĮGŪDŽIAI</Heading>
-            <Accordion allowToggle>
-              {trainingPlan?.skills.map((skill) => {
-                return (
-                  <AccordionItem>
-                    <AccordionButton border="solid" borderColor="#9e9d9d">
-                      <Box as="span" flex="1" textAlign="left">
-                        {skill.name}
-                      </Box>
-                      <AccordionIcon />
-                    </AccordionButton>
-                    <AccordionPanel border="solid" borderColor="#9e9d9d" pb={4}>
-                      <Flex flexDirection="column">
-                        {skill.exercises.map((exercise) => {
-                          return (
-                            <Flex alignItems="center" gap={2}>
-                              <Box className="fa-regular fa-circle-play" />
-                              <Box>{exercise}</Box>
-                            </Flex>
-                          );
-                        })}
-                      </Flex>
-                    </AccordionPanel>
-                  </AccordionItem>
-                );
-              })}
-            </Accordion>
-          </Flex>
+          {!trainingPlan?.isPersonal && (
+            <>
+              <Heading size="md" mt={5}>
+                Treniruočių plano turinys
+              </Heading>
+              <Flex
+                boxShadow="dark-lg"
+                borderRadius="xl"
+                border="solid"
+                borderColor="#9e9d9d"
+                flexDirection="column"
+                gap={2}
+                p={5}
+                mt={5}
+              >
+                <Heading size="md">ĮGŪDŽIAI</Heading>
+                <Accordion allowToggle>
+                  {trainingPlan?.skills.map((skill) => {
+                    return (
+                      <AccordionItem>
+                        <AccordionButton border="solid" borderColor="#9e9d9d">
+                          <Box as="span" flex="1" textAlign="left">
+                            {skill.name}
+                          </Box>
+                          <AccordionIcon />
+                        </AccordionButton>
+                        <AccordionPanel
+                          border="solid"
+                          borderColor="#9e9d9d"
+                          pb={4}
+                        >
+                          <Flex flexDirection="column">
+                            {skill.exercises.map((exercise) => {
+                              return (
+                                <Flex alignItems="center" gap={2}>
+                                  <Box className="fa-regular fa-circle-play" />
+                                  <Box>{exercise}</Box>
+                                </Flex>
+                              );
+                            })}
+                          </Flex>
+                        </AccordionPanel>
+                      </AccordionItem>
+                    );
+                  })}
+                </Accordion>
+              </Flex>
+            </>
+          )}
         </>
       )}
     </Container>

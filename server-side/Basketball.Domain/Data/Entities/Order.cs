@@ -11,5 +11,6 @@
         public TrainingPlan TrainingPlan { get; set; } = null!;
         public Guid TrainingPlanId { get; set; }
         public decimal? CommissionFee { get; set; }
+        public string? TrainingPlanRequest { get; set; }
     }
 }

@@ -26,6 +26,7 @@ import eventBus from "../Helpers/eventBus";
 import ReactPlayer from "react-player";
 import { TrainingPlanExecutionDto } from "../Types/types";
 import ExerciseProgressForm from "../components/forms/ExerciseProgressForm";
+import moment from "moment";
 
 const TrainingPlanExecution = () => {
   const { onOpen, onClose, isOpen } = useDisclosure();
@@ -83,7 +84,7 @@ const TrainingPlanExecution = () => {
             {trainingPlan?.coach}
           </Heading>
           <Heading size="xs" mt={2} textTransform="uppercase">
-            {"Terminas:"}
+            {`Terminas: ${moment(trainingPlan.deadline).format("YYYY-MM-DD")}`}
           </Heading>
           <Flex
             boxShadow="dark-lg"

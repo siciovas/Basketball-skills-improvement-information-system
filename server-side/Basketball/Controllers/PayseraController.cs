@@ -2,18 +2,20 @@
 using Microsoft.AspNetCore.Mvc;
 using EVP.WebToPay.ClientAPI;
 using Microsoft.AspNetCore.Authorization;
+using Basketball.Core.Interfaces.Services;
 
 namespace Basketball.Controllers
 {
     [ApiController]
     [Route("api/paysera")]
-    public class PayseraController(IConfiguration configuration) : ControllerBase
+    public class PayseraController(IConfiguration configuration, IOrderService orderService) : ControllerBase
     {
         private readonly IConfiguration _configuration = configuration;
+        private readonly IOrderService _orderService = orderService;
 
         [HttpPost]
         [Authorize]
-        public ActionResult<string> CreatePayment([FromBody] PayseraDto payseraDto)
+        public async Task<IActionResult> CreatePayment([FromBody] PayseraDto payseraDto)
         {
             var email = User.Identity!.Name;
             var baseUrl = _configuration["AppUrl"]!;
@@ -34,6 +36,11 @@ namespace Basketball.Controllers
             request.AcceptUrl = $"{baseUrl}/successfulPayment?ordernumber={payseraDto.OrderNumber}";
             request.CancelUrl = $"{baseUrl}/successfulPayment";
             request.CallbackUrl = $"{baseUrl}/successfulPayment";
+
+            if(payseraDto.TrainingPlanRequest != null)
+            {
+                await _orderService.UpdateTrainingPlanRequest(Guid.Parse(payseraDto.OrderNumber), payseraDto.TrainingPlanRequest);
+            }
 
             string redirectUrl = client.BuildRequestUrl(request);
 

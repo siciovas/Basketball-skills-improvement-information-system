@@ -10,5 +10,7 @@
         public decimal Price { get; set; }
         public decimal? CommissionFee { get; set; }
         public bool? IsPaid { get; set; }
+        public string? TrainingPlanRequest { get; set; }
+        public bool IsPersonal { get; set; }
     }
 }

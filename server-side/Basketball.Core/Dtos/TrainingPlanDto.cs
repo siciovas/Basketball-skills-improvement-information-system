@@ -13,5 +13,6 @@
         public int Version { get; set; }
         public required string Coach { get; set; }
         public List<TrainingPlanSkillDto> Skills { get; set; } = [];
+        public bool IsPersonal { get; set; }
     }
 }

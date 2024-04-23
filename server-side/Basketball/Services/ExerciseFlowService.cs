@@ -54,11 +54,14 @@ namespace Basketball.Services
         public async Task<ExerciseEvaluationDto> GetExercisesForEvaluation(Guid userId, Guid trainingPlanId)
         {
             var user = await _userRepository.GetUserById(userId);
+            var order = await _orderRepository.GetByTrainingPlanAndUserId(userId, trainingPlanId);
             var userSubmissions = await _exerciseFlowRepository.GetAllByUserIdAndTrainingPlanId(userId, trainingPlanId);
 
             return new ExerciseEvaluationDto
             {
                 Student = string.Format("{0} {1}", user.Name, user.Surname),
+                IsPersonal = order.TrainingPlan.IsPersonal,
+                TrainingPlanRequest = order.TrainingPlanRequest,
                 SubmittedExercises = userSubmissions.Select(submission => new SubmittedExercise
                 {
                     Id = submission.Id,

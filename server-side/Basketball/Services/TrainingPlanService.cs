@@ -38,7 +38,8 @@ namespace Basketball.Services
                 IsActive = trainingPlan.IsActive,
                 Version = 1,
                 CoachId = coachId,
-                Skills = skills
+                Skills = skills,
+                IsPersonal = trainingPlan.IsPersonal,
             };
 
             var createdTrainingPlan = await _trainingPlanRepository.Create(newTrainingPlan);
@@ -141,7 +142,8 @@ namespace Basketball.Services
                 IsActive = trainingPlan.IsActive,
                 Version = trainingPlan.Version,
                 Coach = string.Format("{0} {1}", trainingPlan.Coach.Name, trainingPlan.Coach.Surname),
-                Skills = skills
+                Skills = skills,
+                IsPersonal = trainingPlan.IsPersonal,
             };
         }
 
@@ -178,7 +180,8 @@ namespace Basketball.Services
                     Version = trainingPlan!.Version + 1,
                     CoachId = trainingPlan.CoachId,
                     InitialTrainingPlanId = trainingPlan.InitialTrainingPlanId,
-                    Skills = skills
+                    Skills = skills,
+                    IsPersonal = trainingPlan.IsPersonal,
                 };
             }
             else
@@ -237,7 +240,7 @@ namespace Basketball.Services
         public async Task<TrainingPlanExecutionDto> GetTrainingPlanForExecutionById(Guid id, Guid userId)
         {
             var trainingPlan = await _trainingPlanRepository.GetById(id);
-
+            var order = await _orderRepository.GetByTrainingPlanAndUserId(userId, id);
             var progress = await _exerciseFlowRepository.GetAllByUserIdAndTrainingPlanId(userId, trainingPlan!.Id);
 
             return new TrainingPlanExecutionDto
@@ -245,6 +248,7 @@ namespace Basketball.Services
                 Id = trainingPlan!.Id,
                 Coach = string.Format("{0} {1}", trainingPlan.Coach.Name, trainingPlan.Coach.Surname),
                 Title = trainingPlan.Title,
+                Deadline = order.OrderDate.AddDays(trainingPlan.ExpirationDate),
                 Skills = trainingPlan.Skills.Select(skill => new SkillExecutionDto
                 {
                     Id = skill.Id,

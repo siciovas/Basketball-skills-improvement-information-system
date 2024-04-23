@@ -26,7 +26,7 @@ namespace Basketball.Services
                 Price = trainingPlan!.Price,
                 TrainingPlanId = orderDto.TrainingPlanId,
                 UserId = userId,
-                CommissionFee = commissionFee.IsActive ? commissionFee.Value * 0.01m * trainingPlan.Price : null,
+                CommissionFee = commissionFee.IsActive ? commissionFee.Value * 0.01m * trainingPlan.Price : null
             };
 
             var createdOrder = await _orderRepository.Create(newOrder);
@@ -47,6 +47,7 @@ namespace Basketball.Services
                 CommissionFee = x.CommissionFee,
                 TrainingPlanTitle = x.TrainingPlan.Title,
                 IsPaid = x.IsPaid,
+                TrainingPlanRequest = x.TrainingPlanRequest
             }).ToList();
         }
 
@@ -62,7 +63,8 @@ namespace Basketball.Services
                 StudentFullName = string.Format("{0} {1}", x.User.Name, x.User.Surname),
                 CoachFullName = string.Format("{0} {1}", x.TrainingPlan.Coach.Name, x.TrainingPlan.Coach.Surname),
                 CommissionFee = x.CommissionFee,
-                TrainingPlanTitle = x.TrainingPlan.Title
+                TrainingPlanTitle = x.TrainingPlan.Title,
+                TrainingPlanRequest = x.TrainingPlanRequest
             }).ToList();
         }
 
@@ -91,7 +93,9 @@ namespace Basketball.Services
                 CoachFullName = string.Format("{0} {1}", order.TrainingPlan.Coach.Name, order.TrainingPlan.Coach.Surname),
                 Price = order.Price,
                 CommissionFee = order.CommissionFee,
-                TrainingPlanTitle = order.TrainingPlan.Title
+                TrainingPlanTitle = order.TrainingPlan.Title,
+                TrainingPlanRequest = order.TrainingPlanRequest,
+                IsPersonal = order.TrainingPlan.IsPersonal
             };
         }
 
@@ -126,6 +130,15 @@ namespace Basketball.Services
             var userTrainingPlansByCoachIdCount = userTrainingPlans.Count(x => x.IsPaid && x.TrainingPlan.CoachId == coachId);
 
             return userTrainingPlansByCoachIdCount > 0;
+        }
+
+        public async Task UpdateTrainingPlanRequest(Guid orderId, string trainingPlanRequest)
+        {
+            var order = await _orderRepository.GetById(orderId);
+
+            order!.TrainingPlanRequest = trainingPlanRequest;
+
+            await _orderRepository.Update(order);
         }
     }
 }

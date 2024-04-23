@@ -90,6 +90,7 @@ export interface CheckoutDto {
   trainingPlanTitle: string;
   price: number;
   commissionFee: number | null;
+  isPersonal: boolean;
 }
 export interface Counts {
   coaches: number | null;
@@ -148,6 +149,7 @@ export interface TrainingPlanViewDto {
   price: number;
   coach: string;
   skills: TrainingPlanSkill[];
+  isPersonal: boolean;
 }
 
 export interface TrainingPlanSkill {
@@ -201,6 +203,7 @@ export interface TrainingPlanExecutionDto {
   id: string;
   title: string;
   coach: string;
+  deadline: string;
   skills: SkillExecutionDto[];
 }
 
@@ -223,6 +226,8 @@ export interface ExerciseExecutionDto {
 
 export interface Submissions {
   student: string;
+  isPersonal: boolean;
+  trainingPlanRequest: string | null;
   submittedExercises: SubmittedExercise[];
 }
 
