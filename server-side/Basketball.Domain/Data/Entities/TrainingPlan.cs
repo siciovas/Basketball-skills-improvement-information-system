@@ -19,5 +19,6 @@ namespace Basketball.Domain.Data.Entities
         public Guid? InitialTrainingPlanId { get; set; }
         public TrainingPlan? InitialTrainingPlan { get; set; }
         public ICollection<Skill> Skills { get; set; } = [];
+        public bool IsPersonal { get; set; }
     }
 }

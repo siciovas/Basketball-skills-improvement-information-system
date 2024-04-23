@@ -10,5 +10,6 @@
         public decimal Price { get; set; }
         public bool IsActive { get; set; }
         public required List<Guid> Skills { get; set; }
+        public bool IsPersonal { get; set; }
     }
 }

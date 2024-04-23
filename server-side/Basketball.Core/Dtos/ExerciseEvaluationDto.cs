@@ -10,6 +10,8 @@ namespace Basketball.Core.Dtos
     {
         public required string Student { get; set; }
         public List<SubmittedExercise> SubmittedExercises { get; set; } = [];
+        public bool IsPersonal { get; set; }
+        public string? TrainingPlanRequest { get; set; }
 
     }
 

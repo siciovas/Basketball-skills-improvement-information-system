@@ -12,5 +12,6 @@ namespace Basketball.Core.Dtos
         public required string Title { get; set; }
         public required string Coach { get; set; }
         public List<SkillExecutionDto> Skills { get; set; } = [];
+        public DateTime Deadline { get; set; }
     }
 }

@@ -17,8 +17,15 @@ import {
   useDisclosure,
   Spinner,
   Center,
+  Textarea,
 } from "@chakra-ui/react";
-import { useCallback, useEffect, useState, MouseEvent } from "react";
+import {
+  useCallback,
+  useEffect,
+  useState,
+  MouseEvent,
+  ChangeEvent,
+} from "react";
 import toast from "react-hot-toast";
 import { Unauthorized } from "../Helpers/constants";
 import eventBus from "../Helpers/eventBus";
@@ -28,6 +35,9 @@ const Checkout = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isLoading, setIsLoading] = useState(true);
   const [checkoutDetails, setCheckoutDetails] = useState<CheckoutDto>();
+  const [trainingPlanRequest, setTrainingPlanRequest] = useState<string | null>(
+    null
+  );
   const token = localStorage.getItem("accessToken");
   const { id } = useParams();
   const navigate = useNavigate();
@@ -54,6 +64,12 @@ const Checkout = () => {
     }
   }, []);
 
+  const handleTrainingPlanRequestChange = (
+    e: ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setTrainingPlanRequest(e.target.value);
+  };
+
   const submitCheckout = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const response = await fetch(import.meta.env.VITE_API_URL + "paysera", {
@@ -65,6 +81,7 @@ const Checkout = () => {
       body: JSON.stringify({
         orderNumber: id,
         amount: checkoutDetails?.price,
+        trainingPlanRequest,
       }),
     });
 
@@ -134,6 +151,28 @@ const Checkout = () => {
                 </Flex>
               </Flex>
             </Box>
+            {checkoutDetails?.isPersonal && (
+              <Box border="solid" p={5}>
+                <Flex alignItems="center" gap={5}>
+                  <Box className="fa-solid fa-cart-shopping fa-2xl" />
+                  <Heading size="lg" mb={2}>
+                    Individualaus plano užklausa
+                  </Heading>
+                </Flex>
+                <Divider borderColor="black" />
+                <Flex mt={2} flexDirection="column">
+                  <Box>
+                    Nurodykite savo lūkesčius individualiam treniruočių planui:
+                  </Box>
+                  <Textarea
+                    value={trainingPlanRequest as string}
+                    onChange={handleTrainingPlanRequestChange}
+                    border="solid"
+                    borderColor="#9e9d9d"
+                  />
+                </Flex>
+              </Box>
+            )}
             <Box border="solid" mt={5} p={5}>
               <Flex alignItems="center" gap={5}>
                 <Box className="fa-regular fa-credit-card fa-2xl" />

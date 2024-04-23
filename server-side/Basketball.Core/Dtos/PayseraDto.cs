@@ -4,5 +4,6 @@
     {
         public int Amount { get; set; }
         public required string OrderNumber { get; set; }
+        public string? TrainingPlanRequest { get; set; }
     }
 }

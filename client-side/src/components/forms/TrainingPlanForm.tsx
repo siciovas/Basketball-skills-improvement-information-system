@@ -47,6 +47,7 @@ const TrainingPlanForm = ({ onClose, trainingPlanId }: Props) => {
     price: 0,
     isActive: false,
     skills: [] as string[],
+    isPersonal: false,
   });
   const [isNewVersion, setIsNewVersion] = useState(false);
   const [skills, setSkills] = useState<GenericSkillInfo[]>([]);
@@ -91,6 +92,10 @@ const TrainingPlanForm = ({ onClose, trainingPlanId }: Props) => {
     const name = e.target.name;
     const value = e.target.value;
     setFormState({ ...formState, [name]: value });
+  };
+
+  const handlePlanTypeSwitch = () => {
+    setFormState({ ...formState, isPersonal: !formState.isPersonal });
   };
 
   const handleSwitchChange = () => {
@@ -141,6 +146,7 @@ const TrainingPlanForm = ({ onClose, trainingPlanId }: Props) => {
         skills: trainingPlan.skills.map((skill: GenericSkillInfo) => {
           return skill.id;
         }),
+        isPersonal: trainingPlan.isPersonal,
       });
       await getSkillsList();
     } else {
@@ -301,58 +307,74 @@ const TrainingPlanForm = ({ onClose, trainingPlanId }: Props) => {
                 />
               </Box>
             </Flex>
-            <FormLabel mt={5}>Įtraukti įgūdį</FormLabel>
-            <Flex gap={5}>
-              <Menu closeOnSelect={false}>
-                <MenuButton width="60%" as={Button}>
-                  <Box>
-                    {formState.skills
-                      .map((skill) => {
-                        return skills.find((x) => x.id === skill)?.name;
-                      })
-                      .join(", ")
-                      .substring(0, 30)}
-                  </Box>
-                </MenuButton>
-                <MenuList width="60%">
-                  <MenuOptionGroup
-                    type="checkbox"
-                    value={formState.skills}
-                    onChange={onSkillChange}
-                  >
-                    {skills.map((skill) => {
-                      return (
-                        <MenuItemOption value={skill.id}>
-                          {skill.name}
-                        </MenuItemOption>
-                      );
-                    })}
-                  </MenuOptionGroup>
-                </MenuList>
-              </Menu>
-            </Flex>
-            <Heading size="sm" mb={5} mt={5}>
-              Pridėti įgūdžiai:
-            </Heading>
-            <Box>Keiskite įgūdžių eiliškumą, keičiant jų padėtį.</Box>
-            {formState.skills.map((skill) => {
-              return (
-                <Box
-                  borderWidth="thick"
-                  px={2}
-                  mt={2}
-                  border="solid"
-                  cursor="pointer"
-                  draggable
-                  onDragStart={(e) => handleDragStart(e, skill)}
-                  onDragEnd={handleDragEnd}
-                  onDragOver={handleDragOver}
-                  onDrop={() => handleDrop(skill)}
-                >
-                  {skills.find((x) => x.id === skill)?.name}
-                </Box>
-              );
-            })}
+            {trainingPlanId === undefined && (
+              <Box>
+                <FormLabel mt={5}>Ar planas individualus?</FormLabel>
+                <Switch
+                  size="lg"
+                  colorScheme="blue"
+                  onChange={handlePlanTypeSwitch}
+                  isChecked={formState.isPersonal}
+                />
+              </Box>
+            )}
+            {(!formState.isPersonal || trainingPlanId !== undefined) && (
+              <>
+                <FormLabel mt={5}>Įtraukti įgūdį</FormLabel>
+                <Flex gap={5}>
+                  <Menu closeOnSelect={false}>
+                    <MenuButton width="60%" as={Button}>
+                      <Box>
+                        {formState.skills
+                          .map((skill) => {
+                            return skills.find((x) => x.id === skill)?.name;
+                          })
+                          .join(", ")
+                          .substring(0, 30)}
+                      </Box>
+                    </MenuButton>
+                    <MenuList width="60%">
+                      <MenuOptionGroup
+                        type="checkbox"
+                        value={formState.skills}
+                        onChange={onSkillChange}
+                      >
+                        {skills.map((skill) => {
+                          return (
+                            <MenuItemOption value={skill.id}>
+                              {skill.name}
+                            </MenuItemOption>
+                          );
+                        })}
+                      </MenuOptionGroup>
+                    </MenuList>
+                  </Menu>
+                </Flex>
+                <Heading size="sm" mb={5} mt={5}>
+                  Pridėti įgūdžiai:
+                </Heading>
+                <Box>Keiskite įgūdžių eiliškumą, keičiant jų padėtį.</Box>
+                {formState.skills.map((skill) => {
+                  return (
+                    <Box
+                      borderWidth="thick"
+                      px={2}
+                      mt={2}
+                      border="solid"
+                      cursor="pointer"
+                      draggable
+                      onDragStart={(e) => handleDragStart(e, skill)}
+                      onDragEnd={handleDragEnd}
+                      onDragOver={handleDragOver}
+                      onDrop={() => handleDrop(skill)}
+                    >
+                      {skills.find((x) => x.id === skill)?.name}
+                    </Box>
+                  );
+                })}
+              </>
+            )}
+
             {trainingPlanId && (
               <Checkbox
                 mt={5}

@@ -14,5 +14,6 @@ namespace Basketball.Core.Interfaces.Repositories
         public Task Remove(Order order);
         public Task<Dictionary<Guid, int>> GetClientsCount(List<Guid> coachesIds);
         Task<List<Order>> GetActiveClients(Guid coachId);
+        public Task<Order> GetByTrainingPlanAndUserId(Guid userId, Guid trainingPlanId);
     }
 }
