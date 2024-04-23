@@ -36,6 +36,7 @@ const CoachDetails = () => {
   const [coach, setCoach] = useState<CoachProfile>();
   const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
   const [canUserReport, setCanUserReport] = useState(false);
+  const [canUserFeedback, setCanUserFeedback] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const { id } = useParams();
@@ -79,6 +80,7 @@ const CoachDetails = () => {
       );
       const canReport = await hasPlanResponse.json();
       setCanUserReport(canReport);
+      setCanUserFeedback(canReport);
       setPages({
         ...pages,
         total: Math.ceil(coach.trainingPlans.length / itemsPerPage),
@@ -194,6 +196,7 @@ const CoachDetails = () => {
                       />
                       {coach?.rating}
                     </Box>
+                    {canUserFeedback && (
                     <Button
                       textTransform="uppercase"
                       background="#1E99D6"
@@ -201,8 +204,9 @@ const CoachDetails = () => {
                       borderRadius="2xl"
                       onClick={() => onOpen()}
                     >
-                      TEST: Rašyti atsiliepima
+                      RAŠYTI ATSILIEPIMĄ
                     </Button>
+                    )}
                     {canUserReport && (
                       <Button
                         textTransform="uppercase"
@@ -321,7 +325,7 @@ const CoachDetails = () => {
         <ModalContent>
           <ModalCloseButton />
           <ModalBody>
-            <FeedbackForm />
+            <FeedbackForm coachId={coach?.id as string}/>
           </ModalBody>
         </ModalContent>
       </Modal>

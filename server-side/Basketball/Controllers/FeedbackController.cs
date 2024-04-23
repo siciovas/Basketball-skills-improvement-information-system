@@ -31,15 +31,6 @@ namespace Basketball.Controllers
             return Ok(feedbacks);
         }
 
-        [HttpGet("trainingPlan/{id}")]
-        [Authorize]
-        public async Task<IActionResult> GetAllFeedbacksByTrainingPlanId(Guid id)
-        {
-            var feedbacks = await _feedbackService.GetAllByTrainingPlanId(id);
-
-            return Ok(feedbacks);
-        }
-
         [HttpDelete("{id}")]
         [Authorize(Roles = "Student")]
         public async Task<IActionResult> Delete(Guid id)

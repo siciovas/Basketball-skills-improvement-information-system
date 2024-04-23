@@ -18,8 +18,8 @@ namespace Basketball.Services
                 FeedbackText = feedback.FeedbackText,
                 Date = DateOnly.FromDateTime(DateTime.Now),
                 StudentId = studentId,
-                TrainingPlanId = feedback.TrainingPlanId,
                 Rating = feedback.Rating,
+                CoachId = feedback.CoachId,
             });
 
             return new FeedbackDto
@@ -28,7 +28,8 @@ namespace Basketball.Services
                 FeedbackText = createdFeedback.FeedbackText,
                 Date = createdFeedback.Date,
                 Rating = createdFeedback.Rating,
-                Student = string.Format("{0}", createdFeedback.Student.Name)
+                Student = string.Format("{0}", createdFeedback.Student.Name),
+                CoachId = createdFeedback.CoachId,
             };
         }
 
@@ -49,21 +50,8 @@ namespace Basketball.Services
                 FeedbackText = x.FeedbackText,
                 Date = x.Date,
                 Rating = x.Rating,
-                Student = string.Format("{0}", x.Student.Name)
-            }).ToList();
-        }
-
-        public async Task<List<FeedbackDto>> GetAllByTrainingPlanId(Guid trainingPlanId)
-        {
-            var feedbacks = await _feedbackRepository.GetAllByTrainingPlanId(trainingPlanId);
-
-            return feedbacks.Select(x => new FeedbackDto
-            {
-                Id = x.Id,
-                FeedbackText = x.FeedbackText,
-                Date = x.Date,
-                Rating = x.Rating,
-                Student = string.Format("{0}", x.Student.Name)
+                Student = string.Format("{0}", x.Student.Name),
+                CoachId = x.CoachId,
             }).ToList();
         }
 
@@ -77,7 +65,8 @@ namespace Basketball.Services
                 FeedbackText = feedback.FeedbackText,
                 Date = feedback.Date,
                 Rating = feedback.Rating,
-                Student = string.Format("{0}", feedback.Student.Name)
+                Student = string.Format("{0}", feedback.Student.Name),
+                CoachId = feedback.CoachId,
             };
         }
 
@@ -103,7 +92,8 @@ namespace Basketball.Services
                 FeedbackText = updatedFeedback.FeedbackText,
                 Date = updatedFeedback.Date,
                 Rating = updatedFeedback.Rating,
-                Student = string.Format("{0}", updatedFeedback.Student.Name)
+                Student = string.Format("{0}", updatedFeedback.Student.Name),
+                CoachId = updatedFeedback.CoachId,
             };
         }
 
@@ -120,6 +110,7 @@ namespace Basketball.Services
                 FeedbackText = x.FeedbackText,
                 Rating = x.Rating,
                 Student = string.Format("{0}", x.Student.Name),
+                CoachId = x.CoachId,
             }).ToList();
         }
     }

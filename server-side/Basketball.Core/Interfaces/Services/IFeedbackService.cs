@@ -9,7 +9,6 @@ namespace Basketball.Core.Interfaces.Services
         Task<FeedbackDto> Create(FeedbackPostDto feedback, Guid studentId);
         Task<List<FeedbackDto>> GetAll();
         Task<FeedbackDto?> GetById(Guid id);
-        Task<List<FeedbackDto>> GetAllByTrainingPlanId(Guid trainingPlanId);
         Task Delete(Guid id);
         Task<FeedbackDto> Update(FeedbackUpdateDto feedback, Guid id);
         Task<bool> IsFeedbackOwnedByStudent(Guid studentId, Guid id);

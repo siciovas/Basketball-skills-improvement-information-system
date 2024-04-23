@@ -11,7 +11,11 @@ import ModalWindow from "../ModalWindow";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
-const FeedbackForm = () => {
+interface Props {
+  coachId: string;
+}
+
+const FeedbackForm = ({ coachId }: Props) => {
   const [stars, setStars] = useState<string[]>(Array(5).fill("regular"));
   const { isOpen, onOpen, onClose } = useDisclosure();
   const token = localStorage.getItem("accessToken");
@@ -44,6 +48,7 @@ const FeedbackForm = () => {
       body: JSON.stringify({
         feedbackText: feedback,
         rating: stars.filter((x) => x === "solid").length,
+        coachId: coachId,
       }),
     });
     if (response.status === 201) {
