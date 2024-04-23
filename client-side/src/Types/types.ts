@@ -174,6 +174,7 @@ export interface Feedback {
   date: string;
   rating: number;
   student: string;
+  coachId: string;
 }
 export interface Statistics {
   registeredCoaches: { [key: number]: number };

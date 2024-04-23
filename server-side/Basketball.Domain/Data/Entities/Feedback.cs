@@ -8,8 +8,8 @@
         public int Rating { get; set; }
         public Guid StudentId { get; set; }
         public User Student { get; set; } = null!;
-        public Guid TrainingPlanId { get; set; }
-        public TrainingPlan TrainingPlan { get; set; } = null!;
+        public Guid CoachId { get; set; }
+        public User Coach { get; set; } = null!;
 
 
     }

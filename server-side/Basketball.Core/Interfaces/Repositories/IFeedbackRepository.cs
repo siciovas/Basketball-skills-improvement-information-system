@@ -8,8 +8,6 @@ namespace Basketball.Core.Interfaces.Repositories
         Task<List<Feedback>> GetAll();
         Task<Feedback?> GetById(Guid id);
         Task<List<Feedback>> GetAllForCoach(Guid id);
-
-        Task<List<Feedback>> GetAllByTrainingPlanId(Guid trainingPlanId);
         Task Delete(Feedback feedback);
         Task<Feedback> Update(Feedback feedback);
     }

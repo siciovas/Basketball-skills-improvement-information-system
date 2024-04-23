@@ -14,6 +14,10 @@ namespace Basketball.Infrastructure.Repositories
             var createdFeedback = _db.Add(feedback);
 
             _db.Entry(createdFeedback.Entity)
+               .Reference(u => u.Coach)
+               .Load();
+
+            _db.Entry(createdFeedback.Entity)
                .Reference(u => u.Student)
                .Load();
 
@@ -35,27 +39,19 @@ namespace Basketball.Infrastructure.Repositories
                             .ToListAsync();
         }
 
-        public async Task<List<Feedback>> GetAllByTrainingPlanId(Guid trainingPlanId)
-        {
-            return await _db.Feedbacks
-                            .Include(u => u.Student)
-                            .Where(f => f.TrainingPlanId == trainingPlanId)
-                            .ToListAsync();
-        }
-
         public async Task<Feedback?> GetById(Guid id)
         {
             return await _db.Feedbacks
+                            .Include(u => u.Student)
                             .FirstOrDefaultAsync(f => f.Id == id);
         }
 
         public async Task<List<Feedback>> GetAllForCoach(Guid id)
         {
             return await _db.Feedbacks
-                            .Include(t => t.TrainingPlan)
-                            .ThenInclude(u => u.Coach)
+                            .Include(u => u.Coach)
                             .Include(u => u.Student)
-                            .Where(u => u.TrainingPlan.Coach.Id == id)
+                            .Where(u => u.Coach.Id == id)
                             .ToListAsync();
         }
 

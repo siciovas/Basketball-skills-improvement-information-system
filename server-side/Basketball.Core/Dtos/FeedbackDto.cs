@@ -7,5 +7,6 @@
         public required DateOnly Date { get; set; }
         public int Rating { get; set; }
         public required string Student { get; set; }
+        public Guid CoachId { get; set; }
     }
 }
