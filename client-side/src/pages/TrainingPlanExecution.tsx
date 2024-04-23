@@ -84,7 +84,7 @@ const TrainingPlanExecution = () => {
             {trainingPlan?.coach}
           </Heading>
           <Heading size="xs" mt={2} textTransform="uppercase">
-            {`Terminas: ${moment(trainingPlan.deadline).format("YYYY-MM-DD")}`}
+            {`Terminas: ${moment(trainingPlan?.deadline).format("YYYY-MM-DD")}`}
           </Heading>
           <Flex
             boxShadow="dark-lg"
