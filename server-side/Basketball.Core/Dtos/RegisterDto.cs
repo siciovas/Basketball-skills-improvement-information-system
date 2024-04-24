@@ -21,6 +21,7 @@ namespace Basketball.Core.Dtos
         [RegularExpression(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", ErrorMessage = "Neteisingas el. paštas")]
         public required string Email { get; set; }
 
+        [Required]
         public DateOnly BirthDate { get; set; }
 
         public Role Role { get; set; }
@@ -29,8 +30,10 @@ namespace Basketball.Core.Dtos
         [MinLength(5, ErrorMessage = "Slaptažodis turi būti bent iš 5 simbolių")]
         public required string Password { get; set; }
 
+        [Required]
         public Gender? Gender { get; set; }
 
+        [Required]
         public byte[]? Avatar { get; set; }
 
         // Fields for student
@@ -48,6 +51,8 @@ namespace Basketball.Core.Dtos
 
         // Fields for coach
         public Education? Education { get; set; }
+
+        [RegularExpression(@"^-?\d*\.?\d+$", ErrorMessage = "Galimi tik skaičiai")]
         public int? Experience { get; set; }
         public string? Specialization { get; set; }
         public string? Description { get; set; }
