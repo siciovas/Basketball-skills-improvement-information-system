@@ -65,13 +65,14 @@ const Login = () => {
           </Box>
         </Flex>
         <form onSubmit={(e) => Login(e)}>
-          <FormControl mt={5}>
+          <FormControl mt={5} isRequired>
             <FormLabel>El. Paštas</FormLabel>
             <Input
               type="email"
               onChange={(e) => {
                 onEmailChange(e);
               }}
+              isRequired
             />
             <FormLabel mt={5}>Slaptažodis</FormLabel>
             <Input
@@ -79,6 +80,7 @@ const Login = () => {
               onChange={(e) => {
                 onPasswordChange(e);
               }}
+              isRequired
             />
             <Box
               cursor="pointer"
