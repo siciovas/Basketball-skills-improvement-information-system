@@ -240,7 +240,7 @@ namespace Basketball.Services
         public async Task<TrainingPlanExecutionDto> GetTrainingPlanForExecutionById(Guid id, Guid userId)
         {
             var trainingPlan = await _trainingPlanRepository.GetById(id);
-            var coefficient = 1 / trainingPlan!.Skills.Count;
+            var coefficient = 1 / (double)trainingPlan!.Skills.Count;
             var averages = new List<double>();
             var order = await _orderRepository.GetByTrainingPlanAndUserId(userId, id);
             var progress = await _exerciseFlowRepository.GetAllByUserIdAndTrainingPlanId(userId, trainingPlan!.Id);
@@ -267,7 +267,7 @@ namespace Basketball.Services
                 Coach = string.Format("{0} {1}", trainingPlan.Coach.Name, trainingPlan.Coach.Surname),
                 Title = trainingPlan.Title,
                 FinalMark = averages.Sum(x => x).ToString("F1"),
-                ProgressCounter = ((progressCounter.TryGetValue(trainingPlan.Id, out int count) ? count : 0 / trainingPlan.Skills.Select(x => x.Exercises).Count()) * 100).ToString("F1"),
+                ProgressCounter = ((progressCounter.TryGetValue(trainingPlan.Id, out int count) ? count : 0) / (double)trainingPlan.Skills.SelectMany(x => x.Exercises).Count() * 100).ToString("F1"),
                 Deadline = order.OrderDate.AddDays(trainingPlan.ExpirationDate),
                 Skills = trainingPlan.Skills.Select(skill => new SkillExecutionDto
                 {
@@ -301,7 +301,7 @@ namespace Basketball.Services
                 CoachFullName = string.Format("{0} {1}", x.TrainingPlan.Coach.Name, x.TrainingPlan.Coach.Surname),
                 TrainingPlanId = x.TrainingPlanId,
                 ExpirationDate = x.OrderDate.AddDays(x.TrainingPlan.ExpirationDate),
-                ProgressCounter = ((progressCounter.TryGetValue(x.TrainingPlanId, out int count) ? count : 0 / x.TrainingPlan.Skills.Select(x => x.Exercises).Count()) * 100).ToString("F1")
+                ProgressCounter = ((progressCounter.TryGetValue(x.TrainingPlanId, out int count) ? count : 0) / (double)x.TrainingPlan.Skills.SelectMany(x => x.Exercises).Count() * 100).ToString("F1")
             }).ToList();
         }
     }

@@ -26,11 +26,13 @@ namespace Basketball.Controllers
             return CreatedAtAction(nameof(UploadExerciseProgress), exerciseUrl);
         }
 
-        [HttpGet("getExercisesForEvaluation/{trainingPlanId}/{userId}")]
+        [HttpGet("getExercisesForEvaluation/{userId}")]
         [Authorize]
-        public async Task<IActionResult> GetExercisesForEvaluation(Guid trainingPlanId, Guid userId)
+        public async Task<IActionResult> GetExercisesForEvaluation(Guid userId)
         {
-            var exercises = await _exerciseFlowService.GetExercisesForEvaluation(userId, trainingPlanId);
+            var coachId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
+
+            var exercises = await _exerciseFlowService.GetExercisesForEvaluation(userId, coachId);
 
             return Ok(exercises);
         }
