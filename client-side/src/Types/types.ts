@@ -214,6 +214,7 @@ export interface SkillExecutionDto {
   id: string;
   name: string;
   description: string;
+  isLocked: boolean;
   exercises: ExerciseExecutionDto[];
 }
 
