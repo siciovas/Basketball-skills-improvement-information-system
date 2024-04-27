@@ -3,9 +3,6 @@ import { Flex, Divider, Image, Text, Box } from "@chakra-ui/react";
 const Footer = () => {
   return (
     <Flex w="100%" py={2} backgroundColor="black" flexDir="column" mt="auto">
-      <Flex justify="center" align="center">
-        <Image mt={5} h={40} src="/logo.ico" />
-      </Flex>
       <Flex mt={5} justify="center" alignItems="center" gap={3}>
         <Box className="fa-solid fa-phone" color="#ffffff"></Box>
         <Text color="white">+37060000000</Text>
