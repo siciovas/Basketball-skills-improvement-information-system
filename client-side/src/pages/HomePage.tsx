@@ -10,24 +10,24 @@ const HomePage = () => {
 
   return (
     <Box mt={10}>
-    <>
-      {role === null && 
-        <GuestHomePage />}
-      {(role === STUDENT_ROLE && (
-        <>
-          <StudentHomePage />
-        </>
-      )) ||
-        (role === ADMIN_ROLE && (
+      <>
+        {role === null && <GuestHomePage />}
+        {(role === STUDENT_ROLE && (
           <>
-            <AdminHomePage />
+            <StudentHomePage />
           </>
         )) ||
-        (role === COACH_ROLE && (
-          <>
-            <CoachHomePage />
-          </>
-        ))}
+          (role === ADMIN_ROLE && (
+            <>
+              <AdminHomePage />
+            </>
+          )) ||
+          (role === COACH_ROLE && (
+            <>
+              <CoachHomePage />
+            </>
+          ))}
+      </>
     </Box>
   );
 };
