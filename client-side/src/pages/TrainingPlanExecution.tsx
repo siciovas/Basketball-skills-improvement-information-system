@@ -17,6 +17,8 @@ import {
   ModalContent,
   ModalOverlay,
   useDisclosure,
+  Text,
+  Progress,
 } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -83,9 +85,47 @@ const TrainingPlanExecution = () => {
           <Heading size="sm" mt={2} textTransform="uppercase">
             {trainingPlan?.coach}
           </Heading>
-          <Heading size="xs" mt={2} textTransform="uppercase">
-            {`Terminas: ${moment(trainingPlan?.deadline).format("YYYY-MM-DD")}`}
-          </Heading>
+          <Flex align="end">
+            <Text fontWeight="bold" mt={2} textTransform="uppercase">
+              Terminas:&nbsp;
+            </Text>
+            <Text>{moment(trainingPlan?.deadline).format("YYYY-MM-DD")}</Text>
+          </Flex>
+          <Flex
+            boxShadow="dark-lg"
+            borderRadius="xl"
+            border="solid"
+            borderColor="#9e9d9d"
+            flexDirection="column"
+            p={5}
+            mt={5}
+          >
+            <Heading size="md">{trainingPlan?.title}</Heading>
+            <Flex justifyContent="space-between">
+              <Progress
+                colorScheme="blue"
+                value={trainingPlan?.progressCounter as unknown as number}
+                w="85%"
+                mt={5}
+              />
+              <Flex flexDir="column" mt={3}>
+                <Text>{trainingPlan?.progressCounter === "100.0" ? "Galutinis įvertis" : "Numatomas įvertis"}</Text>
+                <Flex align="center" w="100%" justify="flex-end">
+                  <Box
+                    className="fa-solid fa-star fa-2x"
+                    style={{ color: "#1E99D6" }}
+                  />
+                  <Heading textColor="#1E99D6">
+                    {trainingPlan?.finalMark}
+                  </Heading>
+                </Flex>
+              </Flex>
+            </Flex>
+            <Flex>
+              <Text fontWeight="bold">Plano progresas:&nbsp;</Text>
+              <Text>{trainingPlan?.progressCounter}%</Text>
+            </Flex>
+          </Flex>
           <Flex
             boxShadow="dark-lg"
             borderRadius="xl"
@@ -95,6 +135,7 @@ const TrainingPlanExecution = () => {
             gap={2}
             p={5}
             mt={5}
+            mb={14}
           >
             <Heading size="md">ĮGŪDŽIAI</Heading>
             <Accordion allowToggle>

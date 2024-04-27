@@ -240,14 +240,34 @@ namespace Basketball.Services
         public async Task<TrainingPlanExecutionDto> GetTrainingPlanForExecutionById(Guid id, Guid userId)
         {
             var trainingPlan = await _trainingPlanRepository.GetById(id);
+            var coefficient = 1 / trainingPlan!.Skills.Count;
+            var averages = new List<double>();
             var order = await _orderRepository.GetByTrainingPlanAndUserId(userId, id);
             var progress = await _exerciseFlowRepository.GetAllByUserIdAndTrainingPlanId(userId, trainingPlan!.Id);
+            var progressCounter = await _exerciseFlowRepository.GetCounterByUserAndPositive(userId);
+
+            foreach (var skill in trainingPlan.Skills)
+            {
+                var skillProgress = progress.Where(x => x.SkillId == skill.Id
+                                                   && x.Grade > 4)
+                                            .ToList();
+
+                var gradeSum = skillProgress.Sum(x => x.Grade);
+
+                var average = (double)gradeSum! / (skillProgress.Count == 0 ? 1 : skillProgress.Count);
+
+                var finalAverage = average * coefficient;
+
+                averages.Add(finalAverage);
+            }
 
             return new TrainingPlanExecutionDto
             {
                 Id = trainingPlan!.Id,
                 Coach = string.Format("{0} {1}", trainingPlan.Coach.Name, trainingPlan.Coach.Surname),
                 Title = trainingPlan.Title,
+                FinalMark = averages.Sum(x => x).ToString("F1"),
+                ProgressCounter = ((progressCounter.TryGetValue(trainingPlan.Id, out int count) ? count : 0 / trainingPlan.Skills.Select(x => x.Exercises).Count()) * 100).ToString("F1"),
                 Deadline = order.OrderDate.AddDays(trainingPlan.ExpirationDate),
                 Skills = trainingPlan.Skills.Select(skill => new SkillExecutionDto
                 {
