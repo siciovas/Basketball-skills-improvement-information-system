@@ -147,9 +147,14 @@ const TrainingPlanExecution = () => {
           >
             <Heading size="md">ĮGŪDŽIAI</Heading>
             <Accordion allowToggle>
-              {trainingPlan?.skills.map((skill) => {
+              {trainingPlan?.skills.map((skill, skillIndex) => {
+                const isSkillDisabled =
+                  trainingPlan.skills.findIndex((x) => x.isLocked) ===
+                  skillIndex
+                    ? false
+                    : skill.isLocked;
                 return (
-                  <AccordionItem>
+                  <AccordionItem isDisabled={isSkillDisabled}>
                     <AccordionButton border="solid" borderColor="#9e9d9d">
                       <Box as="span" flex="1" textAlign="left">
                         {skill.name}
