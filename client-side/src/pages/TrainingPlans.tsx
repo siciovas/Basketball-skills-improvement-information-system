@@ -35,7 +35,7 @@ interface Filter {
 
 const TrainingPlans = () => {
   const trainingPlanModal = useDisclosure();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const token = localStorage.getItem("accessToken");
   const [trainingPlans, setTrainingPlans] = useState<TrainingPlanView[]>([]);
   const [filterData, setFilterData] = useState<Filter>({

@@ -16,6 +16,7 @@ import {
   Switch,
   Checkbox,
   Image,
+  FormControl,
 } from "@chakra-ui/react";
 import {
   ChangeEvent,
@@ -155,8 +156,14 @@ const TrainingPlanForm = ({ onClose, trainingPlanId }: Props) => {
   }, []);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    setIsLoading(true);
     e.preventDefault();
+
+    if (formState.skills.length < 1) {
+      toast.error("Nepridėtas nei vienas įgūdis!");
+      return;
+    }
+
+    setIsLoading(true);
 
     const url = trainingPlanId
       ? `${import.meta.env.VITE_API_URL}trainingPlan/${trainingPlanId}`
@@ -188,6 +195,7 @@ const TrainingPlanForm = ({ onClose, trainingPlanId }: Props) => {
       eventBus.dispatch("triggerTrainingPlanCreated", null);
     } else {
       toast.error("Klaida");
+      setIsLoading(false);
     }
   };
 
@@ -238,64 +246,74 @@ const TrainingPlanForm = ({ onClose, trainingPlanId }: Props) => {
                 ? "Treniruočių plano redagavimas"
                 : "Naujas treniruočių planas"}
             </Heading>
-            <FormLabel mt={5}>Nuotrauka</FormLabel>
-            {formState.avatar && (
-              <Box h={40} w={60}>
-                <Image
-                  w="100%"
-                  h="100%"
-                  src={"data:image/jpeg;base64," + formState?.avatar}
+            <FormControl isRequired>
+              <FormLabel mt={5}>Nuotrauka</FormLabel>
+              {formState.avatar && (
+                <Box h={40} w={60}>
+                  <Image
+                    w="100%"
+                    h="100%"
+                    src={"data:image/jpeg;base64," + formState?.avatar}
+                  />
+                </Box>
+              )}
+              <Flex>
+                <input
+                  onChange={(e) => {
+                    onAvatarChange(e);
+                  }}
+                  className="form-control"
+                  type="file"
+                  id="formFile"
+                  name="avatar"
+                  required
                 />
-              </Box>
-            )}
-            <Flex>
-              <input
-                onChange={(e) => {
-                  onAvatarChange(e);
-                }}
-                className="form-control"
-                type="file"
-                id="formFile"
-                name="avatar"
-              />
-            </Flex>
-            <FormLabel mt={5}>Pavadinimas</FormLabel>
-            <Input
-              type="text"
-              name="title"
-              onChange={onFormChange}
-              value={formState.title}
-            />
-            <FormLabel mt={5}>Aprašymas</FormLabel>
-            <Textarea
-              name="description"
-              onChange={onFormChange}
-              value={formState.description}
-            ></Textarea>
-            <FormLabel mt={5}>Trumpasis aprašymas</FormLabel>
-            <Textarea
-              name="shortDescription"
-              onChange={onFormChange}
-              value={formState.shortDescription}
-            ></Textarea>
-            <FormLabel mt={5}>Plano įvykdymo terminas (dienomis)</FormLabel>
-            <Flex flexDir="column" w="53%">
+              </Flex>
+              <FormLabel mt={5}>Pavadinimas</FormLabel>
               <Input
-                type="number"
-                name="expirationDate"
+                type="text"
+                name="title"
                 onChange={onFormChange}
-                value={formState.expirationDate}
-              ></Input>
-            </Flex>
-            <Flex justifyContent="space-between" alignItems="center" mt={2}>
-              <Box>
-                <FormLabel mt={5}>Kaina</FormLabel>
+                value={formState.title}
+                isRequired
+              />
+              <FormLabel mt={5}>Aprašymas</FormLabel>
+              <Textarea
+                name="description"
+                onChange={onFormChange}
+                value={formState.description}
+                isRequired
+              ></Textarea>
+              <FormLabel mt={5}>Trumpasis aprašymas</FormLabel>
+              <Textarea
+                name="shortDescription"
+                onChange={onFormChange}
+                value={formState.shortDescription}
+                isRequired
+              ></Textarea>
+              <FormLabel mt={5}>Plano įvykdymo terminas (dienomis)</FormLabel>
+              <Flex flexDir="column" w="53%">
                 <Input
                   type="number"
-                  name="price"
+                  name="expirationDate"
                   onChange={onFormChange}
-                  value={formState.price}
+                  value={formState.expirationDate}
+                  isRequired
                 ></Input>
+              </Flex>
+            </FormControl>
+            <Flex justifyContent="space-between" alignItems="center" mt={2}>
+              <Box>
+                <FormControl isRequired>
+                  <FormLabel mt={5}>Kaina</FormLabel>
+                  <Input
+                    type="number"
+                    name="price"
+                    onChange={onFormChange}
+                    value={formState.price}
+                    isRequired
+                  ></Input>
+                </FormControl>
               </Box>
               <Box>
                 <FormLabel mt={5}>Aktyvus</FormLabel>
@@ -320,36 +338,38 @@ const TrainingPlanForm = ({ onClose, trainingPlanId }: Props) => {
             )}
             {(!formState.isPersonal || trainingPlanId !== undefined) && (
               <>
-                <FormLabel mt={5}>Įtraukti įgūdį</FormLabel>
-                <Flex gap={5}>
-                  <Menu closeOnSelect={false}>
-                    <MenuButton width="60%" as={Button}>
-                      <Box>
-                        {formState.skills
-                          .map((skill) => {
-                            return skills.find((x) => x.id === skill)?.name;
-                          })
-                          .join(", ")
-                          .substring(0, 30)}
-                      </Box>
-                    </MenuButton>
-                    <MenuList width="60%">
-                      <MenuOptionGroup
-                        type="checkbox"
-                        value={formState.skills}
-                        onChange={onSkillChange}
-                      >
-                        {skills.map((skill) => {
-                          return (
-                            <MenuItemOption value={skill.id}>
-                              {skill.name}
-                            </MenuItemOption>
-                          );
-                        })}
-                      </MenuOptionGroup>
-                    </MenuList>
-                  </Menu>
-                </Flex>
+                <FormControl isRequired>
+                  <FormLabel mt={5}>Įtraukti įgūdį</FormLabel>
+                  <Flex gap={5}>
+                    <Menu closeOnSelect={false}>
+                      <MenuButton width="60%" as={Button}>
+                        <Box>
+                          {formState.skills
+                            .map((skill) => {
+                              return skills.find((x) => x.id === skill)?.name;
+                            })
+                            .join(", ")
+                            .substring(0, 30)}
+                        </Box>
+                      </MenuButton>
+                      <MenuList width="60%">
+                        <MenuOptionGroup
+                          type="checkbox"
+                          value={formState.skills}
+                          onChange={onSkillChange}
+                        >
+                          {skills.map((skill) => {
+                            return (
+                              <MenuItemOption value={skill.id}>
+                                {skill.name}
+                              </MenuItemOption>
+                            );
+                          })}
+                        </MenuOptionGroup>
+                      </MenuList>
+                    </Menu>
+                  </Flex>
+                </FormControl>
                 <Heading size="sm" mb={5} mt={5}>
                   Pridėti įgūdžiai:
                 </Heading>

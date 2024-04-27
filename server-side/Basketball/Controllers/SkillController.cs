@@ -29,6 +29,13 @@ namespace Basketball.Controllers
         {
             var coachId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
 
+            var skillByName = await _skillService.GetBySkillName(skillDto.Title, coachId);
+
+            if (skillByName != null)
+            {
+                return Conflict("Duplicated skill name!");
+            }
+
             var skill = await _skillService.Create(skillDto, coachId);
 
             return CreatedAtAction(nameof(Create), skill);
@@ -65,9 +72,10 @@ namespace Basketball.Controllers
         public async Task<IActionResult> Update(SkillPostDto skill, Guid id)
         {
             var coachId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
+            var skillByName = await _skillService.GetBySkillName(skill.Title, coachId);
             var isCoachOwner = await _skillService.IsCoachSkillOwner(id, coachId);
 
-            if (!isCoachOwner)
+            if (!isCoachOwner || (skillByName != null && skillByName.Id != id))
             {
                 return Forbid();
             }

@@ -39,6 +39,11 @@ const FeedbackForm = ({ coachId }: Props) => {
 
   const submitFeedback = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    if (feedback.replace(/\s/g, "").length < 1 || !stars.includes("solid")) {
+      toast.error("Neužpildėte visų reikšmių");
+      return;
+    }
+
     const response = await fetch(import.meta.env.VITE_API_URL + "feedback", {
       headers: {
         "Content-Type": "application/json",

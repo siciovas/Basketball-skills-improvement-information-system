@@ -139,5 +139,10 @@ namespace Basketball.Services
                 Description = updatedSkill.Description,
             };
         }
+
+        public async Task<Skill?> GetBySkillName(string name, Guid coachId)
+        {
+            return await _skillRepository.GetBySkillName(name, coachId);
+        }
     }
 }

@@ -13,6 +13,7 @@ import {
   MenuItemOption,
   MenuList,
   MenuOptionGroup,
+  FormControl,
 } from "@chakra-ui/react";
 import {
   ChangeEvent,
@@ -131,8 +132,14 @@ const SkillForm = ({ addNewExercise, onClose, skillId }: Props) => {
   }, []);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    setIsLoading(true);
     e.preventDefault();
+
+    if (formState.exercises.length < 1) {
+      toast.error("Nepridėtas nei vienas pratimas!");
+      return;
+    }
+
+    setIsLoading(true);
 
     const url = skillId
       ? `${import.meta.env.VITE_API_URL}skill/${skillId}`
@@ -158,6 +165,7 @@ const SkillForm = ({ addNewExercise, onClose, skillId }: Props) => {
       eventBus.dispatch("triggerSkillCreated", null);
     } else {
       toast.error("Klaida");
+      setIsLoading(false);
     }
   };
 
@@ -180,96 +188,100 @@ const SkillForm = ({ addNewExercise, onClose, skillId }: Props) => {
         </Center>
       ) : (
         <form onSubmit={handleSubmit}>
-          <Flex flexDir="column">
-            <Heading size="md">
-              {skillId ? "Įgūdžio redagavimas" : "Naujas įgūdis"}
-            </Heading>
-            <FormLabel mt={5}>Pavadinimas</FormLabel>
-            <Input
-              type="text"
-              name="title"
-              onChange={onFormChange}
-              value={formState.title}
-            />
-            <FormLabel mt={5}>Aprašymas</FormLabel>
-            <Textarea
-              name="description"
-              onChange={onFormChange}
-              value={formState.description}
-            ></Textarea>
-            <FormLabel mt={5}>Įtraukti pratimą</FormLabel>
-            <Flex gap={5}>
-              <Menu closeOnSelect={false}>
-                <MenuButton width="60%" as={Button}>
-                  <Box>
-                    {formState.exercises
-                      .map((exercise) => {
-                        return exercises.find((x) => x.id === exercise)?.name;
-                      })
-                      .join(", ")
-                      .substring(0, 30)}
-                  </Box>
-                </MenuButton>
-                <MenuList width="60%">
-                  <MenuOptionGroup
-                    type="checkbox"
-                    value={formState.exercises}
-                    onChange={onExerciseChange}
-                  >
-                    {exercises.map((exercise) => {
-                      return (
-                        <MenuItemOption value={exercise.id}>
-                          {exercise.name}
-                        </MenuItemOption>
-                      );
-                    })}
-                  </MenuOptionGroup>
-                </MenuList>
-              </Menu>
-              <Flex
-                onClick={addNewExercise}
-                cursor="pointer"
-                width="40%"
-                alignItems="center"
-                gap={2}
-              >
-                <Box className="fa-solid fa-plus fa-2x" />
-                <Box>Pridėti pratimą</Box>
-              </Flex>
-            </Flex>
-            <Heading size="sm" mb={5} mt={5}>
-              Pridėti pratimai:
-            </Heading>
-            <Box>Keiskite pratimų eiliškumą, keičiant jų padėtį.</Box>
-            {formState.exercises.map((exercise) => {
-              return (
-                <Box
-                  borderWidth="thick"
-                  px={2}
-                  mt={2}
-                  border="solid"
+          <FormControl isRequired>
+            <Flex flexDir="column">
+              <Heading size="md">
+                {skillId ? "Įgūdžio redagavimas" : "Naujas įgūdis"}
+              </Heading>
+              <FormLabel mt={5}>Pavadinimas</FormLabel>
+              <Input
+                type="text"
+                name="title"
+                onChange={onFormChange}
+                value={formState.title}
+                isRequired
+              />
+              <FormLabel mt={5}>Aprašymas</FormLabel>
+              <Textarea
+                name="description"
+                onChange={onFormChange}
+                value={formState.description}
+                isRequired
+              ></Textarea>
+              <FormLabel mt={5}>Įtraukti pratimą</FormLabel>
+              <Flex gap={5}>
+                <Menu closeOnSelect={false}>
+                  <MenuButton width="60%" as={Button}>
+                    <Box>
+                      {formState.exercises
+                        .map((exercise) => {
+                          return exercises.find((x) => x.id === exercise)?.name;
+                        })
+                        .join(", ")
+                        .substring(0, 30)}
+                    </Box>
+                  </MenuButton>
+                  <MenuList width="60%">
+                    <MenuOptionGroup
+                      type="checkbox"
+                      value={formState.exercises}
+                      onChange={onExerciseChange}
+                    >
+                      {exercises.map((exercise) => {
+                        return (
+                          <MenuItemOption value={exercise.id}>
+                            {exercise.name}
+                          </MenuItemOption>
+                        );
+                      })}
+                    </MenuOptionGroup>
+                  </MenuList>
+                </Menu>
+                <Flex
+                  onClick={addNewExercise}
                   cursor="pointer"
-                  draggable
-                  onDragStart={(e) => handleDragStart(e, exercise)}
-                  onDragEnd={handleDragEnd}
-                  onDragOver={handleDragOver}
-                  onDrop={() => handleDrop(exercise)}
+                  width="40%"
+                  alignItems="center"
+                  gap={2}
                 >
-                  {exercises.find((x) => x.id === exercise)?.name}
-                </Box>
-              );
-            })}
-            <Button
-              backgroundColor="#1E99D6"
-              color="white"
-              mt={10}
-              w={52}
-              alignSelf="end"
-              type="submit"
-            >
-              Išsaugoti
-            </Button>
-          </Flex>
+                  <Box className="fa-solid fa-plus fa-2x" />
+                  <Box>Pridėti pratimą</Box>
+                </Flex>
+              </Flex>
+              <Heading size="sm" mb={5} mt={5}>
+                Pridėti pratimai:
+              </Heading>
+              <Box>Keiskite pratimų eiliškumą, keičiant jų padėtį.</Box>
+              {formState.exercises.map((exercise) => {
+                return (
+                  <Box
+                    borderWidth="thick"
+                    px={2}
+                    mt={2}
+                    border="solid"
+                    cursor="pointer"
+                    draggable
+                    onDragStart={(e) => handleDragStart(e, exercise)}
+                    onDragEnd={handleDragEnd}
+                    onDragOver={handleDragOver}
+                    onDrop={() => handleDrop(exercise)}
+                  >
+                    {exercises.find((x) => x.id === exercise)?.name}
+                  </Box>
+                );
+              })}
+              <Button
+                backgroundColor="#1E99D6"
+                color="white"
+                mt={10}
+                w={52}
+                alignSelf="end"
+                type="submit"
+              >
+                Išsaugoti
+              </Button>
+            </Flex>
+          </FormControl>
         </form>
       )}
     </>

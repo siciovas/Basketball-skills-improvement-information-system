@@ -55,6 +55,12 @@ namespace Basketball.Controllers
         public async Task<IActionResult> Create(TrainingPlanPostDto trainingPlan)
         {
             var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
+            var trainingPlanByName = await _trainingPlanService.GetByPlanName(trainingPlan.Title, userId);
+
+            if (trainingPlanByName != null)
+            {
+                return Conflict("Duplicated training plan name!");
+            }
 
             var createdTrainingPlan = await _trainingPlanService.Create(trainingPlan, userId);
 
@@ -66,10 +72,10 @@ namespace Basketball.Controllers
         public async Task<IActionResult> Update(TrainingPlanUpdateDto trainingPlan, Guid id)
         {
             var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
-
+            var trainingPlanByName = await _trainingPlanService.GetByPlanName(trainingPlan.Title, userId);
             var isCoachOwningTrainingPlan = await _trainingPlanService.IsTrainingPlanOwnedByCoachId(id, userId);
 
-            if (!isCoachOwningTrainingPlan)
+            if (!isCoachOwningTrainingPlan || (trainingPlanByName != null && trainingPlanByName.Id != id))
             {
                 return Forbid();
             }
