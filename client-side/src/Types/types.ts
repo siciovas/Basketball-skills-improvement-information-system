@@ -226,6 +226,7 @@ export interface ExerciseExecutionDto {
   isLocked: boolean;
   exerciseVideoUrl: string;
   comment: string;
+  difficulty: string;
 }
 
 export interface TrainingPlanEvaluationDto {
@@ -239,6 +240,12 @@ export interface TrainingPlanEvaluationDto {
 
 export interface AllEvaluationDto {
   student: string;
+  birthDate: string;
+  height: number;
+  weight: number;
+  footSize: number;
+  metabolicAge: number;
+  userAvatar: string;
   trainingPlansEvaluations: TrainingPlanEvaluationDto[];
 }
 

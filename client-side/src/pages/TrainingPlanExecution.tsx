@@ -23,7 +23,7 @@ import {
 import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
-import { Unauthorized } from "../Helpers/constants";
+import { DIFFICULTIES, Unauthorized } from "../Helpers/constants";
 import eventBus from "../Helpers/eventBus";
 import ReactPlayer from "react-player";
 import { TrainingPlanExecutionDto } from "../Types/types";
@@ -201,6 +201,18 @@ const TrainingPlanExecution = () => {
                                   <Box as="span" flex="1" textAlign="left">
                                     {exercise.description}
                                   </Box>
+                                  <Flex flex="1" textAlign="left">
+                                    <Box fontWeight="bold">
+                                      Sudėtingumas -&nbsp;
+                                    </Box>
+                                    <Box>
+                                      {
+                                        DIFFICULTIES[
+                                          exercise.difficulty.toLowerCase() as keyof typeof DIFFICULTIES
+                                        ]
+                                      }
+                                    </Box>
+                                  </Flex>
                                   <Box mt={5}>
                                     <ReactPlayer
                                       controls={true}

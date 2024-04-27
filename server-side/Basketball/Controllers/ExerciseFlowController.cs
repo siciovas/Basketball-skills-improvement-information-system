@@ -9,9 +9,10 @@ namespace Basketball.Controllers
 {
     [ApiController]
     [Route("api/exerciseFlow")]
-    public class ExerciseFlowController(IExerciseFlowService exerciseFlowService) : ControllerBase
+    public class ExerciseFlowController(IExerciseFlowService exerciseFlowService, IUserService userService) : ControllerBase
     {
         private readonly IExerciseFlowService _exerciseFlowService = exerciseFlowService;
+        private readonly IUserService _userService = userService;
 
         [HttpPost]
         [Route("uploadExerciseProgress")]
@@ -33,6 +34,14 @@ namespace Basketball.Controllers
             var coachId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
 
             var exercises = await _exerciseFlowService.GetExercisesForEvaluation(userId, coachId);
+
+            var user = await _userService.GetMe(userId);
+            exercises.BirthDate = user.BirthDate;
+            exercises.Height = (int)user.AdditionalInfo!.Height!;
+            exercises.Weight = (int)user.AdditionalInfo!.Weight!;
+            exercises.MetabolicAge = (int)user.AdditionalInfo!.MetabolicAge!;
+            exercises.FootSize = (int)user.AdditionalInfo!.FootSize!;
+            exercises.UserAvatar = user.Avatar;
 
             return Ok(exercises);
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Basketball.Domain.Data.Entities.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,12 @@ namespace Basketball.Core.Dtos
     public class AllEvaluationDto
     {
         public required string Student { get; set; }
+        public DateOnly BirthDate { get; set; }
+        public int Height { get; set; }
+        public double Weight { get; set; }
+        public double FootSize { get; set; }
+        public int MetabolicAge { get; set; }
+        public byte[]? UserAvatar { get; set; }
         public required List<TrainingPlanEvaluationDto> TrainingPlansEvaluations { get; set; }
     }
 

@@ -29,3 +29,11 @@ export const STATUSCOLORS = {
   patvirtinta: "#63A103",
   atmesta: "red",
 };
+
+export const DIFFICULTIES = {
+  professional: "Profesionalus",
+  hard: "Sunkus",
+  medium: "Vidutinis",
+  easy: "Lengvas",
+  beginner: "Pradedantysis",
+};
