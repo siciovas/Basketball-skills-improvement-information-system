@@ -33,13 +33,15 @@ const AdminNavbar = ({ logOut }: NavbarProps) => {
           />
         </Flex>
         <Flex gap={10} mr={5} alignItems="center">
+        <Box cursor="pointer" onClick={() => navigate("/")}>
+            PAGRINDINIS
+          </Box>
           <Box cursor="pointer" onClick={() => navigate("/manageCoaches")}>
             TRENERIAI
           </Box>
           <Box cursor="pointer" onClick={() => navigate("/finance")}>
-            FINANSAI
+            STATISTIKA
           </Box>
-          <Box cursor="pointer">ŽINUTĖS</Box>
         </Flex>
         <Flex mr={5} alignItems="center" gap={5}>
           <Menu>
