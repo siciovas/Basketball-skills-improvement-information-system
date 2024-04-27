@@ -29,6 +29,13 @@ namespace Basketball.Controllers
         public async Task<IActionResult> Create(ExercisePostDto data)
         {
             var coachId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
+            var exerciseByName = await _exerciseService.GetByExerciseName(data.Name, coachId);
+
+            if (exerciseByName != null)
+            {
+                return Conflict("Duplicated exercise name!");
+            }
+
             var stream = data.ExerciseVideo.OpenReadStream();
             var exercise = await _exerciseService.Create(data, coachId);
 
@@ -67,16 +74,17 @@ namespace Basketball.Controllers
         public async Task<IActionResult> Update(ExercisePostDto exercise, Guid id)
         {
             var coachId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
+            var exerciseByName = await _exerciseService.GetByExerciseName(exercise.Name, coachId);
             var isCoachOwner = await _exerciseService.IsCoachExerciseOwner(id, coachId);
 
-            if (!isCoachOwner)
+            if (!isCoachOwner || (exerciseByName != null && exerciseByName.Id != id))
             {
                 return Forbid();
             }
 
-            var updatedTrainingPlan = await _exerciseService.Update(exercise, id, coachId);
+            var updatedExercise = await _exerciseService.Update(exercise, id, coachId);
 
-            return Ok(updatedTrainingPlan);
+            return Ok(updatedExercise);
         }
     }
 }

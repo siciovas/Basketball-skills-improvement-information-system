@@ -31,13 +31,16 @@ const Complaint = () => {
   const token = localStorage.getItem("accessToken");
 
   const getCoachDetails = useCallback(async () => {
-    const response = await fetch(import.meta.env.VITE_API_URL + `user/coachDetails/${id}`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      method: "GET",
-    });
+    const response = await fetch(
+      import.meta.env.VITE_API_URL + `user/coachDetails/${id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        method: "GET",
+      }
+    );
     if (response.status === 401) {
       eventBus.dispatch("logOut", Unauthorized);
     } else if (response.status === 200) {
@@ -59,6 +62,12 @@ const Complaint = () => {
 
   const submitComplaint = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+
+    if (complaint.replace(/\s/g, "").length < 1) {
+      toast.error("Neužpildėte skundo reikšmės");
+      return;
+    }
+
     const response = await fetch(import.meta.env.VITE_API_URL + "complaint", {
       headers: {
         "Content-Type": "application/json",
@@ -117,8 +126,13 @@ const Complaint = () => {
           </>
         )}
       </Container>
-
-      <ModalWindow title="Skundo pateikimas" text="Ar tikrai norite pateikti skundą?" isOpen={isOpen} onClose={onClose} onClick={submitComplaint} />
+      <ModalWindow
+        title="Skundo pateikimas"
+        text="Ar tikrai norite pateikti skundą?"
+        isOpen={isOpen}
+        onClose={onClose}
+        onClick={submitComplaint}
+      />
     </>
   );
 };

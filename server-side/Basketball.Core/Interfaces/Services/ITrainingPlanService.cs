@@ -1,6 +1,7 @@
 ﻿using Basketball.Core.Dtos;
 using Basketball.Core.Dtos.Post;
 using Basketball.Core.Dtos.Update;
+using Basketball.Domain.Data.Entities;
 
 namespace Basketball.Core.Interfaces.Services
 {
@@ -15,5 +16,6 @@ namespace Basketball.Core.Interfaces.Services
         Task<bool> IsTrainingPlanOwnedByCoachId(Guid id, Guid coachId);
         Task<TrainingPlanExecutionDto> GetTrainingPlanForExecutionById(Guid id, Guid userId);
         Task<List<MyPlansDto>> GetMyPlans(Guid userId);
+        Task<TrainingPlan?> GetByPlanName(string name, Guid coachId);
     }
 }

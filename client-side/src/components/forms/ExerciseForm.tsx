@@ -9,6 +9,7 @@ import {
   Select,
   Center,
   Spinner,
+  FormControl,
 } from "@chakra-ui/react";
 import {
   ChangeEvent,
@@ -122,6 +123,8 @@ const ExerciseForm = ({ onClose, exerciseId }: Props) => {
       eventBus.dispatch("triggerExerciseCreated", null);
     } else {
       toast.error("Klaida");
+      setIsLoading(false);
+
     }
   };
 
@@ -141,69 +144,74 @@ const ExerciseForm = ({ onClose, exerciseId }: Props) => {
         </Center>
       ) : (
         <form onSubmit={onSubmit}>
-          <Flex flexDir="column">
-            <Heading size="md">
-              {exerciseId ? "Pratimo redagavimas" : "Naujas pratimas"}
-            </Heading>
-            <FormLabel mt={5}>Pavadinimas</FormLabel>
-            <Input
-              type="text"
-              name="name"
-              onChange={onChange}
-              value={formState.name}
-            />
-            <FormLabel mt={5}>Aprašymas</FormLabel>
-            <Textarea
-              name="description"
-              onChange={onChange}
-              value={formState.description}
-            ></Textarea>
-            <FormLabel mt={5}>Sudėtingumas</FormLabel>
-            <Select
-              mb={5}
-              name="difficulty"
-              onChange={onChange}
-              isRequired
-              defaultValue=""
-              value={formState.difficulty}
-            >
-              <option hidden disabled value="">
-                Pasirinkite
-              </option>
-              <option value="Professional">Profesionalus</option>
-              <option value="Hard">Sunkus</option>
-              <option value="Medium">Vidutinis</option>
-              <option value="Easy">Lengvas</option>
-              <option value="Beginner">Pradedantysis</option>
-            </Select>
-            <FormLabel>Mokomasis video</FormLabel>
-            {formState.exerciseVideoName ? (
-              <Flex gap={1} alignItems="center">
-                <Box>{formState.exerciseVideoName}</Box>
-                <Button onClick={handleChangeVideo}>Keisti</Button>
-              </Flex>
-            ) : (
-              <Box>
-                <input
-                  onChange={handleFileChange}
-                  className="form-control"
-                  type="file"
-                  id="formFile"
-                />
-              </Box>
-            )}
+          <FormControl isRequired>
+            <Flex flexDir="column">
+              <Heading size="md">
+                {exerciseId ? "Pratimo redagavimas" : "Naujas pratimas"}
+              </Heading>
+              <FormLabel mt={5}>Pavadinimas</FormLabel>
+              <Input
+                type="text"
+                name="name"
+                onChange={onChange}
+                value={formState.name}
+                isRequired
+              />
+              <FormLabel mt={5}>Aprašymas</FormLabel>
+              <Textarea
+                name="description"
+                onChange={onChange}
+                value={formState.description}
+                isRequired
+              ></Textarea>
+              <FormLabel mt={5}>Sudėtingumas</FormLabel>
+              <Select
+                mb={5}
+                name="difficulty"
+                onChange={onChange}
+                isRequired
+                defaultValue=""
+                value={formState.difficulty}
+              >
+                <option hidden disabled value="">
+                  Pasirinkite
+                </option>
+                <option value="Professional">Profesionalus</option>
+                <option value="Hard">Sunkus</option>
+                <option value="Medium">Vidutinis</option>
+                <option value="Easy">Lengvas</option>
+                <option value="Beginner">Pradedantysis</option>
+              </Select>
+              <FormLabel>Mokomasis video</FormLabel>
+              {formState.exerciseVideoName ? (
+                <Flex gap={1} alignItems="center">
+                  <Box>{formState.exerciseVideoName}</Box>
+                  <Button onClick={handleChangeVideo}>Keisti</Button>
+                </Flex>
+              ) : (
+                <Box>
+                  <input
+                    onChange={handleFileChange}
+                    className="form-control"
+                    type="file"
+                    id="formFile"
+                    required
+                  />
+                </Box>
+              )}
 
-            <Button
-              backgroundColor="#1E99D6"
-              color="white"
-              mt={10}
-              w={52}
-              alignSelf="end"
-              type="submit"
-            >
-              Išsaugoti
-            </Button>
-          </Flex>
+              <Button
+                backgroundColor="#1E99D6"
+                color="white"
+                mt={10}
+                w={52}
+                alignSelf="end"
+                type="submit"
+              >
+                Išsaugoti
+              </Button>
+            </Flex>
+          </FormControl>
         </form>
       )}
     </>

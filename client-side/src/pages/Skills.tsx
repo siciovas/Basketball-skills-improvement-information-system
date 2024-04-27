@@ -120,7 +120,7 @@ const Skills = () => {
         ) : (
           <>
             <Flex justify="center" mb={10} mt={10}>
-              <Heading size="xl">Įgūdžiai</Heading>
+              <Heading size="xl">Treniruočių įgūdžiai</Heading>
             </Flex>
             <Flex justifyContent="end">
               <Button

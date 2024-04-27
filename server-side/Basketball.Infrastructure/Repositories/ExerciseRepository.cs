@@ -45,5 +45,13 @@ namespace Basketball.Infrastructure.Repositories
 
             return updatedExercise.Entity;
         }
+
+        public async Task<Exercise?> GetByExerciseName(string name, Guid coachId)
+        {
+            return await _db.Exercises
+                            .Include(x => x.Coach)
+                            .Where(x => x.Name == name && x.Coach.Id == coachId)
+                            .FirstOrDefaultAsync();
+        }
     }
 }
