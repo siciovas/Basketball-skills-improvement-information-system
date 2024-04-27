@@ -291,9 +291,10 @@ namespace Basketball.Services
         public async Task<List<MyPlansDto>> GetMyPlans(Guid userId)
         {
             var orders = await _orderRepository.GetByUserId(userId);
+            var paidOrders = orders.Where(x => x.IsPaid).ToList();
             var progressCounter = await _exerciseFlowRepository.GetCounterByUserAndPositive(userId);
 
-            return orders.Select(x => new MyPlansDto
+            return paidOrders.Select(x => new MyPlansDto
             {
                 Avatar = x.TrainingPlan.Avatar,
                 Name = x.TrainingPlan.Title,

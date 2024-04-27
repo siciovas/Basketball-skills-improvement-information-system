@@ -29,7 +29,7 @@ const StudentNavbar = ({ logOut }: NavbarProps) => {
             <Box className="fa-solid fa-user fa-xl"></Box>
           </MenuButton>
           <MenuList>
-            <MenuItem onClick={() => navigate("/profile")}>Profilis</MenuItem>
+            <MenuItem onClick={() => navigate("/profile")}>Mano profilis</MenuItem>
             <MenuItem onClick={() => navigate("/myPlans")}>Mano treniruotės</MenuItem>
             <MenuItem onClick={() => navigate("/myOrders")}>Mano užsakymai</MenuItem>
             <MenuItem onClick={(e) => logOut(e)}>Atsijungti</MenuItem>
