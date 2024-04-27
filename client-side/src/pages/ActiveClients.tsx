@@ -62,7 +62,7 @@ const ActiveClients = () => {
       ) : (
         <>
           <Flex justify="center" mb={10} mt={10}>
-            <Heading size="xl">Trenerių sąrašas</Heading>
+            <Heading size="xl">Aktyvūs klientai</Heading>
           </Flex>
           <Box overflowX="auto" maxWidth="100%" mt={5}>
             <Table variant="striped">
