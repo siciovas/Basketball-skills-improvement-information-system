@@ -91,8 +91,10 @@ const ExerciseProgressForm = ({
               />
             </Box>
             <Button
-              backgroundColor="#1E99D6"
-              color="white"
+              textTransform="uppercase"
+              background="#1E99D6"
+              textColor="white"
+              borderRadius="2xl"
               mt={10}
               w={52}
               alignSelf="end"
@@ -114,10 +116,21 @@ const ExerciseProgressForm = ({
           <ModalBody>Ar tikrai norite įkelti progreso įrašą?</ModalBody>
 
           <ModalFooter>
-            <Button mr={3} onClick={confirmationModal.onClose}>
+            <Button
+              mr={3}
+              borderRadius="2xl"
+              textTransform="uppercase"
+              onClick={confirmationModal.onClose}
+            >
               Ne
             </Button>
-            <Button onClick={onSubmit} backgroundColor="#1E99D6" color="white">
+            <Button
+              onClick={onSubmit}
+              textTransform="uppercase"
+              background="#1E99D6"
+              textColor="white"
+              borderRadius="2xl"
+            >
               Taip
             </Button>
           </ModalFooter>

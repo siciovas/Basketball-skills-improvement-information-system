@@ -138,6 +138,7 @@ const ManageCoach = () => {
                     <Image
                       w="100%"
                       h="100%"
+                      borderRadius="xl"
                       src={"data:image/jpeg;base64," + coach?.avatar}
                     ></Image>
                   </Box>
@@ -186,17 +187,19 @@ const ManageCoach = () => {
                         {coach?.coachStatus === PENDING && (
                           <>
                             <Button
-                              borderRadius="full"
-                              backgroundColor="#1E99D6"
-                              color="white"
+                              textTransform="uppercase"
+                              background="#1E99D6"
+                              textColor="white"
+                              borderRadius="2xl"
                               onClick={() => handleCoachStatus(APPROVED)}
                             >
                               Patvirtinti
                             </Button>
                             <Button
-                              borderRadius="full"
                               backgroundColor="red"
                               color="white"
+                              textTransform="uppercase"
+                              borderRadius="2xl"
                               onClick={() => handleCoachStatus(REJECTED)}
                             >
                               Atmesti
@@ -206,9 +209,10 @@ const ManageCoach = () => {
                         {coach?.coachStatus === APPROVED && (
                           <>
                             <Button
-                              borderRadius="full"
                               backgroundColor="red"
                               color="white"
+                              textTransform="uppercase"
+                              borderRadius="2xl"
                               onClick={() => handleCoachStatus(BLOCKED)}
                             >
                               Blokuoti
@@ -218,9 +222,10 @@ const ManageCoach = () => {
                         {coach?.coachStatus === BLOCKED && (
                           <>
                             <Button
-                              borderRadius="full"
-                              backgroundColor="#1E99D6"
-                              color="white"
+                              textTransform="uppercase"
+                              background="#1E99D6"
+                              textColor="white"
+                              borderRadius="2xl"
                               onClick={() => handleCoachStatus(APPROVED)}
                             >
                               Atblokuoti

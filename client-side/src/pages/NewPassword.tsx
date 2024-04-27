@@ -65,8 +65,9 @@ const NewPassword = () => {
               w="100%"
               mt={5}
               textTransform="uppercase"
-              background="blue.500"
+              background="#1E99D6"
               textColor="white"
+              borderRadius="2xl"
             >
               Nustatyti naują slaptažodį
             </Button>

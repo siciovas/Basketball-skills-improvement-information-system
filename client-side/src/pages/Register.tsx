@@ -331,10 +331,10 @@ const Register = () => {
                     <Button
                       type="submit"
                       w="100%"
-                      backgroundColor="#1E99D6"
-                      color="white"
-                      borderRadius="2xl"
                       textTransform="uppercase"
+                      background="#1E99D6"
+                      textColor="white"
+                      borderRadius="2xl"
                     >
                       Registruotis
                     </Button>
@@ -404,8 +404,10 @@ const Register = () => {
                     <Button
                       type="submit"
                       w="100%"
-                      background="blue.500"
-                      color="white"
+                      textTransform="uppercase"
+                      background="#1E99D6"
+                      textColor="white"
+                      borderRadius="2xl"
                     >
                       Registruotis
                     </Button>
@@ -416,7 +418,13 @@ const Register = () => {
           </FormControl>
         </form>
         {!isInitWindow && (
-          <Button onClick={() => setIsInitWindow(true)}>Grįžti</Button>
+          <Button
+            textTransform="uppercase"
+            borderRadius="2xl"
+            onClick={() => setIsInitWindow(true)}
+          >
+            Grįžti
+          </Button>
         )}
       </Flex>
     </Container>

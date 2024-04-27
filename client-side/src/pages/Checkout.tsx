@@ -120,7 +120,13 @@ const Checkout = () => {
           </Center>
         ) : (
           <>
-            <Box border="solid" p={5}>
+            <Box
+              borderRadius="xl"
+              border="solid"
+              borderColor="#9e9d9d"
+              borderWidth="2px"
+              p={5}
+            >
               <Flex alignItems="center" gap={5}>
                 <Box className="fa-solid fa-cart-shopping fa-2xl" />
                 <Heading size="lg" mb={2}>
@@ -173,7 +179,14 @@ const Checkout = () => {
                 </Flex>
               </Box>
             )}
-            <Box border="solid" mt={5} p={5}>
+            <Box
+              borderRadius="xl"
+              border="solid"
+              borderColor="#9e9d9d"
+              borderWidth="2px"
+              mt={5}
+              p={5}
+            >
               <Flex alignItems="center" gap={5}>
                 <Box className="fa-regular fa-credit-card fa-2xl" />
                 <Heading size="lg" mb={2}>
@@ -181,9 +194,21 @@ const Checkout = () => {
                 </Heading>
               </Flex>
               <Divider borderColor="black" />
-              <Image mt={5} w={60} src="/Paysera_logo_2022.png" />
+              <Image
+                borderRadius="xl"
+                mt={5}
+                w={60}
+                src="/Paysera_logo_2022.png"
+              />
             </Box>
-            <Box border="solid" mt={5} p={5}>
+            <Box
+              borderRadius="xl"
+              border="solid"
+              borderColor="#9e9d9d"
+              borderWidth="2px"
+              mt={5}
+              p={5}
+            >
               <Flex mb={5} alignItems="center" justifyContent="space-between">
                 <Box fontWeight="bold" fontSize="large">
                   Viso mokėti:
@@ -195,9 +220,10 @@ const Checkout = () => {
               <Divider borderColor="black" />
               <Flex mt={5} justifyContent="center">
                 <Button
-                  backgroundColor="#1E99D6"
-                  color="white"
-                  borderRadius="full"
+                  textTransform="uppercase"
+                  background="#1E99D6"
+                  textColor="white"
+                  borderRadius="2xl"
                   w={60}
                   onClick={submitCheckout}
                 >
@@ -216,13 +242,20 @@ const Checkout = () => {
           <ModalBody>Ar tikrai norite pašalinti paslaugą?</ModalBody>
 
           <ModalFooter>
-            <Button mr={3} onClick={onClose}>
+            <Button
+              mr={3}
+              textTransform="uppercase"
+              borderRadius="2xl"
+              onClick={onClose}
+            >
               Ne
             </Button>
             <Button
               onClick={cancelOrder}
-              backgroundColor="#1E99D6"
-              color="white"
+              textTransform="uppercase"
+              background="#1E99D6"
+              textColor="white"
+              borderRadius="2xl"
             >
               Taip
             </Button>

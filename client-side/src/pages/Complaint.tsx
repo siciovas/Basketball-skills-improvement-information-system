@@ -100,11 +100,11 @@ const Complaint = () => {
             <Flex
               mt={10}
               p={5}
-              boxShadow="dark-lg"
               w={600}
               borderRadius="xl"
               border="solid"
               borderColor="#9e9d9d"
+              borderWidth="2px"
               flexDirection="column"
               gap={5}
             >
@@ -112,12 +112,16 @@ const Complaint = () => {
               <Textarea
                 onChange={onComplaintChange}
                 placeholder="Skundo aprašymas"
+                border="solid"
+                borderWidth="1px"
               ></Textarea>
               <Button
                 alignSelf="end"
                 w={28}
-                backgroundColor="#1E99D6"
-                color="white"
+                textTransform="uppercase"
+                background="#1E99D6"
+                textColor="white"
+                borderRadius="2xl"
                 onClick={onOpen}
               >
                 Pateikti

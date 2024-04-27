@@ -154,7 +154,14 @@ const EditProfile = () => {
           <Container>
             <form onSubmit={(e) => updateUser(e)}>
               <FormControl>
-                <Flex p={5} gap={5} border="solid">
+                <Flex
+                  p={5}
+                  gap={5}
+                  borderRadius="xl"
+                  border="solid"
+                  borderColor="#9e9d9d"
+                  borderWidth="2px"
+                >
                   <Flex flexDir="column" align="center" mx="auto">
                     <Box mb={3}>
                       <FormLabel>Nuotrauka</FormLabel>
@@ -162,6 +169,7 @@ const EditProfile = () => {
                         <Image
                           w="100%"
                           h="100%"
+                          borderRadius="xl"
                           src={"data:image/jpeg;base64," + formState?.avatar}
                         />
                       </Box>
@@ -184,6 +192,8 @@ const EditProfile = () => {
                       name="name"
                       disabled
                       value={formState?.name}
+                      border="solid"
+                      borderWidth="1px"
                     />
                     <FormLabel>Pavardė</FormLabel>
                     <Input
@@ -192,6 +202,8 @@ const EditProfile = () => {
                       name="surname"
                       disabled
                       placeholder={formState?.surname}
+                      border="solid"
+                      borderWidth="1px"
                     />
                     <FormLabel>Lytis</FormLabel>
                     <Select
@@ -199,6 +211,8 @@ const EditProfile = () => {
                       name="gender"
                       disabled
                       value={formState?.gender}
+                      border="solid"
+                      borderWidth="1px"
                     >
                       <option hidden disabled value="">
                         Pasirinkite
@@ -213,6 +227,8 @@ const EditProfile = () => {
                       name="birthDate"
                       disabled
                       placeholder={formState?.birthDate}
+                      border="solid"
+                      borderWidth="1px"
                     />
                     <FormLabel>El. Paštas</FormLabel>
                     <Input
@@ -224,6 +240,8 @@ const EditProfile = () => {
                         handleFormInputChange(e, false);
                       }}
                       isRequired
+                      border="solid"
+                      borderWidth="1px"
                     />
                     <FormLabel>Telefono nr.</FormLabel>
                     <Input
@@ -235,6 +253,8 @@ const EditProfile = () => {
                       }}
                       value={formState?.phoneNumber}
                       isRequired
+                      border="solid"
+                      borderWidth="1px"
                     />
                     {(role === STUDENT_ROLE && (
                       <>
@@ -248,6 +268,8 @@ const EditProfile = () => {
                           }}
                           value={formState?.height as number}
                           isRequired
+                          border="solid"
+                          borderWidth="1px"
                         />
                         <FormLabel>Svoris (kg.)</FormLabel>
                         <Input
@@ -259,6 +281,8 @@ const EditProfile = () => {
                           }}
                           value={formState?.weight as number}
                           isRequired
+                          border="solid"
+                          borderWidth="1px"
                         />
                         <FormLabel>Pėdos dydis (EU)</FormLabel>
                         <Input
@@ -270,6 +294,8 @@ const EditProfile = () => {
                           }}
                           value={formState?.footSize as number}
                           isRequired
+                          border="solid"
+                          borderWidth="1px"
                         />
                         <FormLabel>Metabolinis amžius</FormLabel>
                         <Input
@@ -281,6 +307,8 @@ const EditProfile = () => {
                           }}
                           value={formState?.metabolicAge as number}
                           isRequired
+                          border="solid"
+                          borderWidth="1px"
                         />
                       </>
                     )) ||
@@ -293,6 +321,8 @@ const EditProfile = () => {
                             onChange={(e) => {
                               handleFormInputChange(e, false);
                             }}
+                            border="solid"
+                            borderWidth="1px"
                           ></Textarea>
                           <FormLabel>Išsilavinimas</FormLabel>
                           <Select
@@ -302,6 +332,8 @@ const EditProfile = () => {
                               handleFormInputChange(e, false);
                             }}
                             value={formState?.education as string}
+                            border="solid"
+                            borderWidth="1px"
                           >
                             <option hidden disabled value="">
                               Pasirinkite
@@ -328,6 +360,8 @@ const EditProfile = () => {
                               handleFormInputChange(e, true);
                             }}
                             value={formState?.experience as number}
+                            border="solid"
+                            borderWidth="1px"
                           />
                           <FormLabel>Specializacija</FormLabel>
                           <Input
@@ -338,16 +372,18 @@ const EditProfile = () => {
                               handleFormInputChange(e, false);
                             }}
                             value={formState?.specialization as string}
+                            border="solid"
+                            borderWidth="1px"
                           />
                         </>
                       ))}
                     <Button
                       type="submit"
                       w="100%"
-                      backgroundColor="#1E99D6"
-                      color="white"
-                      borderRadius="2xl"
                       textTransform="uppercase"
+                      background="#1E99D6"
+                      textColor="white"
+                      borderRadius="2xl"
                       mt={5}
                     >
                       Atnaujinti

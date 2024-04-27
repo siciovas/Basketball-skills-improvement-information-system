@@ -113,8 +113,10 @@ const CommissionFee = ({ updateCommissionFee }: Props) => {
               onChange={handleCommissionFeeInput}
             />
             <Button
-              backgroundColor="#1E99D6"
-              color="white"
+              textTransform="uppercase"
+              background="#1E99D6"
+              textColor="white"
+              borderRadius="2xl"
               onClick={(e) => updateCommissionFee(e, commissionFee)}
             >
               ATNAUJINTI

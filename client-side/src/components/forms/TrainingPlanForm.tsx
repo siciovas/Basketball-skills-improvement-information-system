@@ -254,6 +254,7 @@ const TrainingPlanForm = ({ onClose, trainingPlanId }: Props) => {
                     w="100%"
                     h="100%"
                     src={"data:image/jpeg;base64," + formState?.avatar}
+                    borderRadius="xl"
                   />
                 </Box>
               )}
@@ -278,6 +279,8 @@ const TrainingPlanForm = ({ onClose, trainingPlanId }: Props) => {
                 onChange={onFormChange}
                 value={formState.title}
                 isRequired
+                border="solid"
+                borderWidth="1px"
               />
               <FormLabel mt={5}>Aprašymas</FormLabel>
               <Textarea
@@ -285,6 +288,8 @@ const TrainingPlanForm = ({ onClose, trainingPlanId }: Props) => {
                 onChange={onFormChange}
                 value={formState.description}
                 isRequired
+                border="solid"
+                borderWidth="1px"
               ></Textarea>
               <FormLabel mt={5}>Trumpasis aprašymas</FormLabel>
               <Textarea
@@ -292,6 +297,8 @@ const TrainingPlanForm = ({ onClose, trainingPlanId }: Props) => {
                 onChange={onFormChange}
                 value={formState.shortDescription}
                 isRequired
+                border="solid"
+                borderWidth="1px"
               ></Textarea>
               <FormLabel mt={5}>Plano įvykdymo terminas (dienomis)</FormLabel>
               <Flex flexDir="column" w="53%">
@@ -301,7 +308,9 @@ const TrainingPlanForm = ({ onClose, trainingPlanId }: Props) => {
                   onChange={onFormChange}
                   value={formState.expirationDate}
                   isRequired
-                ></Input>
+                  border="solid"
+                  borderWidth="1px"
+                />
               </Flex>
             </FormControl>
             <Flex justifyContent="space-between" alignItems="center" mt={2}>
@@ -314,7 +323,9 @@ const TrainingPlanForm = ({ onClose, trainingPlanId }: Props) => {
                     onChange={onFormChange}
                     value={formState.price}
                     isRequired
-                  ></Input>
+                    border="solid"
+                    borderWidth="1px"
+                  />
                 </FormControl>
               </Box>
               <Box>
@@ -344,7 +355,12 @@ const TrainingPlanForm = ({ onClose, trainingPlanId }: Props) => {
                   <FormLabel mt={5}>Įtraukti įgūdį</FormLabel>
                   <Flex gap={5}>
                     <Menu closeOnSelect={false}>
-                      <MenuButton width="60%" as={Button}>
+                      <MenuButton
+                        width="60%"
+                        as={Button}
+                        border="solid"
+                        borderWidth="1px"
+                      >
                         <Box>
                           {formState.skills
                             .map((skill) => {
@@ -408,8 +424,10 @@ const TrainingPlanForm = ({ onClose, trainingPlanId }: Props) => {
             )}
 
             <Button
-              backgroundColor="#1E99D6"
-              color="white"
+              textTransform="uppercase"
+              background="#1E99D6"
+              textColor="white"
+              borderRadius="2xl"
               mt={10}
               w={52}
               alignSelf="end"

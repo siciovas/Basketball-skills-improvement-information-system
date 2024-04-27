@@ -156,6 +156,8 @@ const ExerciseForm = ({ onClose, exerciseId }: Props) => {
                 onChange={onChange}
                 value={formState.name}
                 isRequired
+                border="solid"
+                borderWidth="1px"
               />
               <FormLabel mt={5}>Aprašymas</FormLabel>
               <Textarea
@@ -163,6 +165,8 @@ const ExerciseForm = ({ onClose, exerciseId }: Props) => {
                 onChange={onChange}
                 value={formState.description}
                 isRequired
+                border="solid"
+                borderWidth="1px"
               ></Textarea>
               <FormLabel mt={5}>Sudėtingumas</FormLabel>
               <Select
@@ -172,6 +176,8 @@ const ExerciseForm = ({ onClose, exerciseId }: Props) => {
                 isRequired
                 defaultValue=""
                 value={formState.difficulty}
+                border="solid"
+                borderWidth="1px"
               >
                 <option hidden disabled value="">
                   Pasirinkite

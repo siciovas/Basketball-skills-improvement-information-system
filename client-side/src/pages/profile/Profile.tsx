@@ -52,7 +52,7 @@ const Profile = () => {
   const onNewPasswordChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setNewPassword(e.target.value as string);
   };
-  
+
   const onRepeatPasswordChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setRepeatPassword(e.target.value as string);
   };
@@ -148,22 +148,26 @@ const Profile = () => {
           <Container minW={1000}>
             <Box m="auto" mt={5}>
               <Box
-                boxShadow="dark-lg"
                 w={600}
                 m="auto"
                 borderRadius="xl"
                 border="solid"
                 borderColor="#9e9d9d"
+                borderWidth="2px"
               >
                 <Flex gap={5} mt={5} mb={5}>
-                  <Box alignSelf="center" h={60} w={60} ml={5}>
-                    <Image
-                      w="100%"
-                      h="100%"
-                      src={"data:image/jpeg;base64," + user?.avatar}
-                    ></Image>
-                  </Box>
-                  <Flex flexDir="column" gap={5}>
+                  <Flex flexDir="column">
+                    <Text fontWeight="bold" ml={5} mb={2}>Pagrindinė informacija</Text>
+                    <Box alignSelf="center" h={60} w={60} ml={5}>
+                      <Image
+                        w="100%"
+                        h="100%"
+                        borderRadius="xl"
+                        src={"data:image/jpeg;base64," + user?.avatar}
+                      ></Image>
+                    </Box>
+                  </Flex>
+                  <Flex flexDir="column" gap={5} mt={7}>
                     <Flex>
                       <Text fontWeight="bold">Vardas:&nbsp;</Text>
                       <Text>{user?.name}</Text>
@@ -192,10 +196,10 @@ const Profile = () => {
                 </Flex>
                 <Flex mx={5} mb={5} justifyContent="end">
                   <Button
-                    backgroundColor="#1E99D6"
-                    color="white"
-                    borderRadius="2xl"
                     textTransform="uppercase"
+                    background="#1E99D6"
+                    textColor="white"
+                    borderRadius="2xl"
                     onClick={() => navigate("/editProfile")}
                   >
                     Redaguoti
@@ -204,26 +208,25 @@ const Profile = () => {
               </Box>
             </Box>
             {user!.additionalInfo && (
-              <Accordion
-                allowToggle
-                mx="auto"
-                mt={10}
-                boxShadow="dark-lg"
-                w={600}
-                borderRadius="xl"
-                border="solid"
-                borderColor="#9e9d9d"
-              >
+              <Accordion allowToggle mx="auto" mt={10} w={600}>
                 <AccordionItem>
-                  <h2>
-                    <AccordionButton>
-                      <Box as="span" flex="1" textAlign="left">
-                        Papildoma informacija
-                      </Box>
-                      <AccordionIcon />
-                    </AccordionButton>
-                  </h2>
-                  <AccordionPanel pb={4}>
+                  <AccordionButton
+                    borderRadius="xl"
+                    border="solid"
+                    borderColor="#9e9d9d"
+                    borderWidth="2px"
+                    fontWeight="bold"
+                  >
+                    Papildoma informacija
+                    <AccordionIcon />
+                  </AccordionButton>
+                  <AccordionPanel
+                    pb={4}
+                    borderRadius="xl"
+                    border="solid"
+                    borderColor="#9e9d9d"
+                    borderWidth="2px"
+                  >
                     <SimpleGrid columns={3} spacing={10}>
                       {Object.keys(user!.additionalInfo).map((key) => {
                         return (
@@ -265,12 +268,12 @@ const Profile = () => {
             </Flex>
             <Box m="auto" mt={5}>
               <Box
-                boxShadow="dark-lg"
                 w={600}
                 m="auto"
                 borderRadius="xl"
                 border="solid"
                 borderColor="#9e9d9d"
+                borderWidth="2px"
               >
                 <form onSubmit={(e) => updatePassword(e)}>
                   <FormControl>
@@ -284,6 +287,8 @@ const Profile = () => {
                         onChange={(e) => {
                           onOldPasswordChange(e);
                         }}
+                        border="solid"
+                        borderWidth="1px"
                       />
                     </Flex>
                     <Flex align="center" flexDir="column">
@@ -296,6 +301,8 @@ const Profile = () => {
                         onChange={(e) => {
                           onNewPasswordChange(e);
                         }}
+                        border="solid"
+                        borderWidth="1px"
                       />
                     </Flex>
                     <Flex align="center" flexDir="column">
@@ -308,17 +315,19 @@ const Profile = () => {
                         onChange={(e) => {
                           onRepeatPasswordChange(e);
                         }}
+                        border="solid"
+                        borderWidth="1px"
                       />
                     </Flex>
                     <Flex justify="center">
                       <Button
                         type="submit"
                         w="50%"
-                        backgroundColor="#1E99D6"
-                        color="white"
+                        textTransform="uppercase"
+                        background="#1E99D6"
+                        textColor="white"
                         borderRadius="2xl"
                         mt={5}
-                        textTransform="uppercase"
                         mb={5}
                       >
                         Atnaujinti slaptažodį

@@ -115,8 +115,10 @@ const TrainingPlans = () => {
             </Flex>
             <Flex justifyContent="end">
               <Button
-                backgroundColor="#1E99D6"
-                color="white"
+                textTransform="uppercase"
+                background="#1E99D6"
+                textColor="white"
+                borderRadius="2xl"
                 onClick={() => onFormOpen(undefined)}
               >
                 Naujas planas
@@ -226,11 +228,10 @@ const TrainingPlans = () => {
                       </Box>
                     )}
                     <Button
-                      borderRadius="3xl"
-                      color="white"
-                      backgroundColor="#1E99D6"
                       textTransform="uppercase"
-                      fontSize="small"
+                      background="#1E99D6"
+                      textColor="white"
+                      borderRadius="2xl"
                       onClick={() => onFormOpen(trainingPlan.id)}
                     >
                       Redaguoti
