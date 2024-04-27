@@ -15,14 +15,26 @@ import toast from "react-hot-toast";
 import { STUDENT_ROLE, COACH_ROLE } from "../Helpers/constants";
 import { useNavigate } from "react-router-dom";
 import { User } from "../Types/types";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 type eventHandleChange<T extends HTMLElement> = ChangeEvent<T>;
 
 const Register = () => {
   const navigate = useNavigate();
   const [isCoach, setIsCoach] = useState(false);
-  const [formState, setFormState] = useState<User>();
+  const [formState, setFormState] = useState<User>({
+    birthDate: new Date(
+      new Date().getFullYear() - 10,
+      new Date().getMonth(),
+      new Date().getDate()
+    ).toString(),
+  });
   const [isInitWindow, setIsInitWindow] = useState(true);
+
+  const handleDateChange = (date: Date | null) => {
+    setFormState({ ...formState, ["birthDate"]: date?.toString() });
+  };
 
   const handleFormInputChange = (
     e: eventHandleChange<
@@ -152,6 +164,8 @@ const Register = () => {
               <>
                 <FormLabel>Vardas</FormLabel>
                 <Input
+                  border="solid"
+                  borderWidth="1px"
                   type="text"
                   mb={5}
                   name="name"
@@ -162,6 +176,8 @@ const Register = () => {
                 />
                 <FormLabel>Pavardė</FormLabel>
                 <Input
+                  border="solid"
+                  borderWidth="1px"
                   type="text"
                   mb={5}
                   name="surname"
@@ -172,6 +188,8 @@ const Register = () => {
                 />
                 <FormLabel>El. Paštas</FormLabel>
                 <Input
+                  border="solid"
+                  borderWidth="1px"
                   type="email"
                   mb={5}
                   name="email"
@@ -194,6 +212,8 @@ const Register = () => {
                 </Box>
                 <FormLabel>Lytis</FormLabel>
                 <Select
+                  border="solid"
+                  borderWidth="1px"
                   mb={5}
                   name="gender"
                   onChange={(e) => {
@@ -209,17 +229,26 @@ const Register = () => {
                   <option value="Female">Moteris</option>
                 </Select>
                 <FormLabel>Gimimo data</FormLabel>
-                <Input
-                  type="date"
-                  mb={5}
-                  name="birthDate"
-                  onChange={(e) => {
-                    handleFormInputChange(e, false);
-                  }}
-                  isRequired
-                />
+                <Box mb={5}>
+                  <DatePicker
+                    wrapperClassName="birthDatePicker"
+                    name="birthDate"
+                    selected={new Date(formState?.birthDate ?? new Date())}
+                    maxDate={
+                      new Date(
+                        new Date().getFullYear() - 10,
+                        new Date().getMonth(),
+                        new Date().getDate()
+                      )
+                    }
+                    onChange={handleDateChange}
+                    dateFormat="yyyy-MM-dd"
+                  />
+                </Box>
                 <FormLabel>Telefono nr.</FormLabel>
                 <Input
+                  border="solid"
+                  borderWidth="1px"
                   type="text"
                   mb={5}
                   name="phoneNumber"
@@ -232,6 +261,8 @@ const Register = () => {
                   <>
                     <FormLabel>Aprašymas</FormLabel>
                     <Textarea
+                      border="solid"
+                      borderWidth="1px"
                       name="description"
                       onChange={(e) => {
                         handleFormInputChange(e, false);
@@ -239,6 +270,8 @@ const Register = () => {
                     ></Textarea>
                     <FormLabel>Išsilavinimas</FormLabel>
                     <Select
+                      border="solid"
+                      borderWidth="1px"
                       mb={5}
                       name="education"
                       onChange={(e) => {
@@ -261,6 +294,8 @@ const Register = () => {
                     </Select>
                     <FormLabel>Patirtis metais</FormLabel>
                     <Input
+                      border="solid"
+                      borderWidth="1px"
                       type="number"
                       mb={5}
                       name="experience"
@@ -271,6 +306,8 @@ const Register = () => {
                     />
                     <FormLabel>Specializacija</FormLabel>
                     <Input
+                      border="solid"
+                      borderWidth="1px"
                       type="text"
                       mb={5}
                       name="specialization"
@@ -281,6 +318,8 @@ const Register = () => {
                     />
                     <FormLabel>Slaptažodis</FormLabel>
                     <Input
+                      border="solid"
+                      borderWidth="1px"
                       type="password"
                       mb={5}
                       name="password"
@@ -304,6 +343,8 @@ const Register = () => {
                   <>
                     <FormLabel>Ūgis (cm.)</FormLabel>
                     <Input
+                      border="solid"
+                      borderWidth="1px"
                       type="number"
                       mb={5}
                       name="height"
@@ -314,6 +355,8 @@ const Register = () => {
                     />
                     <FormLabel>Svoris (kg.)</FormLabel>
                     <Input
+                      border="solid"
+                      borderWidth="1px"
                       type="number"
                       mb={5}
                       name="weight"
@@ -324,6 +367,8 @@ const Register = () => {
                     />
                     <FormLabel>Pėdos dydis (EU)</FormLabel>
                     <Input
+                      border="solid"
+                      borderWidth="1px"
                       type="number"
                       mb={5}
                       name="footSize"
@@ -334,6 +379,8 @@ const Register = () => {
                     />
                     <FormLabel>Metabolinis amžius</FormLabel>
                     <Input
+                      border="solid"
+                      borderWidth="1px"
                       type="text"
                       mb={5}
                       name="metabolicAge"
@@ -344,6 +391,8 @@ const Register = () => {
                     />
                     <FormLabel>Slaptažodis</FormLabel>
                     <Input
+                      border="solid"
+                      borderWidth="1px"
                       type="password"
                       mb={5}
                       name="password"
