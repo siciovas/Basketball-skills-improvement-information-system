@@ -12,7 +12,6 @@ import {
   Tr,
   Text,
 } from "@chakra-ui/react";
-import moment from "moment";
 import OrderFilter from "../components/OrderFilter";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import eventBus from "../Helpers/eventBus";
@@ -21,6 +20,7 @@ import { Orders } from "../Types/types";
 import toast from "react-hot-toast";
 import Container from "../components/Container";
 import { useNavigate } from "react-router-dom";
+import moment from "moment-timezone";
 
 interface FilterProps {
   from: Date | undefined;
@@ -144,16 +144,29 @@ const MyOrders = () => {
                       </Td>
                       <Td>
                         <Text>
-                          {moment(order?.orderDate).format(
-                            "yyyy-MM-DD HH:mm:ss"
-                          )}
+                          {moment(
+                            new Date(
+                              moment(order?.orderDate).utc(true).toString()
+                            )
+                          ).format("yyyy-MM-DD HH:mm:ss")}
                         </Text>
                       </Td>
                       <Td>
                         <Text>{order.price?.toFixed(2)}€</Text>
                       </Td>
                       <Td>
-                        <Text cursor="pointer" as="u" color="blue.400" onClick={() => navigate(order.isPaid ? `/viewOrderedPlan/${order.id}` : `/checkout/${order.id}`)}>
+                        <Text
+                          cursor="pointer"
+                          as="u"
+                          color="blue.400"
+                          onClick={() =>
+                            navigate(
+                              order.isPaid
+                                ? `/viewOrderedPlan/${order.id}`
+                                : `/checkout/${order.id}`
+                            )
+                          }
+                        >
                           {order.isPaid
                             ? "Peržiūrėti užsakymą"
                             : "Užbaigti užsakymą"}

@@ -58,11 +58,12 @@ namespace Basketball.Infrastructure.Repositories
             return exerciseProgress;
         }
 
-        public async Task<int> GetCounterByUserAndTrainingPlanAndNotEvaluated(Guid userId, Guid trainingPlanId)
+        public async Task<int> GetCounterByUserAndTrainingPlanAndNotEvaluated(Guid userId, Guid coachId)
         {
             var count = await _db.ExerciseProgresses
+                                .Include(x => x.TrainingPlan)
                                  .Where(x => x.UserId == userId
-                                        && x.TrainingPlanId == trainingPlanId
+                                        && x.TrainingPlan.CoachId == coachId
                                         && x.Grade == null)
                                  .CountAsync();
 

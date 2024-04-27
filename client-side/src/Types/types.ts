@@ -227,11 +227,18 @@ export interface ExerciseExecutionDto {
   comment: string;
 }
 
-export interface Submissions {
-  student: string;
+export interface TrainingPlanEvaluationDto {
+  title: string;
+  submittedExercises: SubmittedExercise[];
   isPersonal: boolean;
   trainingPlanRequest: string | null;
-  submittedExercises: SubmittedExercise[];
+  finalMark: string;
+  progressCounter: string;
+}
+
+export interface AllEvaluationDto {
+  student: string;
+  trainingPlansEvaluations: TrainingPlanEvaluationDto[];
 }
 
 export interface SubmittedExercise {
@@ -241,6 +248,7 @@ export interface SubmittedExercise {
   comment: string | null;
   grade: number | null;
 }
+
 export interface MyPlansDto {
   avatar: string;
   name: string;
@@ -252,9 +260,7 @@ export interface MyPlansDto {
 
 export interface ActiveClient {
   fullName: string;
-  trainingPlan: string;
-  trainingPlanId: string;
+  trainingPlans: string[];
   userId: string;
-  deadline: string;
   isExistsNotEvaluatedExercises: boolean;
 }

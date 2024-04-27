@@ -103,7 +103,11 @@ const MyPlans = () => {
                       <Flex>
                         <Text fontWeight="bold">Terminas:&nbsp;</Text>
                         <Text>
-                          {moment(plan.expirationDate).format("yyyy-MM-DD")}
+                          {moment(
+                            new Date(
+                              moment(plan.expirationDate).utc(true).toString()
+                            )
+                          ).format("YYYY-MM-DD")}
                         </Text>
                       </Flex>
                     </Flex>

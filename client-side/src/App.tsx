@@ -42,6 +42,7 @@ function App() {
     }
     localStorage.removeItem("accessToken");
     localStorage.removeItem("role");
+    eventBus.dispatch("storage", "");
     navigate("/login");
   }, []);
 
@@ -93,7 +94,7 @@ function App() {
           element={<TrainingPlanExecution />}
         />
         <Route
-          path="exercisesEvaluation/:userId/:trainingPlanId"
+          path="exercisesEvaluation/:userId"
           element={<ExercisesEvaluation />}
         />
         <Route path="myPlans" element={<MyPlans />} />

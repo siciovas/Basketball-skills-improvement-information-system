@@ -86,7 +86,7 @@ const CoachDetails = () => {
         total: Math.ceil(coach.trainingPlans.length / itemsPerPage),
       });
       setCoach(coach);
-      setIsLoading(false);
+      await getFeedbacks();
     } else {
       toast.error("Netikėta klaida!");
     }
@@ -116,7 +116,6 @@ const CoachDetails = () => {
 
   useEffect(() => {
     getCoachDetails();
-    getFeedbacks();
   }, []);
 
   return (
@@ -197,15 +196,15 @@ const CoachDetails = () => {
                       {coach?.rating}
                     </Box>
                     {canUserFeedback && (
-                    <Button
-                      textTransform="uppercase"
-                      background="#1E99D6"
-                      textColor="white"
-                      borderRadius="2xl"
-                      onClick={() => onOpen()}
-                    >
-                      RAŠYTI ATSILIEPIMĄ
-                    </Button>
+                      <Button
+                        textTransform="uppercase"
+                        background="#1E99D6"
+                        textColor="white"
+                        borderRadius="2xl"
+                        onClick={() => onOpen()}
+                      >
+                        RAŠYTI ATSILIEPIMĄ
+                      </Button>
                     )}
                     {canUserReport && (
                       <Button
@@ -325,7 +324,7 @@ const CoachDetails = () => {
         <ModalContent>
           <ModalCloseButton />
           <ModalBody>
-            <FeedbackForm coachId={coach?.id as string}/>
+            <FeedbackForm coachId={coach?.id as string} />
           </ModalBody>
         </ModalContent>
       </Modal>

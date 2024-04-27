@@ -19,7 +19,6 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Unauthorized } from "../Helpers/constants";
 import eventBus from "../Helpers/eventBus";
-import moment from "moment";
 
 const ActiveClients = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -69,8 +68,7 @@ const ActiveClients = () => {
               <Thead>
                 <Tr>
                   <Th>Krepšininkas</Th>
-                  <Th>Treniruočių planas</Th>
-                  <Th>Terminas</Th>
+                  <Th>Treniruočių planai</Th>
                   <Th>Ar yra neįvertintų pratimų?</Th>
                 </Tr>
               </Thead>
@@ -83,7 +81,7 @@ const ActiveClients = () => {
                         cursor="pointer"
                         onClick={() =>
                           navigate(
-                            `/exercisesEvaluation/${activeClient.userId}/${activeClient.trainingPlanId}`
+                            `/exercisesEvaluation/${activeClient.userId}`
                           )
                         }
                       >
@@ -91,12 +89,7 @@ const ActiveClients = () => {
                       </Text>
                     </Td>
                     <Td>
-                      <Text>{activeClient.trainingPlan}</Text>
-                    </Td>
-                    <Td>
-                      <Text>
-                        {moment(activeClient.deadline).format("YYYY-MM-DD")}
-                      </Text>
+                      <Text>{activeClient.trainingPlans.join(", ")}</Text>
                     </Td>
                     <Td>
                       <Text>

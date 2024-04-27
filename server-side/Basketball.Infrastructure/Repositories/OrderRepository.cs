@@ -69,7 +69,7 @@ namespace Basketball.Infrastructure.Repositories
 
         public async Task RemoveExpiredOrders()
         {
-            _db.Orders.RemoveRange(_db.Orders.Where(x => x.OrderDate.AddMinutes(20) < DateTime.Now && !x.IsPaid));
+            _db.Orders.RemoveRange(_db.Orders.Where(x => x.OrderDate.AddMinutes(20) < DateTime.UtcNow && !x.IsPaid));
             await _db.SaveChangesAsync();
         }
 
@@ -99,12 +99,21 @@ namespace Basketball.Infrastructure.Repositories
 
         public async Task<List<Order>> GetActiveClients(Guid coachId)
         {
-            return await _db.Orders.Include(x => x.User).Include(x => x.TrainingPlan).Where(x => x.TrainingPlan.CoachId == coachId).ToListAsync();
+            return await _db.Orders.Include(x => x.User).Include(x => x.TrainingPlan)
+                .Where(x => x.TrainingPlan.CoachId == coachId)
+                .GroupBy(x => x.UserId)
+                .Select(x => x.First())
+                .ToListAsync();
         }
 
         public async Task<Order> GetByTrainingPlanAndUserId(Guid userId, Guid trainingPlanId)
         {
             return await _db.Orders.Include(x => x.TrainingPlan).FirstAsync(x => x.TrainingPlanId == trainingPlanId && x.UserId == userId);
+        }
+
+        public async Task<List<Order>> GetByCoachIdAndUserId(Guid userId, Guid coachId)
+        {
+            return await _db.Orders.Include(x => x.TrainingPlan).ThenInclude(x => x.Skills).ThenInclude(x => x.Exercises).Where(x => x.TrainingPlan.CoachId == coachId && x.UserId == userId && x.IsPaid).ToListAsync();
         }
     }
 }

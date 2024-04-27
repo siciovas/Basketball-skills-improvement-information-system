@@ -31,45 +31,75 @@ namespace Basketball.Services
 
         public async Task<List<ActiveClient>> GetActiveClients(Guid userId)
         {
-            var notEvaluatedExercisesCounts = new Dictionary<Guid, int>();
+            var notEvaluatedExercisesCounts = new Dictionary<Guid, (int, List<string>)>();
             var activeClients = await _orderRepository.GetActiveClients(userId);
 
             foreach (var activeClient in activeClients)
             {
-                var clientNotEvaluatedExercisesCount = await _exerciseFlowRepository.GetCounterByUserAndTrainingPlanAndNotEvaluated(activeClient.UserId, activeClient.TrainingPlanId);
-                notEvaluatedExercisesCounts.Add(activeClient.TrainingPlanId, clientNotEvaluatedExercisesCount);
+                var orders = await _orderRepository.GetByCoachIdAndUserId(activeClient.UserId, userId);
+                var clientNotEvaluatedExercisesCount = await _exerciseFlowRepository.GetCounterByUserAndTrainingPlanAndNotEvaluated(activeClient.UserId, userId);
+                notEvaluatedExercisesCounts.Add(activeClient.UserId, (clientNotEvaluatedExercisesCount, orders.Select(x => x.TrainingPlan.Title).ToList()));
             }
 
             return activeClients.Select(activeClient => new ActiveClient
             {
                 FullName = string.Format("{0} {1}", activeClient.User.Name, activeClient.User.Surname),
-                TrainingPlan = activeClient.TrainingPlan.Title,
-                TrainingPlanId = activeClient.TrainingPlanId,
+                TrainingPlans = notEvaluatedExercisesCounts[activeClient.UserId].Item2,
                 UserId = activeClient.UserId,
-                Deadline = activeClient.OrderDate.AddDays(activeClient.TrainingPlan.ExpirationDate),
-                IsExistsNotEvaluatedExercises = notEvaluatedExercisesCounts.TryGetValue(activeClient.TrainingPlanId, out int count) && count > 0
+                IsExistsNotEvaluatedExercises = notEvaluatedExercisesCounts[activeClient.UserId].Item1 > 0
             }).ToList();
         }
 
-        public async Task<ExerciseEvaluationDto> GetExercisesForEvaluation(Guid userId, Guid trainingPlanId)
+        public async Task<AllEvaluationDto> GetExercisesForEvaluation(Guid userId, Guid coachId)
         {
+            var trainingPlansSubmissions = new Dictionary<Guid, TrainingPlanEvaluationDto>();
             var user = await _userRepository.GetUserById(userId);
-            var order = await _orderRepository.GetByTrainingPlanAndUserId(userId, trainingPlanId);
-            var userSubmissions = await _exerciseFlowRepository.GetAllByUserIdAndTrainingPlanId(userId, trainingPlanId);
+            var orders = await _orderRepository.GetByCoachIdAndUserId(userId, coachId);
+            foreach (var order in orders)
+            {
+                var coefficient = 1 / (double)order.TrainingPlan.Skills.Count;
+                var averages = new List<double>();
+                var progress = await _exerciseFlowRepository.GetAllByUserIdAndTrainingPlanId(userId, order.TrainingPlan.Id);
+                var progressCounter = await _exerciseFlowRepository.GetCounterByUserAndPositive(userId);
 
-            return new ExerciseEvaluationDto
+                foreach (var skill in order.TrainingPlan.Skills)
+                {
+                    var skillProgress = progress.Where(x => x.SkillId == skill.Id
+                                                       && x.Grade > 4)
+                                                .ToList();
+
+                    var gradeSum = skillProgress.Sum(x => x.Grade);
+
+                    var average = (double)gradeSum! / (skillProgress.Count == 0 ? 1 : skillProgress.Count);
+
+                    var finalAverage = average * coefficient;
+
+                    averages.Add(finalAverage);
+                }
+                var userSubmissions = await _exerciseFlowRepository.GetAllByUserIdAndTrainingPlanId(userId, order.TrainingPlanId);
+                var evaluationDto = new TrainingPlanEvaluationDto
+                {
+                    Title = order.TrainingPlan.Title,
+                    IsPersonal = order.TrainingPlan.IsPersonal,
+                    FinalMark = averages.Sum(x => x).ToString("F1"),
+                    ProgressCounter = ((progressCounter.TryGetValue(order.TrainingPlanId, out int count) ? count : 0) / (double)order.TrainingPlan.Skills.SelectMany(x => x.Exercises).Count() * 100).ToString("F1"),
+                    TrainingPlanRequest = order.TrainingPlanRequest,
+                    SubmittedExercises = userSubmissions.Select(submission => new SubmittedExercise
+                    {
+                        Id = submission.Id,
+                        Comment = submission.Comment,
+                        Title = submission.Exercise.Name,
+                        VideoUrl = submission.ProgressVideoUrl,
+                        Grade = submission.Grade,
+                    }).ToList()
+                };
+                trainingPlansSubmissions.Add(order.TrainingPlanId, evaluationDto);
+            }
+
+            return new AllEvaluationDto
             {
                 Student = string.Format("{0} {1}", user.Name, user.Surname),
-                IsPersonal = order.TrainingPlan.IsPersonal,
-                TrainingPlanRequest = order.TrainingPlanRequest,
-                SubmittedExercises = userSubmissions.Select(submission => new SubmittedExercise
-                {
-                    Id = submission.Id,
-                    Comment = submission.Comment,
-                    Title = submission.Exercise.Name,
-                    VideoUrl = submission.ProgressVideoUrl,
-                    Grade = submission.Grade,
-                }).ToList()
+                TrainingPlansEvaluations = orders.Select(x => trainingPlansSubmissions[x.TrainingPlanId]).ToList()
             };
         }
 

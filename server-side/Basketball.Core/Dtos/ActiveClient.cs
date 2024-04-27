@@ -9,10 +9,8 @@ namespace Basketball.Core.Dtos
     public class ActiveClient
     {
         public required string FullName { get; set; }
-        public required string TrainingPlan { get; set; }
-        public Guid TrainingPlanId { get; set; }
+        public required List<string> TrainingPlans { get; set; }
         public Guid UserId { get; set; }
-        public DateTime Deadline { get; set; }
         public bool IsExistsNotEvaluatedExercises { get; set; }
     }
 }

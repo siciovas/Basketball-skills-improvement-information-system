@@ -68,7 +68,9 @@ const ViewOrderedPlan = () => {
               <Flex>
                 <Heading size="md">UŽSAKYMO DATA:&nbsp;</Heading>
                 <Text>
-                  {moment(order?.orderDate).format("yyyy-MM-DD HH:mm:ss")}
+                  {moment(
+                    new Date(moment(order?.orderDate).utc(true).toString())
+                  ).format("yyyy-MM-DD HH:mm:ss")}
                 </Text>
               </Flex>
             </Flex>
@@ -95,9 +97,7 @@ const ViewOrderedPlan = () => {
             <Flex gap={64}>
               <Flex flexDir="column" gap={5}>
                 <Heading size="sm">Mokėtojo informacija</Heading>
-                <Text>
-                  {order?.buyerFullName}
-                </Text>
+                <Text>{order?.buyerFullName}</Text>
                 <Flex>
                   <Text fontWeight="bold">Tel. Nr.:&nbsp;</Text>
                   <Text>{order?.phoneNumber}</Text>

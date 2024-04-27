@@ -153,9 +153,11 @@ const AllOrders = () => {
                       </Td>
                       <Td>
                         <Text>
-                          {moment(order?.orderDate).format(
-                            "yyyy-MM-DD HH:mm:ss"
-                          )}
+                          {moment(
+                            new Date(
+                              moment(order?.orderDate).utc(true).toString()
+                            )
+                          ).format("yyyy-MM-DD HH:mm:ss")}
                         </Text>
                       </Td>
                       <Td>

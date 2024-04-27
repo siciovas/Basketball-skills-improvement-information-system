@@ -21,7 +21,7 @@ namespace Basketball.Services
                 Text = complaintDto.Text,
                 StudentId = complaintDto.StudentId,
                 CoachId = complaintDto.CoachId,
-                Date = DateOnly.FromDateTime(DateTime.Now)
+                Date = DateOnly.FromDateTime(DateTime.UtcNow)
             };
 
             var createdComplaint = await _complaintRepository.Create(newComplaint);
