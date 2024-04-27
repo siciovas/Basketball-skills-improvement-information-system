@@ -11,6 +11,7 @@ import eventBus from "../Helpers/eventBus";
 import { useParams } from "react-router-dom";
 import Container from "../components/Container";
 import {
+  Image,
   Text,
   Accordion,
   AccordionButton,
@@ -124,6 +125,53 @@ const ExercisesEvaluation = () => {
         ) : (
           <>
             <Heading size="lg">{`Klientas ${submissions?.student}`}</Heading>
+            <Box
+              m="auto"
+              borderRadius="xl"
+              border="solid"
+              borderColor="#9e9d9d"
+              borderWidth="2px"
+            >
+              <Flex gap={5} mt={5} mb={5}>
+                <Box alignSelf="center" h={60} w={60} ml={5}>
+                  <Image
+                    w="100%"
+                    h="100%"
+                    src={"data:image/jpeg;base64," + submissions?.userAvatar}
+                  ></Image>
+                </Box>
+                <Flex flexDir="column" gap={5}>
+                  <Flex>
+                    <Text fontWeight="bold">Vardas:&nbsp;</Text>
+                    <Text>{submissions?.student.split(" ")[0]}</Text>
+                  </Flex>
+                  <Flex>
+                    <Text fontWeight="bold">Pavardė:&nbsp;</Text>
+                    <Text>{submissions?.student.split(" ")[0]}</Text>
+                  </Flex>
+                  <Flex>
+                    <Text fontWeight="bold">Gimimo data:&nbsp;</Text>
+                    <Text>{submissions?.birthDate}</Text>
+                  </Flex>
+                  <Flex>
+                    <Text fontWeight="bold">Pėdos dydis:&nbsp;</Text>
+                    <Text>{submissions?.footSize}</Text>
+                  </Flex>
+                  <Flex>
+                    <Text fontWeight="bold">Ūgis:&nbsp;</Text>
+                    <Text>{submissions?.height}</Text>
+                  </Flex>
+                  <Flex>
+                    <Text fontWeight="bold">Svoris:&nbsp;</Text>
+                    <Text>{submissions?.weight}</Text>
+                  </Flex>
+                  <Flex>
+                    <Text fontWeight="bold">Metabolinis amžius:&nbsp;</Text>
+                    <Text>{submissions?.metabolicAge}</Text>
+                  </Flex>
+                </Flex>
+              </Flex>
+            </Box>
             {submissions?.trainingPlansEvaluations.map(
               (trainingPlanEvaluation) => {
                 return (
@@ -146,10 +194,9 @@ const ExercisesEvaluation = () => {
                         </Flex>
                         <Box mt={5}>
                           <Button
-                            textTransform="uppercase"
-                            background="#1E99D6"
-                            textColor="white"
-                            borderRadius="2xl"
+                            borderRadius="full"
+                            backgroundColor="#1E99D6"
+                            color="white"
                             onClick={onOpen}
                           >
                             Papildyti planą
@@ -164,7 +211,6 @@ const ExercisesEvaluation = () => {
                       borderRadius="xl"
                       border="solid"
                       borderColor="#9e9d9d"
-                      borderWidth="2px"
                       flexDirection="column"
                       p={5}
                       mt={3}
@@ -218,13 +264,13 @@ const ExercisesEvaluation = () => {
                               : "Atmesta"
                             : "Laukiama";
                           return (
-                            <AccordionItem mt={2}>
-                              <AccordionButton
-                                borderRadius="xl"
-                                border="solid"
-                                borderColor="#9e9d9d"
-                                borderWidth="2px"
-                              >
+                            <AccordionItem
+                              borderRadius="xl"
+                              border="solid"
+                              borderColor="#9e9d9d"
+                              mt={2}
+                            >
+                              <AccordionButton>
                                 <Flex
                                   gap={3}
                                   as="span"
@@ -251,13 +297,7 @@ const ExercisesEvaluation = () => {
                                 </Flex>
                                 <AccordionIcon />
                               </AccordionButton>
-                              <AccordionPanel
-                                pb={4}
-                                borderRadius="xl"
-                                border="solid"
-                                borderColor="#9e9d9d"
-                                borderWidth="2px"
-                              >
+                              <AccordionPanel pb={4}>
                                 <Flex flexDirection="column">
                                   <Box>
                                     <ReactPlayer
@@ -266,16 +306,14 @@ const ExercisesEvaluation = () => {
                                     />
                                   </Box>
                                   <Box mt={2}>
-                                    <Box fontWeight="bold" mt={5}>
-                                      Komentaras:
-                                    </Box>
+                                    <Box>Komentaras</Box>
                                     {status === "Laukiama" ? (
                                       <>
                                         <Textarea
                                           value={comment}
                                           onChange={handleCommentChange}
                                           border="solid"
-                                          borderWidth="1px"
+                                          borderColor="#9e9d9d"
                                         />
                                         <Flex
                                           mt={3}
@@ -285,7 +323,7 @@ const ExercisesEvaluation = () => {
                                           <Select
                                             w={16}
                                             border="solid"
-                                            borderWidth="1px"
+                                            borderColor="#9e9d9d"
                                             placeholder="-"
                                             value={grade}
                                             onChange={handleChangeGrade}
@@ -299,10 +337,9 @@ const ExercisesEvaluation = () => {
                                           </Select>
                                           <Flex gap={2} flexDirection="column">
                                             <Button
-                                              textTransform="uppercase"
-                                              background="#1E99D6"
-                                              textColor="white"
-                                              borderRadius="2xl"
+                                              borderRadius="full"
+                                              backgroundColor="#1E99D6"
+                                              color="white"
                                               onClick={(e) =>
                                                 handleSubmit(
                                                   e,
@@ -314,10 +351,9 @@ const ExercisesEvaluation = () => {
                                               Patvirtinti
                                             </Button>
                                             <Button
-                                              textTransform="uppercase"
-                                              background="red.500"
-                                              textColor="white"
-                                              borderRadius="2xl"
+                                              borderRadius="full"
+                                              backgroundColor="red"
+                                              color="white"
                                               onClick={(e) =>
                                                 handleSubmit(
                                                   e,
@@ -334,11 +370,9 @@ const ExercisesEvaluation = () => {
                                     ) : (
                                       <>
                                         <Box>{exercise.comment}</Box>
-                                        <Flex>
-                                          <Box fontWeight="bold" mt={5}>
-                                            Įvertis:&nbsp;
-                                          </Box>
-                                          <Box mt={5}>{exercise.grade}</Box>
+                                        <Flex gap={3}>
+                                          <Box fontWeight="bold">Įvertis</Box>
+                                          <Box>{exercise.grade}</Box>
                                         </Flex>
                                       </>
                                     )}

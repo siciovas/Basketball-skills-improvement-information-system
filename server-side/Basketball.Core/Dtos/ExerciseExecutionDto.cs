@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Basketball.Domain.Data.Entities.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,5 +16,6 @@ namespace Basketball.Core.Dtos
         public bool IsLocked { get; set; }
         public required string ExerciseVideoUrl { get; set; }
         public string? Comment { get; set; }
+        public Difficulty Difficulty { get; set; }
     }
 }
