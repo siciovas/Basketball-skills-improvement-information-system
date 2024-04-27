@@ -274,7 +274,7 @@ namespace Basketball.Services
                     Id = skill.Id,
                     Description = skill.Description,
                     Name = skill.Title,
-                    IsLocked = !(index == 0) || !trainingPlan.Skills.ElementAt(index - 1).Exercises.All(ex => progress.Any(p => p.TrainingPlanId == trainingPlan.Id && p.ExerciseId == ex.Id && p.SkillId == trainingPlan.Skills.ElementAt(index - 1).Id && p.Grade != null && p.Grade > 4)),
+                    IsLocked = index == 0 || !trainingPlan.Skills.ElementAt(index - 1).Exercises.All(ex => progress.Any(p => p.TrainingPlanId == trainingPlan.Id && p.ExerciseId == ex.Id && p.SkillId == trainingPlan.Skills.ElementAt(index - 1).Id && p.Grade != null && p.Grade > 4)),
                     Exercises = skill.Exercises.Select(exercise => new ExerciseExecutionDto
                     {
                         Id = exercise.Id,
