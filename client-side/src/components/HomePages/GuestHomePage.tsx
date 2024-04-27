@@ -1,44 +1,37 @@
 import {
-  Box,
-  Button,
-  Center,
-  Flex,
   Heading,
-  Progress,
   SimpleGrid,
-  Spinner,
+  Flex,
+  Button,
+  Box,
   Image,
-  Text,
+  Center,
+  Spinner,
+  Grid,
+  GridItem,
 } from "@chakra-ui/react";
-import { useCallback, useEffect, useState } from "react";
-import toast from "react-hot-toast";
-import { Unauthorized } from "../../Helpers/constants";
-import eventBus from "../../Helpers/eventBus";
 import Container from "../Container";
-import moment from "moment";
-import { StudentHomePageDto } from "../../Types/types";
 import { useNavigate } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
+import { GuestHomePageDto } from "../../Types/types";
+import toast from "react-hot-toast";
 
-const StudentHomePage = () => {
+const GuestHomePage = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [homePage, setHomePage] = useState<StudentHomePageDto>();
-  const token = localStorage.getItem("accessToken");
+  const [homePage, setHomePage] = useState<GuestHomePageDto>();
   const navigate = useNavigate();
 
   const getHomePage = useCallback(async () => {
     const response = await fetch(
-      import.meta.env.VITE_API_URL + "user/studentHome",
+      import.meta.env.VITE_API_URL + "user/guestHome",
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
         method: "GET",
       }
     );
-    if (response.status === 401) {
-      eventBus.dispatch("logOut", Unauthorized);
-    } else if (response.status === 200) {
+    if (response.status === 200) {
       const homePage = await response.json();
       setHomePage(homePage);
       setIsLoading(false);
@@ -60,97 +53,95 @@ const StudentHomePage = () => {
           </Center>
         ) : (
           <>
-            <Heading>
-              {homePage!.plans.length > 0
-                ? "Tęskite treniruotes"
-                : "Treniruočių neturite"}
-            </Heading>
-            {homePage!.plans.length > 0 && (
-              <Box
-                borderRadius="xl"
-                border="solid"
-                borderColor="#9e9d9d"
-                borderWidth="2px"
-                mt={5}
-              >
-                <Heading
-                  cursor="pointer"
-                  textDecoration="underline"
-                  size="sm"
-                  textAlign="right"
-                  mx={10}
-                  mt={2}
-                  onClick={() => navigate("/myPlans")}
+            <Grid templateColumns="repeat(3, 1fr)" gap={5}>
+              <GridItem>
+                <Flex
+                  flexDir="column"
+                  border="1px"
+                  borderRadius="lg"
+                  bg="#FDFFFC"
+                  px={15}
+                  py={10}
+                  gap={5}
                 >
-                  Mano treniruotės
-                </Heading>
-                <SimpleGrid columns={3} spacing={10} p={5}>
-                  {homePage?.plans.map((plan) => (
+                  <Flex gap={4} align="center" justify="space-evenly">
+                    <Heading size="4xl">{homePage?.coachesCount}</Heading>
+                    <Box className="fa-solid fa-briefcase fa-4x"></Box>
+                  </Flex>
+                  <Flex justify="center" align="center" h="50%">
+                    <Heading size="lg">Registruoti treneriai</Heading>
+                  </Flex>
+                </Flex>
+              </GridItem>
+              <GridItem>
+                <Flex
+                  flexDir="column"
+                  border="1px"
+                  borderRadius="lg"
+                  bg="#1E98D6"
+                  px={15}
+                  py={10}
+                  gap={5}
+                >
+                  <Flex gap={4} align="center" justify="space-evenly">
+                    <Heading size="4xl">{homePage?.studentsCount}</Heading>
+                    <Box className="fa-solid fa-person-running fa-4x"></Box>
+                  </Flex>
+                  <Flex justify="center" align="center" h="50%">
+                    <Heading size="lg">Registruoti krepšininkai</Heading>
+                  </Flex>
+                </Flex>
+              </GridItem>
+              <GridItem>
+                <Flex
+                  flexDir="column"
+                  border="1px"
+                  borderRadius="lg"
+                  bg="#2E4057"
+                  px={15}
+                  py={10}
+                  gap={5}
+                >
+                  <Flex gap={4} align="center" justify="space-evenly">
+                    <Heading size="4xl" color="white">{homePage?.plansCount}</Heading>
                     <Box
-                      borderRadius="xl"
-                      border="solid"
-                      borderColor="#9e9d9d"
-                      borderWidth="2px"
-                      p={5}
-                    >
-                      <Flex flexDir="column">
-                        <Box h={40} w="100%">
-                          <Image
-                            w="100%"
-                            h="100%"
-                            borderRadius="xl"
-                            src={"data:image/jpeg;base64," + plan.avatar}
-                          />
-                        </Box>
-                        <Heading size="md" mt={5}>
-                          {plan.name}
-                        </Heading>
-                        <Text mt={2}>{plan.coachFullName}</Text>
-                        <Flex justify="flex-end" ml={5}>
-                          <Button
-                            textTransform="uppercase"
-                            background="#1E99D6"
-                            textColor="white"
-                            borderRadius="2xl"
-                            onClick={() =>
-                              navigate(
-                                `/trainingPlanExecution/${plan.trainingPlanId}`
-                              )
-                            }
-                          >
-                            VYKDYTI
-                          </Button>
-                        </Flex>
-                        <Progress
-                          colorScheme="blue"
-                          value={plan.progressCounter as unknown as number}
-                          mt={5}
-                        />
-                        <Flex justify="space-between" mt={2}>
-                          <Flex>
-                            <Text fontWeight="bold">Progresas:&nbsp;</Text>
-                            <Text>{plan.progressCounter}%</Text>
-                          </Flex>
-                          <Flex>
-                            <Text fontWeight="bold">Terminas:&nbsp;</Text>
-                            <Text>
-                              {moment(
-                                new Date(
-                                  moment(plan.expirationDate)
-                                    .utc(true)
-                                    .toString()
-                                )
-                              ).format("YYYY-MM-DD")}
-                            </Text>
-                          </Flex>
-                        </Flex>
-                      </Flex>
-                    </Box>
-                  ))}
-                </SimpleGrid>
-              </Box>
-            )}
-
+                      className="fa-solid fa-list-check fa-4x"
+                      color="white"
+                    ></Box>
+                  </Flex>
+                  <Flex justify="center" align="center" h="50%">
+                    <Heading size="lg" color="white">
+                      Treniruočių planai
+                    </Heading>
+                  </Flex>
+                </Flex>
+              </GridItem>
+            </Grid>
+            <Flex
+              borderRadius="xl"
+              border="solid"
+              borderColor="#9e9d9d"
+              borderWidth="2px"
+              flexDirection="column"
+              mt={5}
+              p={5}
+              gap={5}
+            >
+              <Heading m="auto" size="md">
+                Treniruokite arba tobulinkite savo krepšinio įgūdžius su
+                geriausiais treneriais
+              </Heading>
+              <Button
+                m="auto"
+                textTransform="uppercase"
+                background="#1E99D6"
+                textColor="white"
+                borderRadius="2xl"
+                onClick={() => navigate("/register")}
+              >
+                Registruotis
+              </Button>
+            </Flex>
             <Heading mt={5}>
               {homePage!.coaches.length > 0
                 ? "Tobulėkite su geriausiais treneriais"
@@ -247,4 +238,4 @@ const StudentHomePage = () => {
   );
 };
 
-export default StudentHomePage;
+export default GuestHomePage;

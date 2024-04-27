@@ -148,7 +148,7 @@ namespace Basketball.Services
                 Avatar = x.Avatar,
                 TrainingPlansCount = trainingPlansCount.TryGetValue(x.Id, out int value) ? value : 0,
                 ClientsCount = clientsCount.TryGetValue(x.Id, out int count) ? count : 0
-            });
+            }).OrderByDescending(x => x.Rating);
 
             return allCoaches.ToList();
         }

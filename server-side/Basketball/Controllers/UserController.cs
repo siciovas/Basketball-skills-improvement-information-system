@@ -2,6 +2,7 @@
 using Basketball.Core.Dtos.Update;
 using Basketball.Core.Interfaces.Services;
 using Basketball.Domain.Data.Entities.Enums;
+using Basketball.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -10,9 +11,11 @@ namespace Basketball.Controllers
 {
     [ApiController]
     [Route("api/user")]
-    public class UserController(IUserService userService) : ControllerBase
+    public class UserController(IUserService userService, ITrainingPlanService trainingPlanService, IStatisticsService statisticsService) : ControllerBase
     {
         private readonly IUserService _userService = userService;
+        private readonly ITrainingPlanService _trainingPlanService = trainingPlanService;
+        private readonly IStatisticsService _statisticsService = statisticsService;
 
         [HttpPost]
         [Route("register")]
@@ -172,6 +175,39 @@ namespace Basketball.Controllers
             var user = await _userService.GetMe(userId);
 
             return Ok(user);
+        }
+
+        [HttpGet("studentHome")]
+        [Authorize(Roles = "Student")]
+        public async Task<IActionResult> GetStudentHomePage()
+        {
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
+
+            var myPlans = await _trainingPlanService.GetMyPlans(userId);
+
+            var coaches = await _userService.GetApprovedCoaches();
+
+            return Ok(new
+            {
+                Plans = myPlans.TakeLast(3),
+                Coaches = coaches.Take(3)
+            });
+        }
+
+        [HttpGet("guestHome")]
+        public async Task<IActionResult> GetGuestHomePage()
+        {
+            var coaches = await _userService.GetApprovedCoaches();
+
+            var counts = await _statisticsService.GetCountsForAdmin();
+
+            return Ok(new
+            {
+                Coaches = coaches.Take(3),
+                CoachesCount = counts.Coaches,
+                StudentsCount = counts.Students,
+                PlansCount = counts.TrainingPlans
+            });
         }
     }
 }
