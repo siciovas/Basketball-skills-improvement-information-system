@@ -292,7 +292,7 @@ namespace Basketball.Services
         public async Task<List<MyPlansDto>> GetMyPlans(Guid userId)
         {
             var orders = await _orderRepository.GetByUserId(userId);
-            var paidOrders = orders.Where(x => x.IsPaid).ToList();
+            var paidOrders = orders.Where(x => x.IsPaid).OrderBy(x => x.OrderDate).ToList();
             var progressCounter = await _exerciseFlowRepository.GetCounterByUserAndPositive(userId);
 
             return paidOrders.Select(x => new MyPlansDto

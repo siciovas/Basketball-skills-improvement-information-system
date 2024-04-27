@@ -2,6 +2,7 @@ import { Box } from "@chakra-ui/react";
 import { ADMIN_ROLE, COACH_ROLE, STUDENT_ROLE } from "../Helpers/constants";
 import AdminHomePage from "../components/HomePages/AdminHomePage";
 import CoachHomePage from "../components/HomePages/CoachHomePage";
+import GuestHomePage from "../components/HomePages/GuestHomePage";
 import StudentHomePage from "../components/HomePages/StudentHomePage";
 
 const HomePage = () => {
@@ -9,6 +10,9 @@ const HomePage = () => {
 
   return (
     <Box mt={10}>
+    <>
+      {role === null && 
+        <GuestHomePage />}
       {(role === STUDENT_ROLE && (
         <>
           <StudentHomePage />
