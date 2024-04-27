@@ -205,6 +205,8 @@ export interface TrainingPlanExecutionDto {
   title: string;
   coach: string;
   deadline: string;
+  finalMark: string;
+  progressCounter: string;
   skills: SkillExecutionDto[];
 }
 
