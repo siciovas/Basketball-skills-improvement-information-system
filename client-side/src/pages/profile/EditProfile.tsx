@@ -110,6 +110,7 @@ const EditProfile = () => {
       getUserDetails();
     } else {
       toast.error("Atnaujinti nepavyko!");
+      setIsLoading(false);
     }
   };
 

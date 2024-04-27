@@ -75,140 +75,148 @@ const CoachHomePage = () => {
           <Spinner size="xl" textAlign="center" />
         </Center>
       ) : (
-        <SimpleGrid columns={3} m={10} gap={5}>
-          <Flex
-            boxShadow="dark-lg"
-            borderRadius="xl"
-            border="solid"
-            borderColor="#9e9d9d"
-            flexDirection="column"
-            position="relative"
-            justifyContent="center"
-            alignItems="center"
-            py={5}
-          >
-            <Heading size="lg" position="relative">
-              Treniruočių planai
+        <>
+          <Flex mt={5} mb={5} justify="center">
+            <Heading>
+              Generuokite daugiau pajamų efektyviai, valdydami savo treniruočių
+              planus
             </Heading>
-            <Box className="fa-solid fa-list-check fa-8x" my={2} />
-            <Flex flexDirection="column" gap={5} w="70%">
-              <Button
-                backgroundColor="#1E99D6"
-                color="white"
-                onClick={trainingPlanModal.onOpen}
-              >
-                Naujas planas
-              </Button>
-              {homePageData?.trainingPlans.map((plan) => {
-                return (
-                  <Button
-                    cursor="default"
-                    _hover={{
-                      backgroundColor: "#EDF2F7",
-                    }}
-                  >
-                    {plan.name}
-                  </Button>
-                );
-              })}
-              <Button
-                backgroundColor="#1E99D6"
-                color="white"
-                onClick={() => navigate("/trainingPlans")}
-              >
-                Visi planai
-              </Button>
-            </Flex>
           </Flex>
-          <Flex
-            boxShadow="dark-lg"
-            borderRadius="xl"
-            border="solid"
-            borderColor="#9e9d9d"
-            flexDirection="column"
-            position="relative"
-            justifyContent="center"
-            alignItems="center"
-            py={5}
-          >
-            <Heading size="lg" position="relative">
-              Įgūdžiai
-            </Heading>
-            <Box className="fa-solid fa-basketball fa-8x" my={2} />
-            <Flex flexDirection="column" gap={5} w="70%">
-              <Button
-                backgroundColor="#1E99D6"
-                color="white"
-                onClick={skillModal.onOpen}
-              >
-                Naujas įgūdis
-              </Button>
-              {homePageData?.skills.map((skill) => {
-                return (
-                  <Button
-                    cursor="default"
-                    _hover={{
-                      backgroundColor: "#EDF2F7",
-                    }}
-                  >
-                    {skill.name}
-                  </Button>
-                );
-              })}
-              <Button
-                backgroundColor="#1E99D6"
-                color="white"
-                onClick={() => navigate("/skills")}
-              >
-                Visi įgūdžiai
-              </Button>
+          <SimpleGrid columns={3} m={10} gap={5}>
+            <Flex
+              boxShadow="dark-lg"
+              borderRadius="xl"
+              border="solid"
+              borderColor="#9e9d9d"
+              flexDirection="column"
+              position="relative"
+              justifyContent="center"
+              alignItems="center"
+              py={5}
+            >
+              <Heading size="lg" position="relative">
+                Treniruočių planai
+              </Heading>
+              <Box className="fa-solid fa-list-check fa-8x" my={2} />
+              <Flex flexDirection="column" gap={5} w="70%">
+                <Button
+                  backgroundColor="#1E99D6"
+                  color="white"
+                  onClick={trainingPlanModal.onOpen}
+                >
+                  Naujas planas
+                </Button>
+                {homePageData?.trainingPlans.map((plan) => {
+                  return (
+                    <Button
+                      cursor="default"
+                      _hover={{
+                        backgroundColor: "#EDF2F7",
+                      }}
+                    >
+                      {plan.name}
+                    </Button>
+                  );
+                })}
+                <Button
+                  backgroundColor="#1E99D6"
+                  color="white"
+                  onClick={() => navigate("/trainingPlans")}
+                >
+                  Visi planai
+                </Button>
+              </Flex>
             </Flex>
-          </Flex>
-          <Flex
-            boxShadow="dark-lg"
-            borderRadius="xl"
-            border="solid"
-            borderColor="#9e9d9d"
-            flexDirection="column"
-            position="relative"
-            justifyContent="center"
-            alignItems="center"
-            py={5}
-          >
-            <Heading size="lg" position="relative">
-              Pratimai
-            </Heading>
-            <Box className="fa-solid fa-person-running fa-8x" my={2} />
-            <Flex flexDirection="column" gap={5} w="70%">
-              <Button
-                backgroundColor="#1E99D6"
-                color="white"
-                onClick={exerciseModal.onOpen}
-              >
-                Naujas pratimas
-              </Button>
-              {homePageData?.exercises.map((exercise) => {
-                return (
-                  <Button
-                    cursor="default"
-                    _hover={{
-                      backgroundColor: "#EDF2F7",
-                    }}
-                  >
-                    {exercise.name}
-                  </Button>
-                );
-              })}
-              <Button
-                backgroundColor="#1E99D6"
-                color="white"
-                onClick={() => navigate("/exercises")}
-              >
-                Visi pratimai
-              </Button>
+            <Flex
+              boxShadow="dark-lg"
+              borderRadius="xl"
+              border="solid"
+              borderColor="#9e9d9d"
+              flexDirection="column"
+              position="relative"
+              justifyContent="center"
+              alignItems="center"
+              py={5}
+            >
+              <Heading size="lg" position="relative">
+                Įgūdžiai
+              </Heading>
+              <Box className="fa-solid fa-basketball fa-8x" my={2} />
+              <Flex flexDirection="column" gap={5} w="70%">
+                <Button
+                  backgroundColor="#1E99D6"
+                  color="white"
+                  onClick={skillModal.onOpen}
+                >
+                  Naujas įgūdis
+                </Button>
+                {homePageData?.skills.map((skill) => {
+                  return (
+                    <Button
+                      cursor="default"
+                      _hover={{
+                        backgroundColor: "#EDF2F7",
+                      }}
+                    >
+                      {skill.name}
+                    </Button>
+                  );
+                })}
+                <Button
+                  backgroundColor="#1E99D6"
+                  color="white"
+                  onClick={() => navigate("/skills")}
+                >
+                  Visi įgūdžiai
+                </Button>
+              </Flex>
             </Flex>
-          </Flex>
-        </SimpleGrid>
+            <Flex
+              boxShadow="dark-lg"
+              borderRadius="xl"
+              border="solid"
+              borderColor="#9e9d9d"
+              flexDirection="column"
+              position="relative"
+              justifyContent="center"
+              alignItems="center"
+              py={5}
+            >
+              <Heading size="lg" position="relative">
+                Pratimai
+              </Heading>
+              <Box className="fa-solid fa-person-running fa-8x" my={2} />
+              <Flex flexDirection="column" gap={5} w="70%">
+                <Button
+                  backgroundColor="#1E99D6"
+                  color="white"
+                  onClick={exerciseModal.onOpen}
+                >
+                  Naujas pratimas
+                </Button>
+                {homePageData?.exercises.map((exercise) => {
+                  return (
+                    <Button
+                      cursor="default"
+                      _hover={{
+                        backgroundColor: "#EDF2F7",
+                      }}
+                    >
+                      {exercise.name}
+                    </Button>
+                  );
+                })}
+                <Button
+                  backgroundColor="#1E99D6"
+                  color="white"
+                  onClick={() => navigate("/exercises")}
+                >
+                  Visi pratimai
+                </Button>
+              </Flex>
+            </Flex>
+          </SimpleGrid>
+        </>
       )}
       <Modal isOpen={exerciseModal.isOpen} onClose={exerciseModal.onClose}>
         <ModalOverlay />

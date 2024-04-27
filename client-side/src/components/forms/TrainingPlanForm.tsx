@@ -266,9 +266,11 @@ const TrainingPlanForm = ({ onClose, trainingPlanId }: Props) => {
                   type="file"
                   id="formFile"
                   name="avatar"
-                  required
+                  required={trainingPlanId === undefined}
                 />
               </Flex>
+            </FormControl>
+            <FormControl isRequired>
               <FormLabel mt={5}>Pavadinimas</FormLabel>
               <Input
                 type="text"

@@ -131,14 +131,12 @@ namespace Basketball.Controllers
             var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
 
             var isExists = await _userService.IsUserExistsById(userId);
-            var isEmailExists = await _userService.IsUserExistsByEmail(userDto.Email);
+            var userByEmail = await _userService.GetUserByEmail(userDto.Email);
 
-            if (!isExists || isEmailExists)
+            if (!isExists || (userByEmail != null && userByEmail.Id != userId))
             {
                 return Forbid();
             }
-
-
 
             await _userService.Update(userId, userDto);
 

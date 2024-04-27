@@ -11,7 +11,8 @@ namespace Basketball.Services
 {
     public class UserService(IJwtTokenService jwtTokenService, IUserRepository userRepository,
                              ITrainingPlanRepository trainingPlanRepository, IOrderRepository orderRepository,
-                             IEmailService emailService, IConfiguration configuration, ISkillRepository skillRepository, IExerciseRepository exerciseRepository) : IUserService
+                             IEmailService emailService, IConfiguration configuration,
+                             ISkillRepository skillRepository, IExerciseRepository exerciseRepository) : IUserService
     {
         private readonly IUserRepository _userRepository = userRepository;
         private readonly IJwtTokenService _jwtTokenService = jwtTokenService;
@@ -316,6 +317,11 @@ namespace Basketball.Services
                     Name = x.Name
                 }).TakeLast(4).ToList(),
             };
+        }
+
+        public async Task<User> GetUserByEmail(string name)
+        {
+            return await _userRepository.GetUserByEmail(name);
         }
     }
 }
