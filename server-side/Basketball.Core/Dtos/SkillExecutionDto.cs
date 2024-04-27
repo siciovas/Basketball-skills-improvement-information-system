@@ -11,6 +11,7 @@ namespace Basketball.Core.Dtos
         public required Guid Id { get; set; }
         public required string Name { get; set; }
         public required string Description { get; set; }
+        public bool IsLocked { get; set; }
         public List<ExerciseExecutionDto> Exercises { get; set; } = [];
     }
 }

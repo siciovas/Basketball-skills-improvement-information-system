@@ -269,11 +269,12 @@ namespace Basketball.Services
                 FinalMark = averages.Sum(x => x).ToString("F1"),
                 ProgressCounter = ((progressCounter.TryGetValue(trainingPlan.Id, out int count) ? count : 0) / (double)trainingPlan.Skills.SelectMany(x => x.Exercises).Count() * 100).ToString("F1"),
                 Deadline = order.OrderDate.AddDays(trainingPlan.ExpirationDate),
-                Skills = trainingPlan.Skills.Select(skill => new SkillExecutionDto
+                Skills = trainingPlan.Skills.Select((skill, index) => new SkillExecutionDto
                 {
                     Id = skill.Id,
                     Description = skill.Description,
                     Name = skill.Title,
+                    IsLocked = !(index == 0) || !trainingPlan.Skills.ElementAt(index - 1).Exercises.All(ex => progress.Any(p => p.TrainingPlanId == trainingPlan.Id && p.ExerciseId == ex.Id && p.SkillId == trainingPlan.Skills.ElementAt(index - 1).Id && p.Grade != null && p.Grade > 4)),
                     Exercises = skill.Exercises.Select(exercise => new ExerciseExecutionDto
                     {
                         Id = exercise.Id,
