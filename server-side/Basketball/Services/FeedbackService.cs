@@ -16,7 +16,7 @@ namespace Basketball.Services
             var createdFeedback = await _feedbackRepository.Create(new Feedback
             {
                 FeedbackText = feedback.FeedbackText,
-                Date = DateOnly.FromDateTime(DateTime.Now),
+                Date = DateOnly.FromDateTime(DateTime.UtcNow),
                 StudentId = studentId,
                 Rating = feedback.Rating,
                 CoachId = feedback.CoachId,
@@ -81,7 +81,7 @@ namespace Basketball.Services
         {
             var feedback = await _feedbackRepository.GetById(id);
             feedback!.FeedbackText = feedbackDto.FeedbackText;
-            feedback.Date = DateOnly.FromDateTime(DateTime.Now);
+            feedback.Date = DateOnly.FromDateTime(DateTime.UtcNow);
             feedback.Rating = feedbackDto.Rating;
 
             var updatedFeedback = await _feedbackRepository.Update(feedback);

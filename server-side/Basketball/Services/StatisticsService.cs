@@ -14,13 +14,13 @@ namespace Basketball.Services
 
         public async Task<StatisticsDto> GetStatistics()
         {
-            int currentMonth = DateTime.Now.Month;
+            int currentMonth = DateTime.UtcNow.Month;
             var months = Enumerable.Range(1, currentMonth).ToList();
 
             var coaches = await _userRepository.GetApprovedCoaches();
             var groupedCoaches = months
                 .GroupJoin(coaches
-                .Where(x => x.RegisterDate.Year == DateTime.Now.Year),
+                .Where(x => x.RegisterDate.Year == DateTime.UtcNow.Year),
                 month => month,
                 coach => coach.RegisterDate.Month,
                 (month, coachGroup) => new { Month = month, Count = coachGroup.Count() })
@@ -30,7 +30,7 @@ namespace Basketball.Services
             var students = await _userRepository.GetAllStudents();
             var groupedStudents = months
                 .GroupJoin(students
-                .Where(x => x.RegisterDate.Year == DateTime.Now.Year),
+                .Where(x => x.RegisterDate.Year == DateTime.UtcNow.Year),
                 month => month,
                 coach => coach.RegisterDate.Month,
                 (month, coachGroup) => new { Month = month, Count = coachGroup.Count() })
@@ -40,7 +40,7 @@ namespace Basketball.Services
             var orders = await _orderRepository.GetAll();
             var groupedOrders = months
                 .GroupJoin(orders
-                .Where(x => x.OrderDate.Year == DateTime.Now.Year),
+                .Where(x => x.OrderDate.Year == DateTime.UtcNow.Year),
                 month => month,
                 coach => coach.OrderDate.Month,
                 (month, coachGroup) => new { Month = month, Count = coachGroup.Count() })
@@ -49,7 +49,7 @@ namespace Basketball.Services
 
             var groupedCommissions = months
                 .GroupJoin(orders
-                .Where(x => x.OrderDate.Year == DateTime.Now.Year),
+                .Where(x => x.OrderDate.Year == DateTime.UtcNow.Year),
                 month => month,
                 coach => coach.OrderDate.Month,
                 (month, coachGroup) => new { Month = month, Count = coachGroup.Sum(x => x.CommissionFee) })
@@ -70,7 +70,7 @@ namespace Basketball.Services
 
         public async Task<CountsDto> GetCountsForAdmin()
         {
-            int currentMonth = DateTime.Now.Month;
+            int currentMonth = DateTime.UtcNow.Month;
             var months = Enumerable.Range(1, currentMonth).ToList();
 
             var coaches = await _userRepository.GetApprovedCoaches();
@@ -80,7 +80,7 @@ namespace Basketball.Services
             var orders = await _orderRepository.GetAll();
             var groupedOrders = months
                 .GroupJoin(orders
-                .Where(x => x.OrderDate.Year == DateTime.Now.Year),
+                .Where(x => x.OrderDate.Year == DateTime.UtcNow.Year),
                 month => month,
                 coach => coach.OrderDate.Month,
                 (month, coachGroup) => new { Month = month, Count = coachGroup.Count() })
@@ -89,7 +89,7 @@ namespace Basketball.Services
 
             var groupedCommissions = months
                 .GroupJoin(orders
-                .Where(x => x.OrderDate.Year == DateTime.Now.Year),
+                .Where(x => x.OrderDate.Year == DateTime.UtcNow.Year),
                 month => month,
                 coach => coach.OrderDate.Month,
                 (month, coachGroup) => new { Month = month, Count = coachGroup.Sum(x => x.CommissionFee) })

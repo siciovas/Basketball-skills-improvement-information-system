@@ -95,7 +95,11 @@ const ActiveClients = () => {
                     </Td>
                     <Td>
                       <Text>
-                        {moment(activeClient.deadline).format("YYYY-MM-DD")}
+                        {moment(
+                          new Date(
+                            moment(activeClient.deadline).utc(true).toString()
+                          )
+                        ).format("YYYY-MM-DD")}
                       </Text>
                     </Td>
                     <Td>

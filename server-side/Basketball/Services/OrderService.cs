@@ -22,7 +22,7 @@ namespace Basketball.Services
             var newOrder = new Order
             {
                 Id = Guid.NewGuid(),
-                OrderDate = DateTime.Now,
+                OrderDate = DateTime.UtcNow,
                 Price = trainingPlan!.Price,
                 TrainingPlanId = orderDto.TrainingPlanId,
                 UserId = userId,

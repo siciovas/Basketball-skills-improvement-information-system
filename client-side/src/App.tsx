@@ -42,6 +42,7 @@ function App() {
     }
     localStorage.removeItem("accessToken");
     localStorage.removeItem("role");
+    eventBus.dispatch("storage", "");
     navigate("/login");
   }, []);
 

@@ -89,7 +89,11 @@ const TrainingPlanExecution = () => {
             <Text fontWeight="bold" mt={2} textTransform="uppercase">
               Terminas:&nbsp;
             </Text>
-            <Text>{moment(trainingPlan?.deadline).format("YYYY-MM-DD")}</Text>
+            <Text>
+              {moment(
+                new Date(moment(trainingPlan?.deadline).utc(true).toString())
+              ).format("YYYY-MM-DD")}
+            </Text>
           </Flex>
           <Flex
             boxShadow="dark-lg"
@@ -109,7 +113,11 @@ const TrainingPlanExecution = () => {
                 mt={5}
               />
               <Flex flexDir="column" mt={3}>
-                <Text>{trainingPlan?.progressCounter === "100.0" ? "Galutinis įvertis" : "Numatomas įvertis"}</Text>
+                <Text>
+                  {trainingPlan?.progressCounter === "100.0"
+                    ? "Galutinis įvertis"
+                    : "Numatomas įvertis"}
+                </Text>
                 <Flex align="center" w="100%" justify="flex-end">
                   <Box
                     className="fa-solid fa-star fa-2x"

@@ -69,7 +69,7 @@ namespace Basketball.Infrastructure.Repositories
 
         public async Task RemoveExpiredOrders()
         {
-            _db.Orders.RemoveRange(_db.Orders.Where(x => x.OrderDate.AddMinutes(20) < DateTime.Now && !x.IsPaid));
+            _db.Orders.RemoveRange(_db.Orders.Where(x => x.OrderDate.AddMinutes(20) < DateTime.UtcNow && !x.IsPaid));
             await _db.SaveChangesAsync();
         }
 
