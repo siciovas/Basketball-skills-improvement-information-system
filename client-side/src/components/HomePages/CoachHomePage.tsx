@@ -78,7 +78,7 @@ const CoachHomePage = () => {
         <>
           <Flex mt={5} mb={5} justify="center">
             <Heading>
-              Generuokite daugiau pajamų efektyviai, valdydami savo treniruočių
+              Generuokite daugiau pajamų, efektyviai valdydami savo treniruočių
               planus
             </Heading>
           </Flex>

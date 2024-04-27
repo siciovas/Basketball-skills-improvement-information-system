@@ -88,7 +88,7 @@ const MainCoachesList = () => {
         </Center>
       ) : (
         <>
-          <Heading>Treneriai</Heading>
+          <Heading textAlign="center">Treneriai</Heading>
           <HStack justifyContent="end" spacing={10}>
             <Flex>
               <Menu closeOnSelect={false}>

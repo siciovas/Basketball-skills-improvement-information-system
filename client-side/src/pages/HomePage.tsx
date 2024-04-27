@@ -1,3 +1,4 @@
+import { Box } from "@chakra-ui/react";
 import { ADMIN_ROLE, COACH_ROLE, STUDENT_ROLE } from "../Helpers/constants";
 import AdminHomePage from "../components/HomePages/AdminHomePage";
 import CoachHomePage from "../components/HomePages/CoachHomePage";
@@ -8,24 +9,26 @@ const HomePage = () => {
   const role = localStorage.getItem("role");
 
   return (
-    <>
-      {role === null && <GuestHomePage />}
-      {(role === STUDENT_ROLE && (
-        <>
-          <StudentHomePage />
-        </>
-      )) ||
-        (role === ADMIN_ROLE && (
+    <Box mt={10}>
+      <>
+        {role === null && <GuestHomePage />}
+        {(role === STUDENT_ROLE && (
           <>
-            <AdminHomePage />
+            <StudentHomePage />
           </>
         )) ||
-        (role === COACH_ROLE && (
-          <>
-            <CoachHomePage />
-          </>
-        ))}
-    </>
+          (role === ADMIN_ROLE && (
+            <>
+              <AdminHomePage />
+            </>
+          )) ||
+          (role === COACH_ROLE && (
+            <>
+              <CoachHomePage />
+            </>
+          ))}
+      </>
+    </Box>
   );
 };
 
