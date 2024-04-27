@@ -265,3 +265,15 @@ export interface ActiveClient {
   userId: string;
   isExistsNotEvaluatedExercises: boolean;
 }
+
+export interface StudentHomePageDto {
+  plans: MyPlansDto[];
+  coaches: Coach[];
+}
+
+export interface GuestHomePageDto {
+  coaches: Coach[];
+  coachesCount: number;
+  studentsCount: number;
+  plansCount: number;
+}
