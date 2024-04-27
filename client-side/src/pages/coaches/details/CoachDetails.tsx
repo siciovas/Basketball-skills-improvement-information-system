@@ -132,12 +132,18 @@ const CoachDetails = () => {
               Grįžti į trenerių sąrašą
             </Box>
             <Box w={1000} m="auto" mt={5}>
-              <Box border="solid">
+              <Box
+                borderRadius="xl"
+                border="solid"
+                borderColor="#9e9d9d"
+                borderWidth="2px"
+              >
                 <Flex gap={5} mt={2}>
                   <Box alignSelf="center" h={60} w={60} ml={5}>
                     <Image
                       w="100%"
                       h="100%"
+                      borderRadius="xl"
                       src={"data:image/jpeg;base64," + coach?.avatar}
                     ></Image>
                   </Box>
@@ -272,15 +278,22 @@ const CoachDetails = () => {
                   )
                   .map((trainingPlan) => {
                     return (
-                      <Box backgroundColor="#E2E2E2" p={5}>
+                      <Box
+                        borderRadius="xl"
+                        border="solid"
+                        borderColor="#9e9d9d"
+                        borderWidth="2px"
+                        p={5}
+                      >
                         <Flex flexDirection="column" gap={5}>
                           <Box fontSize="larger" fontWeight="bold">
                             {trainingPlan.title}
                           </Box>
-                          <Box h={40} w={60}>
+                          <Box h={40} w={96}>
                             <Image
                               w="100%"
                               h="100%"
+                              borderRadius="xl"
                               src={
                                 "data:image/jpeg;base64," + trainingPlan.avatar
                               }
@@ -295,11 +308,11 @@ const CoachDetails = () => {
                         </Flex>
                         <Button
                           w="100%"
-                          backgroundColor="#1E99D6"
-                          color="white"
+                          textTransform="uppercase"
+                          background="#1E99D6"
+                          textColor="white"
                           borderRadius="2xl"
                           mt={10}
-                          textTransform="uppercase"
                           onClick={() =>
                             navigate(`/trainingPlan/${trainingPlan.id}`)
                           }

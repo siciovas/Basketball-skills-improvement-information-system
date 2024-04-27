@@ -79,9 +79,19 @@ const FeedbackForm = ({ coachId }: Props) => {
           ))}
         </Flex>
         <Text>Atsiliepimas apie trenerį: </Text>
-        <Textarea onChange={onFeedbackChange} />
+        <Textarea
+          onChange={onFeedbackChange}
+          border="solid"
+          borderWidth="1px"
+        />
         <Flex justify="flex-end" mr={5}>
-          <Button background="#1E99D6" color="white" onClick={onOpen}>
+          <Button
+            textTransform="uppercase"
+            background="#1E99D6"
+            textColor="white"
+            borderRadius="2xl"
+            onClick={onOpen}
+          >
             PATEIKTI
           </Button>
         </Flex>

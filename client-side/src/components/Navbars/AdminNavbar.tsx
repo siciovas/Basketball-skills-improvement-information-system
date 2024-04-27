@@ -27,6 +27,7 @@ const AdminNavbar = ({ logOut }: NavbarProps) => {
           <Image
             ml={5}
             h={45}
+            borderRadius="xl"
             src="/logo.ico"
             cursor="pointer"
             onClick={() => navigate("/")}

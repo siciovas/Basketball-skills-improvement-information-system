@@ -80,10 +80,10 @@ const TrainingPlan = () => {
       ) : (
         <>
           <Flex
-            boxShadow="dark-lg"
             borderRadius="xl"
             border="solid"
             borderColor="#9e9d9d"
+            borderWidth="2px"
             flexDirection="column"
             gap={2}
             p={5}
@@ -99,8 +99,10 @@ const TrainingPlan = () => {
               <Box>{trainingPlan?.price} EUR</Box>
             </Flex>
             <Button
-              backgroundColor="#1E99D6"
-              color="white"
+              textTransform="uppercase"
+              background="#1E99D6"
+              textColor="white"
+              borderRadius="2xl"
               w={44}
               alignSelf="end"
               onClick={handleSubmit}
@@ -114,10 +116,10 @@ const TrainingPlan = () => {
                 Treniruočių plano turinys
               </Heading>
               <Flex
-                boxShadow="dark-lg"
                 borderRadius="xl"
                 border="solid"
                 borderColor="#9e9d9d"
+                borderWidth="2px"
                 flexDirection="column"
                 gap={2}
                 p={5}
@@ -128,15 +130,22 @@ const TrainingPlan = () => {
                   {trainingPlan?.skills.map((skill) => {
                     return (
                       <AccordionItem>
-                        <AccordionButton border="solid" borderColor="#9e9d9d">
+                        <AccordionButton
+                          borderRadius="xl"
+                          border="solid"
+                          borderColor="#9e9d9d"
+                          borderWidth="2px"
+                        >
                           <Box as="span" flex="1" textAlign="left">
                             {skill.name}
                           </Box>
                           <AccordionIcon />
                         </AccordionButton>
                         <AccordionPanel
+                          borderRadius="xl"
                           border="solid"
                           borderColor="#9e9d9d"
+                          borderWidth="2px"
                           pb={4}
                         >
                           <Flex flexDirection="column">

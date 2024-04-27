@@ -13,6 +13,7 @@ const MainNavBar = () => {
           src="/logo.ico"
           cursor="pointer"
           onClick={() => navigate("/")}
+          borderRadius="xl"
         />
       </Flex>
       <Flex gap={10} mr={5} alignItems="center">

@@ -62,7 +62,13 @@ const MyPlans = () => {
           <>
             <SimpleGrid mt={5} columns={3} spacing={10}>
               {plans.map((plan) => (
-                <Box border="solid" borderColor="#9e9d9d" p={5}>
+                <Box
+                  borderRadius="xl"
+                  border="solid"
+                  borderColor="#9e9d9d"
+                  borderWidth="2px"
+                  p={5}
+                >
                   <Flex flexDir="column">
                     <Box h={40} w="100%">
                       <Image
@@ -78,9 +84,10 @@ const MyPlans = () => {
                     <Text mt={2}>{plan.coachFullName}</Text>
                     <Flex justify="flex-end" ml={5}>
                       <Button
-                        borderRadius="3xl"
-                        color="white"
-                        backgroundColor="#1E99D6"
+                        textTransform="uppercase"
+                        background="#1E99D6"
+                        textColor="white"
+                        borderRadius="2xl"
                         onClick={() =>
                           navigate(
                             `/trainingPlanExecution/${plan.trainingPlanId}`

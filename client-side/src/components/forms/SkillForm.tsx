@@ -200,6 +200,8 @@ const SkillForm = ({ addNewExercise, onClose, skillId }: Props) => {
                 onChange={onFormChange}
                 value={formState.title}
                 isRequired
+                border="solid"
+                borderWidth="1px"
               />
               <FormLabel mt={5}>Aprašymas</FormLabel>
               <Textarea
@@ -207,11 +209,18 @@ const SkillForm = ({ addNewExercise, onClose, skillId }: Props) => {
                 onChange={onFormChange}
                 value={formState.description}
                 isRequired
+                border="solid"
+                borderWidth="1px"
               ></Textarea>
               <FormLabel mt={5}>Įtraukti pratimą</FormLabel>
               <Flex gap={5}>
                 <Menu closeOnSelect={false}>
-                  <MenuButton width="60%" as={Button}>
+                  <MenuButton
+                    width="60%"
+                    as={Button}
+                    border="solid"
+                    borderWidth="1px"
+                  >
                     <Box>
                       {formState.exercises
                         .map((exercise) => {
@@ -271,8 +280,10 @@ const SkillForm = ({ addNewExercise, onClose, skillId }: Props) => {
                 );
               })}
               <Button
-                backgroundColor="#1E99D6"
-                color="white"
+                textTransform="uppercase"
+                background="#1E99D6"
+                textColor="white"
+                borderRadius="2xl"
                 mt={10}
                 w={52}
                 alignSelf="end"

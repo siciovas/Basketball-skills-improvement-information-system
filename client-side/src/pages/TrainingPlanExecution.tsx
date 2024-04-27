@@ -96,10 +96,10 @@ const TrainingPlanExecution = () => {
             </Text>
           </Flex>
           <Flex
-            boxShadow="dark-lg"
             borderRadius="xl"
             border="solid"
             borderColor="#9e9d9d"
+            borderWidth="2px"
             flexDirection="column"
             p={5}
             mt={5}
@@ -135,10 +135,10 @@ const TrainingPlanExecution = () => {
             </Flex>
           </Flex>
           <Flex
-            boxShadow="dark-lg"
             borderRadius="xl"
             border="solid"
             borderColor="#9e9d9d"
+            borderWidth="2px"
             flexDirection="column"
             gap={2}
             p={5}
@@ -155,13 +155,24 @@ const TrainingPlanExecution = () => {
                     : skill.isLocked;
                 return (
                   <AccordionItem isDisabled={isSkillDisabled}>
-                    <AccordionButton border="solid" borderColor="#9e9d9d">
+                    <AccordionButton
+                      borderRadius="xl"
+                      border="solid"
+                      borderColor="#9e9d9d"
+                      borderWidth="2px"
+                    >
                       <Box as="span" flex="1" textAlign="left">
                         {skill.name}
                       </Box>
                       <AccordionIcon />
                     </AccordionButton>
-                    <AccordionPanel border="solid" borderColor="#9e9d9d" pb={4}>
+                    <AccordionPanel
+                      borderRadius="xl"
+                      border="solid"
+                      borderColor="#9e9d9d"
+                      borderWidth="2px"
+                      pb={4}
+                    >
                       <Box as="span" flex="1" textAlign="left">
                         {skill.description}
                       </Box>
@@ -228,10 +239,10 @@ const TrainingPlanExecution = () => {
                                       exercise.grade < 5) && (
                                       <Button
                                         mt={3}
-                                        borderRadius="full"
-                                        backgroundColor="#1E99D6"
-                                        color="white"
                                         textTransform="uppercase"
+                                        background="#1E99D6"
+                                        textColor="white"
+                                        borderRadius="2xl"
                                         onClick={() =>
                                           handleProgressUpload(
                                             exercise.id,

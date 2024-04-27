@@ -53,14 +53,20 @@ const PasswordRecovery = () => {
           </Box>
           <FormControl>
             <FormLabel>El. Paštas</FormLabel>
-            <Input type="email" onChange={onEmailChange} />
+            <Input
+              type="email"
+              onChange={onEmailChange}
+              border="solid"
+              borderWidth="1px"
+            />
             <Button
               type="submit"
               w="100%"
               my={5}
               textTransform="uppercase"
-              background="blue.500"
+              background="#1E99D6"
               textColor="white"
+              borderRadius="2xl"
             >
               Atstatyti slaptažodį
             </Button>
@@ -70,6 +76,7 @@ const PasswordRecovery = () => {
             type="submit"
             w="100%"
             mt={5}
+            borderRadius="2xl"
             textTransform="uppercase"
             onClick={() => navigate("/login")}
           >

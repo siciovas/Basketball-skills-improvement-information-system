@@ -19,7 +19,7 @@ const Footer = () => {
       <Divider w="95%" m="auto" />
       <Flex justify="center" mr={7} alignItems="center">
         <Box h={16} w={40}>
-          <Image h="100%" src="/paysera.png" />
+          <Image h="100%" src="/paysera.png"  borderRadius="xl"/>
         </Box>
       </Flex>
     </Flex>

@@ -95,6 +95,7 @@ const MainCoachesList = () => {
                 <MenuButton
                   as={Button}
                   border="solid"
+                  borderWidth="2px"
                   borderColor="#9e9d9d"
                   backgroundColor="#E2E2E2"
                 >
@@ -105,6 +106,7 @@ const MainCoachesList = () => {
                   backgroundColor="#E2E2E2"
                   border="solid"
                   borderColor="#9e9d9d"
+                  borderWidth="1px"
                 >
                   <MenuOptionGroup
                     type="radio"
@@ -132,6 +134,7 @@ const MainCoachesList = () => {
               value={sortData.page}
               border="solid"
               borderColor="#9e9d9d"
+              borderWidth="2px"
               onChange={handlePage}
             >
               <option value="10" style={{ backgroundColor: "#E2E2E2" }}>
@@ -160,9 +163,10 @@ const MainCoachesList = () => {
               .map((coach) => {
                 return (
                   <Box
+                    borderRadius="xl"
                     border="solid"
                     borderColor="#9e9d9d"
-                    boxShadow="dark-lg"
+                    borderWidth="2px"
                     minH={60}
                     p={2}
                   >
@@ -171,6 +175,7 @@ const MainCoachesList = () => {
                         <Image
                           w="100%"
                           h="100%"
+                          borderRadius="xl"
                           src={"data:image/jpeg;base64," + coach.avatar}
                         ></Image>
                       </Box>
@@ -197,13 +202,11 @@ const MainCoachesList = () => {
                           </Flex>
                         </Flex>
                         <Button
-                          borderRadius="3xl"
-                          color="white"
-                          backgroundColor="#1E99D6"
-                          alignSelf="end"
-                          w={32}
                           textTransform="uppercase"
-                          fontSize="small"
+                          background="#1E99D6"
+                          textColor="white"
+                          borderRadius="2xl"
+                          alignSelf="end"
                           onClick={() => navigate(`/coachDetails/${coach.id}`)}
                         >
                           Sužinoti daugiau

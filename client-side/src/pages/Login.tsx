@@ -68,6 +68,8 @@ const Login = () => {
           <FormControl mt={5} isRequired>
             <FormLabel>El. Paštas</FormLabel>
             <Input
+              border="solid"
+              borderWidth="1px"
               type="email"
               onChange={(e) => {
                 onEmailChange(e);
@@ -76,6 +78,8 @@ const Login = () => {
             />
             <FormLabel mt={5}>Slaptažodis</FormLabel>
             <Input
+              border="solid"
+              borderWidth="1px"
               type="password"
               onChange={(e) => {
                 onPasswordChange(e);
@@ -94,10 +98,10 @@ const Login = () => {
             <Button
               type="submit"
               w="100%"
-              backgroundColor="#1E99D6"
-              color="white"
-              borderRadius="2xl"
               textTransform="uppercase"
+              background="#1E99D6"
+              textColor="white"
+              borderRadius="2xl"
             >
               <Box pos="absolute" w="100%" textAlign="left" ml={5}>
                 <i className="fa fa-solid fa-lock" />
