@@ -29,8 +29,9 @@ const TeacherNavbar = ({ logOut }: NavbarProps) => {
             <Box className="fa-solid fa-user fa-xl"></Box>
           </MenuButton>
           <MenuList>
-            <MenuItem onClick={() => navigate("/profile")}>Profilis</MenuItem>
-            <MenuItem>Mano planai</MenuItem>
+            <MenuItem onClick={() => navigate("/profile")}>Mano profilis</MenuItem>
+            <MenuItem onClick={() => navigate("/trainingPlans")}>Mano planai</MenuItem>
+            <MenuItem onClick={() => navigate("/activeClients")}>Mano klientai</MenuItem>
             <MenuItem onClick={(e) => logOut(e)}>Atsijungti</MenuItem>
           </MenuList>
         </Menu>
