@@ -36,6 +36,7 @@ import {
 import ReactPlayer from "react-player";
 import TrainingPlanForm from "../components/forms/TrainingPlanForm";
 import { AllEvaluationDto } from "../Types/types";
+import ModalWindow from "../components/ModalWindow";
 
 const ExercisesEvaluation = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -45,6 +46,19 @@ const ExercisesEvaluation = () => {
   const [grade, setGrade] = useState<number>();
   const [comment, setComment] = useState<string>("");
   const token = localStorage.getItem("accessToken");
+  const gradeApproveExerciseModal = useDisclosure();
+  const gradeDisapproveExerciseModal = useDisclosure();
+  const [exerciseId, setExerciseId] = useState<string>();
+
+  const handleGradingApproveModal = (exerciseId: string) => {
+    setExerciseId(exerciseId);
+    gradeApproveExerciseModal.onOpen();
+  };
+
+  const handleGradingDisapproveModal = (exerciseId: string) => {
+    setExerciseId(exerciseId);
+    gradeDisapproveExerciseModal.onOpen();
+  };
 
   const handleCommentChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value);
@@ -56,15 +70,14 @@ const ExercisesEvaluation = () => {
 
   const handleSubmit = async (
     e: MouseEvent<HTMLButtonElement>,
-    isValid: boolean,
-    id: string
+    isValid: boolean
   ) => {
     e.preventDefault();
     if (grade === undefined && isValid) {
       toast.error("Įveskite pažymį!");
     } else {
       const response = await fetch(
-        import.meta.env.VITE_API_URL + `exerciseFlow/evaluate/${id}/`,
+        import.meta.env.VITE_API_URL + `exerciseFlow/evaluate/${exerciseId}/`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -84,6 +97,9 @@ const ExercisesEvaluation = () => {
       } else {
         toast.error("Įvyko klaida");
       }
+      onClose();
+      gradeApproveExerciseModal.onClose();
+      gradeDisapproveExerciseModal.onClose();
     }
   };
 
@@ -303,10 +319,8 @@ const ExercisesEvaluation = () => {
                                               background="#1E99D6"
                                               textColor="white"
                                               borderRadius="2xl"
-                                              onClick={(e) =>
-                                                handleSubmit(
-                                                  e,
-                                                  true,
+                                              onClick={() =>
+                                                handleGradingApproveModal(
                                                   exercise.id
                                                 )
                                               }
@@ -318,10 +332,8 @@ const ExercisesEvaluation = () => {
                                               background="red.500"
                                               textColor="white"
                                               borderRadius="2xl"
-                                              onClick={(e) =>
-                                                handleSubmit(
-                                                  e,
-                                                  false,
+                                              onClick={() =>
+                                                handleGradingDisapproveModal(
                                                   exercise.id
                                                 )
                                               }
@@ -357,6 +369,20 @@ const ExercisesEvaluation = () => {
           </>
         )}
       </Container>
+      <ModalWindow
+        title="Pratimo įvertinimas"
+        text="Ar tikrai norite pateikti pratimo įvertinimą?"
+        onClose={gradeApproveExerciseModal.onClose}
+        isOpen={gradeApproveExerciseModal.isOpen}
+        onClick={(e) => handleSubmit(e, true)}
+      />
+      <ModalWindow
+        title="Pratimo įvertinimas"
+        text="Ar tikrai norite atmesti pratimo įvertinimą?"
+        onClose={gradeDisapproveExerciseModal.onClose}
+        isOpen={gradeDisapproveExerciseModal.isOpen}
+        onClick={(e) => handleSubmit(e, false)}
+      />
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
