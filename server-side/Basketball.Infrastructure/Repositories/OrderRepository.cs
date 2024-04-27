@@ -40,9 +40,10 @@ namespace Basketball.Infrastructure.Repositories
         {
             return await _db.Orders
                             .Include(t => t.TrainingPlan)
+                            .ThenInclude(u => u.Coach)
+                            .Include(t => t.TrainingPlan)
                             .ThenInclude(x => x.Skills)
                             .ThenInclude(x => x.Exercises)
-                            .ThenInclude(u => u.Coach)
                             .Where(o => o.UserId == userId)
                             .ToListAsync();
         }
