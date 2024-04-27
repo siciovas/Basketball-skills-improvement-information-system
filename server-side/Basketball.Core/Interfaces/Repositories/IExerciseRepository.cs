@@ -9,5 +9,6 @@ namespace Basketball.Core.Interfaces.Repositories
         Task<Exercise> Create(Exercise exercise);
         Task<Exercise> Update(Exercise exercise);
         Task Delete(Exercise exercise);
+        Task<Exercise?> GetByExerciseName(string name, Guid coachId);
     }
 }

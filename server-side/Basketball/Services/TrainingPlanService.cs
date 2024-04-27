@@ -304,5 +304,10 @@ namespace Basketball.Services
                 ProgressCounter = ((progressCounter.TryGetValue(x.TrainingPlanId, out int count) ? count : 0) / (double)x.TrainingPlan.Skills.SelectMany(x => x.Exercises).Count() * 100).ToString("F1")
             }).ToList();
         }
+
+        public async Task<TrainingPlan?> GetByPlanName(string name, Guid coachId)
+        {
+            return await _trainingPlanRepository.GetByPlanName(name, coachId);
+        }
     }
 }

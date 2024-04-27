@@ -101,5 +101,10 @@ namespace Basketball.Services
                 Name = updatedExercise.Name,
             };
         }
+
+        public async Task<Exercise?> GetByExerciseName(string name, Guid coachId)
+        {
+            return await _exerciseRepository.GetByExerciseName(name, coachId);
+        }
     }
 }

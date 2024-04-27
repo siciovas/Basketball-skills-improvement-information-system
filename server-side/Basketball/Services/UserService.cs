@@ -157,6 +157,7 @@ namespace Basketball.Services
             var coach = await _userRepository.GetUserById(id);
 
             var trainingPlans = await _trainingPlanRepository.GetAllByCoachId(id);
+            var activePlans = trainingPlans.Where(x => x.IsActive);
 
             var clientsCount = await _orderRepository.GetClientsCount([id]);
 
@@ -178,7 +179,7 @@ namespace Basketball.Services
                 Avatar = coach.Avatar,
                 TrainingPlansCount = trainingPlans.Count,
                 ClientsCount = clientsCount.TryGetValue(id, out int count) ? count : 0,
-                TrainingPlans = trainingPlans.Select(x => new TrainingPlanSummaryDto
+                TrainingPlans = activePlans.Select(x => new TrainingPlanSummaryDto
                 {
                     Id = x.Id,
                     Avatar = x.Avatar,
@@ -293,12 +294,13 @@ namespace Basketball.Services
         public async Task<CoachHomeDataDto> GetHomeData(Guid coachId)
         {
             var trainingPlans = await _trainingPlanRepository.GetAllByCoachId(coachId);
+            var activePlans = trainingPlans.Where(x => x.IsActive);
             var skills = await _skillRepository.GetAll(coachId);
             var exercises = await _exerciseRepository.GetAll(coachId);
 
             return new CoachHomeDataDto
             {
-                TrainingPlans = trainingPlans.Select(x => new HomeData
+                TrainingPlans = activePlans.Select(x => new HomeData
                 {
                     Id = x.Id,
                     Name = x.Title

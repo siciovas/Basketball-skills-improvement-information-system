@@ -41,7 +41,7 @@ namespace Basketball.Infrastructure.Repositories
         {
             return await _db.TrainingPlans
                             .Include(t => t.Coach)
-                            .Where(t => t.CoachId == coachId && t.IsActive)
+                            .Where(t => t.CoachId == coachId)
                             .GroupBy(t => t.InitialTrainingPlanId)
                             .Select(g => g.OrderByDescending(t => t.Version).FirstOrDefault()!)
                             .ToListAsync();
@@ -101,6 +101,14 @@ namespace Basketball.Infrastructure.Repositories
         {
             _db.SkillsOrders.RemoveRange(skillsOrder);
             await _db.SaveChangesAsync();
+        }
+
+        public async Task<TrainingPlan?> GetByPlanName(string name, Guid coachId)
+        {
+            return await _db.TrainingPlans
+                            .Include(x => x.Coach)
+                            .Where(x => x.Title == name && x.Coach.Id == coachId)
+                            .FirstOrDefaultAsync();
         }
     }
 }

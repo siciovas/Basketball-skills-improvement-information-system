@@ -65,5 +65,14 @@ namespace Basketball.Infrastructure.Repositories
             _db.ExercisesOrders.RemoveRange(exercisesOrder);
             await _db.SaveChangesAsync();
         }
+
+
+        public async Task<Skill?> GetBySkillName(string name, Guid coachId)
+        {
+            return await _db.Skills
+                            .Include(x => x.Coach)
+                            .Where(x => x.Title == name && x.Coach.Id == coachId)
+                            .FirstOrDefaultAsync();
+        }
     }
 }

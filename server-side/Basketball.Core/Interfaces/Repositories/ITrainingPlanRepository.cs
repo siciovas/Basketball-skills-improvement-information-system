@@ -15,5 +15,6 @@ namespace Basketball.Core.Interfaces.Repositories
         Task AddSkillsOrders(List<SkillsOrder> skillsOrder);
         Task<List<SkillsOrder>> GetSkillOrderByPlanId(Guid planId);
         Task DeleteExerciseOrders(List<SkillsOrder> skillsOrder);
+        Task<TrainingPlan?> GetByPlanName(string name, Guid coachId);
     }
 }
