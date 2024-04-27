@@ -6,7 +6,7 @@ namespace Basketball.Core.Interfaces.Services
     public interface IExerciseFlowService
     {
         Task<string> UploadExerciseProgress(UploadExerciseProgressPostDto progressDto, Guid userId);
-        Task<ExerciseEvaluationDto> GetExercisesForEvaluation(Guid userId, Guid trainingPlanId);
+        Task<AllEvaluationDto> GetExercisesForEvaluation(Guid userId, Guid coachId);
         Task<EvaluationDto> EvaluateExercise(Guid id, EvaluationDto evaluationDto);
         Task<List<ActiveClient>> GetActiveClients(Guid userId);
     }

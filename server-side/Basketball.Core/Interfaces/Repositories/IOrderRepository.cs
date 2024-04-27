@@ -15,5 +15,6 @@ namespace Basketball.Core.Interfaces.Repositories
         public Task<Dictionary<Guid, int>> GetClientsCount(List<Guid> coachesIds);
         Task<List<Order>> GetActiveClients(Guid coachId);
         public Task<Order> GetByTrainingPlanAndUserId(Guid userId, Guid trainingPlanId);
+        public Task<List<Order>> GetByCoachIdAndUserId(Guid userId, Guid coachId);
     }
 }
