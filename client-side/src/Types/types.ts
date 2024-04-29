@@ -227,6 +227,7 @@ export interface ExerciseExecutionDto {
   exerciseVideoUrl: string;
   comment: string;
   difficulty: string;
+  isWaitingForGrade: boolean;
 }
 
 export interface TrainingPlanEvaluationDto {

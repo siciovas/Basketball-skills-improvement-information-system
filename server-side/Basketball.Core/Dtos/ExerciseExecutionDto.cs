@@ -17,5 +17,6 @@ namespace Basketball.Core.Dtos
         public required string ExerciseVideoUrl { get; set; }
         public string? Comment { get; set; }
         public Difficulty Difficulty { get; set; }
+        public bool IsWaitingForGrade { get; set; }
     }
 }
