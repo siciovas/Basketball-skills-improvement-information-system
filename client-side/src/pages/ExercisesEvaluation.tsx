@@ -163,7 +163,7 @@ const ExercisesEvaluation = () => {
                   </Flex>
                   <Flex>
                     <Text fontWeight="bold">Pavardė:&nbsp;</Text>
-                    <Text>{submissions?.student.split(" ")[0]}</Text>
+                    <Text>{submissions?.student.split(" ")[1]}</Text>
                   </Flex>
                   <Flex>
                     <Text fontWeight="bold">Gimimo data:&nbsp;</Text>

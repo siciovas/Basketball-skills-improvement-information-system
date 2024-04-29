@@ -96,6 +96,7 @@ const TrainingPlans = () => {
 
   useEffect(() => {
     eventBus.on("triggerTrainingPlanCreated", () => {
+      setIsLoading(true);
       getTrainingPlansList();
     });
     getTrainingPlansList();

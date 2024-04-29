@@ -105,6 +105,7 @@ const Skills = () => {
 
   useEffect(() => {
     eventBus.on("triggerSkillCreated", () => {
+      setIsLoading(true);
       getSkillsList();
     });
     getSkillsList();

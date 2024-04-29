@@ -93,6 +93,7 @@ const Exercises = () => {
 
   useEffect(() => {
     eventBus.on("triggerExerciseCreated", () => {
+      setIsLoading(true);
       getExercisesList();
     });
     getExercisesList();

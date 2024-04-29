@@ -108,7 +108,8 @@ namespace Basketball.Infrastructure.Repositories
             return await _db.TrainingPlans
                             .Include(x => x.Coach)
                             .Where(x => x.Title == name && x.Coach.Id == coachId)
-                            .FirstOrDefaultAsync();
+                            .OrderBy(x => x.Version)
+                            .LastOrDefaultAsync();
         }
     }
 }
