@@ -21,7 +21,7 @@ namespace Basketball.Core.Interfaces.Services
         Task Delete(Guid id);
         Task<MeDto> GetMe(Guid id);
         Task<CoachHomeDataDto> GetHomeData(Guid coachId);
-        Task<User> GetUserByEmail(string name);
+        Task<User?> GetUserByEmail(string name);
 
     }
 }

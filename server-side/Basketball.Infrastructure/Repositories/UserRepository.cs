@@ -18,11 +18,11 @@ namespace Basketball.Infrastructure.Repositories
             return addedUser.Entity;
         }
 
-        public async Task<User> GetUserByEmail(string email)
+        public async Task<User?> GetUserByEmail(string email)
         {
             return await _db.Users
                             .Where(u => u.Email == email)
-                            .FirstAsync();
+                            .FirstOrDefaultAsync();
         }
 
         public async Task<User> GetUserById(Guid id)

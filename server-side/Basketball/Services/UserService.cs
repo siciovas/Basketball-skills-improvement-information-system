@@ -319,7 +319,7 @@ namespace Basketball.Services
             };
         }
 
-        public async Task<User> GetUserByEmail(string name)
+        public async Task<User?> GetUserByEmail(string name)
         {
             return await _userRepository.GetUserByEmail(name);
         }
