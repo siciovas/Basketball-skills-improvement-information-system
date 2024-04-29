@@ -215,7 +215,7 @@ const StudentHomePage = () => {
                               </Flex>
                               <Flex flexDir="column" alignItems="center">
                                 <Box>Reitingas</Box>
-                                <Box fontWeight="bold">{coach.rating}</Box>
+                                <Box fontWeight="bold">{coach.rating == null ? 0 : coach.rating}</Box>
                               </Flex>
                             </Flex>
                             <Button
