@@ -7,9 +7,10 @@ using Basketball.Domain.Data.Entities;
 
 namespace Basketball.Services
 {
-    public class FeedbackService(IFeedbackRepository feedbackRepository) : IFeedbackService
+    public class FeedbackService(IFeedbackRepository feedbackRepository, IUserRepository userRepository) : IFeedbackService
     {
         private readonly IFeedbackRepository _feedbackRepository = feedbackRepository;
+        private readonly IUserRepository _userRepository = userRepository;
 
         public async Task<FeedbackDto> Create(FeedbackPostDto feedback, Guid studentId)
         {
@@ -21,6 +22,15 @@ namespace Basketball.Services
                 Rating = feedback.Rating,
                 CoachId = feedback.CoachId,
             });
+
+            var coachFeedbacks = await _feedbackRepository.GetAllForCoach(feedback.CoachId);
+            var feedbackCount = coachFeedbacks.Count;
+            var gradeSum = coachFeedbacks.Sum(x => x.Rating);
+
+            var coach = await _userRepository.GetUserById(feedback.CoachId);
+            coach.Rating = (double)gradeSum / feedbackCount;
+
+            await _userRepository.Update(coach);
 
             return new FeedbackDto
             {
