@@ -158,10 +158,16 @@ const TrainingPlanForm = ({ onClose, trainingPlanId }: Props) => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (formState.skills.length < 1) {
+    if (formState.skills.length < 1 && !formState.isPersonal) {
       toast.error("Nepridėtas nei vienas įgūdis!");
       return;
     }
+
+    if(formState.shortDescription.length > 40)
+      {
+        toast.error("Trumpasis aprašymas per ilgas! (Max. 40 simbolių)");
+        return;
+      }
 
     setIsLoading(true);
 
@@ -291,7 +297,7 @@ const TrainingPlanForm = ({ onClose, trainingPlanId }: Props) => {
                 border="solid"
                 borderWidth="1px"
               ></Textarea>
-              <FormLabel mt={5}>Trumpasis aprašymas</FormLabel>
+              <FormLabel mt={5}>Trumpasis aprašymas (maks. 40 simbolių)</FormLabel>
               <Textarea
                 name="shortDescription"
                 onChange={onFormChange}
