@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { User } from "../Types/types";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import moment from "moment-timezone";
 
 type eventHandleChange<T extends HTMLElement> = ChangeEvent<T>;
 
@@ -68,7 +69,7 @@ const Register = () => {
           email: formState?.email,
           role: isCoach ? COACH_ROLE : STUDENT_ROLE,
           phoneNumber: formState?.phoneNumber,
-          birthDate: formState?.birthDate,
+          birthDate: moment(formState?.birthDate).format("YYYY-MM-DD"),
           password: formState?.password,
           height: formState?.height,
           weight: formState?.weight,
