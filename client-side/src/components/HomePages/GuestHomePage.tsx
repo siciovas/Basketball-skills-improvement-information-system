@@ -206,23 +206,9 @@ const GuestHomePage = () => {
                               </Flex>
                               <Flex flexDir="column" alignItems="center">
                                 <Box>Reitingas</Box>
-                                <Box fontWeight="bold">{coach.rating}</Box>
+                                <Box fontWeight="bold">{coach.rating == null ? 0 : coach.rating}</Box>
                               </Flex>
                             </Flex>
-                            <Button
-                              textTransform="uppercase"
-                              background="#1E99D6"
-                              textColor="white"
-                              borderRadius="2xl"
-                              alignSelf="end"
-                              w={32}
-                              fontSize="small"
-                              onClick={() =>
-                                navigate(`/coachDetails/${coach.id}`)
-                              }
-                            >
-                              Sužinoti daugiau
-                            </Button>
                           </Flex>
                         </Flex>
                       </Box>

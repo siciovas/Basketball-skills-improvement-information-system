@@ -163,7 +163,7 @@ const CoachesList = () => {
                         <Text>{coach.specialization}</Text>
                       </Td>
                       <Td>
-                        <Text>{coach.rating}</Text>
+                        <Text>{coach.rating == null ? 0 : coach.rating}</Text>
                       </Td>
                       <Td>
                         <Text>

@@ -50,7 +50,6 @@ namespace Basketball.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         [Route("getCoaches")]
         public async Task<IActionResult> GetCoaches()
         {
@@ -77,7 +76,6 @@ namespace Basketball.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         [Route("coachDetails/{id}")]
         public async Task<IActionResult> GetCoachDetails(Guid id)
         {
