@@ -247,8 +247,10 @@ const TrainingPlanExecution = () => {
                                         <Box>{exercise.comment}</Box>
                                       </Flex>
                                     </Flex>
-                                    {(exercise.grade === null ||
-                                      exercise.grade < 5) && (
+                                    {((!exercise.isWaitingForGrade &&
+                                      exercise.grade === null) ||
+                                      (exercise.grade !== null &&
+                                        exercise.grade < 5)) && (
                                       <Button
                                         mt={3}
                                         textTransform="uppercase"
