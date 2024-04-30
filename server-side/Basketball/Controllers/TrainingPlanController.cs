@@ -59,7 +59,7 @@ namespace Basketball.Controllers
 
             if (trainingPlanByName != null)
             {
-                return Conflict("Duplicated training plan name!");
+                return Conflict("Treniruočių planas tokiu pavadinimu jau egzistuoja!");
             }
 
             var createdTrainingPlan = await _trainingPlanService.Create(trainingPlan, userId);
@@ -77,7 +77,7 @@ namespace Basketball.Controllers
 
             if (!isCoachOwningTrainingPlan || (trainingPlanByName != null && trainingPlanByName.Id != id))
             {
-                return Forbid();
+                return Conflict("Treniruočių planas tokiu pavadinimu jau egzistuoja!");
             }
 
             var updatedTrainingPlan = await _trainingPlanService.Update(trainingPlan, id);

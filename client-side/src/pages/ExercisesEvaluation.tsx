@@ -38,6 +38,7 @@ import ReactPlayer from "react-player";
 import TrainingPlanForm from "../components/forms/TrainingPlanForm";
 import { AllEvaluationDto } from "../Types/types";
 import ModalWindow from "../components/ModalWindow";
+import handleErrorMessage from "../Helpers/errorHandler";
 
 const ExercisesEvaluation = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -96,7 +97,8 @@ const ExercisesEvaluation = () => {
         setIsLoading(true);
         await getSubmissions();
       } else {
-        toast.error("Įvyko klaida");
+        const err = await handleErrorMessage(response);
+        toast.error(err);
       }
       onClose();
       gradeApproveExerciseModal.onClose();
@@ -123,7 +125,8 @@ const ExercisesEvaluation = () => {
       setSubmissions(submissions);
       setIsLoading(false);
     } else {
-      toast.error("Netikėta klaida!");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   }, []);
 

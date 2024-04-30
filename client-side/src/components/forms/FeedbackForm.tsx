@@ -10,6 +10,7 @@ import { useState, MouseEvent, ChangeEvent } from "react";
 import ModalWindow from "../ModalWindow";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import handleErrorMessage from "../../Helpers/errorHandler";
 
 interface Props {
   coachId: string;
@@ -60,7 +61,8 @@ const FeedbackForm = ({ coachId }: Props) => {
       toast.success("Atsiliepimas pateiktas sėkmingai!");
       navigate("/allCoaches");
     } else {
-      toast.error("Įvyko klaida");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   };
 

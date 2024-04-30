@@ -16,6 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { useState, ChangeEvent, MouseEvent } from "react";
 import toast from "react-hot-toast";
+import handleErrorMessage from "../../Helpers/errorHandler";
 
 interface Props {
   trainingPlanId: string;
@@ -68,7 +69,8 @@ const ExerciseProgressForm = ({
       window.location.reload();
       toast.success("Pratimo progresas sėkmingai įkeltas");
     } else {
-      toast.error("Klaida");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   };
 

@@ -30,6 +30,7 @@ import toast from "react-hot-toast";
 import { Unauthorized } from "../Helpers/constants";
 import eventBus from "../Helpers/eventBus";
 import { CheckoutDto } from "../Types/types";
+import handleErrorMessage from "../Helpers/errorHandler";
 
 const Checkout = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -60,7 +61,8 @@ const Checkout = () => {
       setCheckoutDetails(details);
       setIsLoading(false);
     } else {
-      toast.error("Netikėta klaida!");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   }, []);
 
@@ -104,6 +106,9 @@ const Checkout = () => {
       toast.success("Užsakymas sėkmingai pašalintas!");
       onClose();
       navigate("/");
+    } else {
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   };
 

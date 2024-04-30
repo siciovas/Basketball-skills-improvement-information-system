@@ -29,6 +29,7 @@ import translations from "../../../Helpers/translations.json";
 import { CoachProfile, Feedback } from "../../../Types/types";
 import FeedbackForm from "../../../components/forms/FeedbackForm";
 import Pagination from "../../../components/Pagination";
+import handleErrorMessage from "../../../Helpers/errorHandler";
 const stars = ["", "", "", "", ""];
 
 const CoachDetails = () => {
@@ -88,7 +89,8 @@ const CoachDetails = () => {
       setCoach(coach);
       await getFeedbacks();
     } else {
-      toast.error("Netikėta klaida!");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   }, []);
 
@@ -110,7 +112,8 @@ const CoachDetails = () => {
       setFeedbacks(feedback);
       setIsLoading(false);
     } else {
-      toast.error("Netikėta klaida!");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   }, []);
 

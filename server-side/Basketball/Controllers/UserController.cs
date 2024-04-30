@@ -25,7 +25,7 @@ namespace Basketball.Controllers
 
             if (isUserExists)
             {
-                return Conflict("User already registered");
+                return Conflict("Toks vartotojas jau užregistruotas!");
             }
 
             var registeredUser = await _userService.Register(registerDto);
@@ -41,7 +41,7 @@ namespace Basketball.Controllers
 
             if (!isCredentialsCorrect)
             {
-                return BadRequest("Credentials invalid");
+                return BadRequest("Neteisingi prisijungimo duomenys!");
             }
 
             var result = await _userService.Login(loginDto);

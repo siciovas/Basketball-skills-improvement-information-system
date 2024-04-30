@@ -28,6 +28,7 @@ import eventBus from "../../../Helpers/eventBus";
 import translations from "../../../Helpers/translations.json";
 import { CoachProfile, Complaint } from "../../../Types/types";
 import ModalWindow from "../../../components/ModalWindow";
+import handleErrorMessage from "../../../Helpers/errorHandler";
 
 const ManageCoach = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -63,7 +64,8 @@ const ManageCoach = () => {
       setCoach(coach);
       setIsLoading(false);
     } else {
-      toast.error("Netikėta klaida!");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   }, []);
 
@@ -82,7 +84,8 @@ const ManageCoach = () => {
       const complaints = await response.json();
       setComplaints(complaints);
     } else {
-      toast.error("Netikėta klaida!");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   };
 
@@ -102,7 +105,8 @@ const ManageCoach = () => {
       toast.success("Trenerio statusas pakeistas!");
       await getCoachDetails();
     } else {
-      toast.error("Netikėta klaida!");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
     onClose();
   };

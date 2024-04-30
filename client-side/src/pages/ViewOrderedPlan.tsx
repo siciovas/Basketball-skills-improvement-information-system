@@ -15,6 +15,7 @@ import eventBus from "../Helpers/eventBus";
 import { useParams } from "react-router-dom";
 import moment from "moment";
 import { OrderedPlanInfo } from "../Types/types";
+import handleErrorMessage from "../Helpers/errorHandler";
 
 const ViewOrderedPlan = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -40,7 +41,8 @@ const ViewOrderedPlan = () => {
       setOrder(order);
       setIsLoading(false);
     } else {
-      toast.error("Netikėta klaida!");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   }, []);
 

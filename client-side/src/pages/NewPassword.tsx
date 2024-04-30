@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useState, ChangeEvent, FormEvent } from "react";
 import toast from "react-hot-toast";
+import handleErrorMessage from "../Helpers/errorHandler";
 
 const NewPassword = () => {
   const { id } = useParams();
@@ -44,7 +45,8 @@ const NewPassword = () => {
     if (response.status === 200) {
       toast.success("Slaptažodis pakeistas sėkmingai");
     } else {
-      toast.error("Klaida");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   };
 

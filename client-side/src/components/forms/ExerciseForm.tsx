@@ -22,6 +22,7 @@ import toast from "react-hot-toast";
 import { Unauthorized } from "../../Helpers/constants";
 import eventBus from "../../Helpers/eventBus";
 import { useNavigate } from "react-router-dom";
+import handleErrorMessage from "../../Helpers/errorHandler";
 
 type eventHandleChange<T extends HTMLElement> = ChangeEvent<T>;
 
@@ -85,7 +86,8 @@ const ExerciseForm = ({ onClose, exerciseId }: Props) => {
       });
       setIsLoading(false);
     } else {
-      toast.error("Netikėta klaida!");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   }, []);
 
@@ -122,9 +124,9 @@ const ExerciseForm = ({ onClose, exerciseId }: Props) => {
       );
       eventBus.dispatch("triggerExerciseCreated", null);
     } else {
-      toast.error("Klaida");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
       setIsLoading(false);
-
     }
   };
 

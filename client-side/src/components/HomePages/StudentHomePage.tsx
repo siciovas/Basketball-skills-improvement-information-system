@@ -18,6 +18,7 @@ import Container from "../Container";
 import moment from "moment";
 import { StudentHomePageDto } from "../../Types/types";
 import { useNavigate } from "react-router-dom";
+import handleErrorMessage from "../../Helpers/errorHandler";
 
 const StudentHomePage = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -43,7 +44,8 @@ const StudentHomePage = () => {
       setHomePage(homePage);
       setIsLoading(false);
     } else {
-      toast.error("Netikėta klaida!");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   }, []);
 
@@ -215,7 +217,9 @@ const StudentHomePage = () => {
                               </Flex>
                               <Flex flexDir="column" alignItems="center">
                                 <Box>Reitingas</Box>
-                                <Box fontWeight="bold">{coach.rating == null ? 0 : coach.rating}</Box>
+                                <Box fontWeight="bold">
+                                  {coach.rating == null ? 0 : coach.rating}
+                                </Box>
                               </Flex>
                             </Flex>
                             <Button

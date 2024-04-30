@@ -18,6 +18,7 @@ import { Unauthorized } from "../Helpers/constants";
 import eventBus from "../Helpers/eventBus";
 import toast from "react-hot-toast";
 import { CommissionFeeDto } from "../Types/types";
+import handleErrorMessage from "../Helpers/errorHandler";
 
 interface Props {
   updateCommissionFee: (
@@ -62,7 +63,8 @@ const CommissionFee = ({ updateCommissionFee }: Props) => {
       setValue(commissionFee.value);
       setIsLoading(false);
     } else {
-      toast.error("Netikėta klaida!");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   }, []);
 

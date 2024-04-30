@@ -33,7 +33,7 @@ namespace Basketball.Controllers
 
             if (skillByName != null)
             {
-                return Conflict("Duplicated skill name!");
+                return Conflict("Įgūdis tokiu pavadinimu jau egzistuoja!");
             }
 
             var skill = await _skillService.Create(skillDto, coachId);
@@ -77,7 +77,7 @@ namespace Basketball.Controllers
 
             if (!isCoachOwner || (skillByName != null && skillByName.Id != id))
             {
-                return Forbid();
+                return Conflict("Įgūdis tokiu pavadinimu jau egzistuoja!");
             }
 
             var updatedSkill = await _skillService.Update(skill, id);

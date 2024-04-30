@@ -8,6 +8,7 @@ import { Statistics } from "../Types/types";
 import toast from "react-hot-toast";
 import eventBus from "../Helpers/eventBus";
 import { ExtractDataToArray } from "../components/Chart/ExtractDataToArray";
+import handleErrorMessage from "../Helpers/errorHandler";
 
 const Finance = () => {
   const [statistics, setStatistics] = useState<Statistics>();
@@ -29,7 +30,8 @@ const Finance = () => {
       setStatistics(statistics);
       setIsLoading(false);
     } else {
-      toast.error("Netikėta klaida!");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   }, []);
 

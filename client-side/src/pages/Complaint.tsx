@@ -20,6 +20,7 @@ import { Unauthorized } from "../Helpers/constants";
 import toast from "react-hot-toast";
 import eventBus from "../Helpers/eventBus";
 import ModalWindow from "../components/ModalWindow";
+import handleErrorMessage from "../Helpers/errorHandler";
 
 const Complaint = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -48,7 +49,8 @@ const Complaint = () => {
       setCoach(coach.fullName);
       setIsLoading(false);
     } else {
-      toast.error("Netikėta klaida!");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   }, []);
 
@@ -83,7 +85,8 @@ const Complaint = () => {
       toast.success("Skundas pateiktas sėkmingai!");
       navigate("/allCoaches");
     } else {
-      toast.error("Įvyko klaida");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   };
 

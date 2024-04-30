@@ -27,6 +27,7 @@ import {
   Unauthorized,
 } from "../../Helpers/constants";
 import toast from "react-hot-toast";
+import handleErrorMessage from "../../Helpers/errorHandler";
 
 type eventHandleChange<T extends HTMLElement> = ChangeEvent<T>;
 
@@ -75,7 +76,8 @@ const EditProfile = () => {
       setFormState(userObj);
       setIsLoading(false);
     } else {
-      toast.error("Netikėta klaida!");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   }, []);
 
@@ -109,7 +111,8 @@ const EditProfile = () => {
       toast.success("Paskyros informacija atnaujinta!");
       getUserDetails();
     } else {
-      toast.error("Atnaujinti nepavyko!");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
       setIsLoading(false);
     }
   };

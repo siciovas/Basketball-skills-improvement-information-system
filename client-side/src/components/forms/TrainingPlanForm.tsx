@@ -31,6 +31,7 @@ import { useNavigate } from "react-router-dom";
 import { Unauthorized } from "../../Helpers/constants";
 import eventBus from "../../Helpers/eventBus";
 import { GenericSkillInfo } from "../../Types/types";
+import handleErrorMessage from "../../Helpers/errorHandler";
 
 interface Props {
   onClose: () => void;
@@ -117,7 +118,8 @@ const TrainingPlanForm = ({ onClose, trainingPlanId }: Props) => {
       setSkills(skills);
       setIsLoading(false);
     } else {
-      toast.error("Netikėta klaida!");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   }, []);
 
@@ -151,7 +153,8 @@ const TrainingPlanForm = ({ onClose, trainingPlanId }: Props) => {
       });
       await getSkillsList();
     } else {
-      toast.error("Netikėta klaida!");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   }, []);
 
@@ -163,11 +166,10 @@ const TrainingPlanForm = ({ onClose, trainingPlanId }: Props) => {
       return;
     }
 
-    if(formState.shortDescription.length > 40)
-      {
-        toast.error("Trumpasis aprašymas per ilgas! (Max. 40 simbolių)");
-        return;
-      }
+    if (formState.shortDescription.length > 40) {
+      toast.error("Trumpasis aprašymas per ilgas! (Max. 40 simbolių)");
+      return;
+    }
 
     setIsLoading(true);
 
@@ -200,7 +202,8 @@ const TrainingPlanForm = ({ onClose, trainingPlanId }: Props) => {
       );
       eventBus.dispatch("triggerTrainingPlanCreated", null);
     } else {
-      toast.error("Klaida");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
       setIsLoading(false);
     }
   };
@@ -297,7 +300,9 @@ const TrainingPlanForm = ({ onClose, trainingPlanId }: Props) => {
                 border="solid"
                 borderWidth="1px"
               ></Textarea>
-              <FormLabel mt={5}>Trumpasis aprašymas (maks. 40 simbolių)</FormLabel>
+              <FormLabel mt={5}>
+                Trumpasis aprašymas (maks. 40 simbolių)
+              </FormLabel>
               <Textarea
                 name="shortDescription"
                 onChange={onFormChange}

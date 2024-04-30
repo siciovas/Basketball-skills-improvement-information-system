@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
 import { GuestHomePageDto } from "../../Types/types";
 import toast from "react-hot-toast";
+import handleErrorMessage from "../../Helpers/errorHandler";
 
 const GuestHomePage = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -36,7 +37,8 @@ const GuestHomePage = () => {
       setHomePage(homePage);
       setIsLoading(false);
     } else {
-      toast.error("Netikėta klaida!");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   }, []);
 
@@ -103,7 +105,9 @@ const GuestHomePage = () => {
                   gap={5}
                 >
                   <Flex gap={4} align="center" justify="space-evenly">
-                    <Heading size="4xl" color="white">{homePage?.plansCount}</Heading>
+                    <Heading size="4xl" color="white">
+                      {homePage?.plansCount}
+                    </Heading>
                     <Box
                       className="fa-solid fa-list-check fa-4x"
                       color="white"
@@ -206,7 +210,9 @@ const GuestHomePage = () => {
                               </Flex>
                               <Flex flexDir="column" alignItems="center">
                                 <Box>Reitingas</Box>
-                                <Box fontWeight="bold">{coach.rating == null ? 0 : coach.rating}</Box>
+                                <Box fontWeight="bold">
+                                  {coach.rating == null ? 0 : coach.rating}
+                                </Box>
                               </Flex>
                             </Flex>
                           </Flex>

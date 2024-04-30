@@ -18,6 +18,7 @@ import { Unauthorized } from "../Helpers/constants";
 import eventBus from "../Helpers/eventBus";
 import toast from "react-hot-toast";
 import moment from "moment";
+import handleErrorMessage from "../Helpers/errorHandler";
 
 const MyPlans = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -43,7 +44,8 @@ const MyPlans = () => {
       setPlans(plans);
       setIsLoading(false);
     } else {
-      toast.error("Netikėta klaida!");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   }, []);
 

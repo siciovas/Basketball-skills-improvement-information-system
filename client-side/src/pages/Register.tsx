@@ -18,6 +18,7 @@ import { User } from "../Types/types";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment-timezone";
+import handleErrorMessage from "../Helpers/errorHandler";
 
 type eventHandleChange<T extends HTMLElement> = ChangeEvent<T>;
 
@@ -88,7 +89,8 @@ const Register = () => {
       toast.success("Registracija sėkminga!");
       navigate("/login");
     } else {
-      toast.error("Registracija nesėkminga");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   };
 

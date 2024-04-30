@@ -23,6 +23,7 @@ import Container from "../components/Container";
 import { useNavigate } from "react-router-dom";
 import translations from "../Helpers/translations.json";
 import CoachSort from "../components/CoachSort";
+import handleErrorMessage from "../Helpers/errorHandler";
 
 interface FilterProps {
   from: Date | undefined;
@@ -69,7 +70,8 @@ const CoachesList = () => {
       setCoaches(coaches);
       setIsLoading(false);
     } else {
-      toast.error("Netikėta klaida!");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   }, []);
 

@@ -29,6 +29,7 @@ import { Filter } from "./Exercises";
 import ExerciseForm from "../components/forms/ExerciseForm";
 import SkillForm from "../components/forms/SkillForm";
 import Pagination from "../components/Pagination";
+import handleErrorMessage from "../Helpers/errorHandler";
 
 const Skills = () => {
   const exerciseModal = useDisclosure();
@@ -99,7 +100,8 @@ const Skills = () => {
       setSkills(skills);
       setIsLoading(false);
     } else {
-      toast.error("Netikėta klaida!");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   }, []);
 
