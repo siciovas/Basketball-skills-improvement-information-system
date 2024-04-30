@@ -13,7 +13,6 @@ namespace Basketball.Core.Dtos
         public required string Name { get; set; }
         public required string Description { get; set; }
         public int? Grade { get; set; }
-        public bool IsLocked { get; set; }
         public required string ExerciseVideoUrl { get; set; }
         public string? Comment { get; set; }
         public Difficulty Difficulty { get; set; }
