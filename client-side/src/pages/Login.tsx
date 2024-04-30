@@ -12,6 +12,7 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import eventBus from "../Helpers/eventBus";
+import handleErrorMessage from "../Helpers/errorHandler";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -46,7 +47,8 @@ const Login = () => {
       eventBus.dispatch("storage", "");
       navigate("/");
     } else {
-      toast.error("Prisijungimas nepavyko!");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   };
 
