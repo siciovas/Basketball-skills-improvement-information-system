@@ -19,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Unauthorized } from "../Helpers/constants";
 import eventBus from "../Helpers/eventBus";
+import handleErrorMessage from "../Helpers/errorHandler";
 
 const ActiveClients = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -43,7 +44,8 @@ const ActiveClients = () => {
       setActiveClients(activeClients);
       setIsLoading(false);
     } else {
-      toast.error("Netikėta klaida!");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   }, []);
 

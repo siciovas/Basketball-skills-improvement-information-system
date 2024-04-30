@@ -23,6 +23,7 @@ import { Unauthorized } from "../../Helpers/constants";
 import eventBus from "../../Helpers/eventBus";
 import { useNavigate } from "react-router-dom";
 import Pagination from "../../components/Pagination";
+import handleErrorMessage from "../../Helpers/errorHandler";
 
 const MainCoachesList = () => {
   const [coaches, setCoaches] = useState<Coach[]>([]);
@@ -72,7 +73,8 @@ const MainCoachesList = () => {
       setCoaches(coaches);
       setIsLoading(false);
     } else {
-      toast.error("Netikėta klaida!");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   }, []);
 

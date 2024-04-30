@@ -16,6 +16,7 @@ import { CommissionFeeDto, Counts } from "../../Types/types";
 import BarChart from "../Chart/BarChart";
 import { ExtractDataToArray } from "../Chart/ExtractDataToArray";
 import CommissionFee from "../CommissionFee";
+import handleErrorMessage from "../../Helpers/errorHandler";
 
 const AdminHomePage = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -41,7 +42,8 @@ const AdminHomePage = () => {
       setCounts(counts);
       setIsLoading(false);
     } else {
-      toast.error("Netikėta klaida!");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   }, []);
 
@@ -68,7 +70,8 @@ const AdminHomePage = () => {
       toast.success("Komisinis mokestis atnaujintas!");
       await getCounts();
     } else {
-      toast.error("Netikėta klaida!");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   };
 

@@ -18,6 +18,7 @@ import toast from "react-hot-toast";
 import { Unauthorized } from "../Helpers/constants";
 import eventBus from "../Helpers/eventBus";
 import Container from "../components/Container";
+import handleErrorMessage from "../Helpers/errorHandler";
 
 const TrainingPlan = () => {
   const token = localStorage.getItem("accessToken");
@@ -44,7 +45,8 @@ const TrainingPlan = () => {
       setTrainingPlan(trainingPlan);
       setIsLoading(false);
     } else {
-      toast.error("Netikėta klaida!");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   }, []);
 
@@ -64,10 +66,12 @@ const TrainingPlan = () => {
         trainingPlanId: id,
       }),
     });
-
     if (response.status === 201) {
       const id = await response.json();
       navigate(`/checkout/${id}`);
+    } else {
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   };
 

@@ -27,6 +27,7 @@ import { Unauthorized } from "../Helpers/constants";
 import { TrainingPlanView } from "../Types/types";
 import Pagination from "../components/Pagination";
 import TrainingPlanForm from "../components/forms/TrainingPlanForm";
+import handleErrorMessage from "../Helpers/errorHandler";
 
 interface Filter {
   isPublic: boolean | undefined;
@@ -90,7 +91,8 @@ const TrainingPlans = () => {
       setTrainingPlans(trainingPlans);
       setIsLoading(false);
     } else {
-      toast.error("Netikėta klaida!");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   }, []);
 

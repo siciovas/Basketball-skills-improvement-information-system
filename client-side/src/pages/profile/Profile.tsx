@@ -33,6 +33,7 @@ import eventBus from "../../Helpers/eventBus";
 import { AdditionalInfo, MeDto } from "../../Types/types";
 import translations from "../../Helpers/translations.json";
 import ModalWindow from "../../components/ModalWindow";
+import handleErrorMessage from "../../Helpers/errorHandler";
 
 const Profile = () => {
   const token = localStorage.getItem("accessToken");
@@ -72,7 +73,8 @@ const Profile = () => {
       setUser(userResponse);
       setIsLoading(false);
     } else {
-      toast.error("Netikėta klaida!");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   }, []);
 
@@ -103,7 +105,8 @@ const Profile = () => {
       toast.success("Slaptažodis pakeistas!");
       getUserDetails();
     } else {
-      toast.error("Atnaujinti nepavyko!");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   };
 
@@ -129,7 +132,8 @@ const Profile = () => {
       localStorage.removeItem("accessToken");
       navigate("/");
     } else {
-      toast.error("Nepavyko ištrinti!");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   };
 
@@ -157,7 +161,9 @@ const Profile = () => {
               >
                 <Flex gap={5} mt={5} mb={5}>
                   <Flex flexDir="column">
-                    <Text fontWeight="bold" ml={5} mb={2}>Pagrindinė informacija</Text>
+                    <Text fontWeight="bold" ml={5} mb={2}>
+                      Pagrindinė informacija
+                    </Text>
                     <Box alignSelf="center" h={60} w={60} ml={5}>
                       <Image
                         w="100%"

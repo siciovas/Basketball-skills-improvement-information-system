@@ -27,6 +27,7 @@ import { Unauthorized } from "../Helpers/constants";
 import { GenericExerciseSkillInfo } from "../Types/types";
 import ExerciseForm from "../components/forms/ExerciseForm";
 import Pagination from "../components/Pagination";
+import handleErrorMessage from "../Helpers/errorHandler";
 
 export interface Filter {
   isUsed: boolean | undefined;
@@ -87,7 +88,8 @@ const Exercises = () => {
       setExercises(exercises);
       setIsLoading(false);
     } else {
-      toast.error("Netikėta klaida!");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   }, []);
 

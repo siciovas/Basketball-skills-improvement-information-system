@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { useState, FormEvent, ChangeEvent } from "react";
 import toast from "react-hot-toast";
+import handleErrorMessage from "../Helpers/errorHandler";
 
 const PasswordRecovery = () => {
   const navigate = useNavigate();
@@ -39,7 +40,8 @@ const PasswordRecovery = () => {
     if (response.status === 201) {
       toast.success("Paskyros atkūrimo nuoroda išsiųsta nurodytu el. paštu");
     } else {
-      toast.error("Klaida");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   };
   return (

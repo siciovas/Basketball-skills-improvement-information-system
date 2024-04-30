@@ -29,6 +29,7 @@ import ReactPlayer from "react-player";
 import { TrainingPlanExecutionDto } from "../Types/types";
 import ExerciseProgressForm from "../components/forms/ExerciseProgressForm";
 import moment from "moment";
+import handleErrorMessage from "../Helpers/errorHandler";
 
 const TrainingPlanExecution = () => {
   const { onOpen, onClose, isOpen } = useDisclosure();
@@ -57,7 +58,8 @@ const TrainingPlanExecution = () => {
       setTrainingPlan(trainingPlan);
       setIsLoading(false);
     } else {
-      toast.error("Netikėta klaida!");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   }, []);
 

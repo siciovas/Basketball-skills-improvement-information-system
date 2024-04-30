@@ -33,7 +33,7 @@ namespace Basketball.Controllers
 
             if (exerciseByName != null)
             {
-                return Conflict("Duplicated exercise name!");
+                return Conflict("Pratimas tokiu pavadinimu jau egzistuoja!");
             }
 
             var stream = data.ExerciseVideo.OpenReadStream();
@@ -79,7 +79,7 @@ namespace Basketball.Controllers
 
             if (!isCoachOwner || (exerciseByName != null && exerciseByName.Id != id))
             {
-                return Forbid();
+                return Conflict("Pratimas tokiu pavadinimu jau egzistuoja!");
             }
 
             var updatedExercise = await _exerciseService.Update(exercise, id, coachId);

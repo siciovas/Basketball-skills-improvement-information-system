@@ -28,6 +28,7 @@ import { Unauthorized } from "../../Helpers/constants";
 import eventBus from "../../Helpers/eventBus";
 import { Exercise, GenericExerciseSkillInfo } from "../../Types/types";
 import { useNavigate } from "react-router";
+import handleErrorMessage from "../../Helpers/errorHandler";
 
 interface Props {
   addNewExercise: () => void;
@@ -99,7 +100,8 @@ const SkillForm = ({ addNewExercise, onClose, skillId }: Props) => {
       setExercises(exercises);
       setIsLoading(false);
     } else {
-      toast.error("Netikėta klaida!");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   }, []);
 
@@ -127,7 +129,8 @@ const SkillForm = ({ addNewExercise, onClose, skillId }: Props) => {
       });
       await getExercisesList();
     } else {
-      toast.error("Netikėta klaida!");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   }, []);
 
@@ -164,7 +167,8 @@ const SkillForm = ({ addNewExercise, onClose, skillId }: Props) => {
       );
       eventBus.dispatch("triggerSkillCreated", null);
     } else {
-      toast.error("Klaida");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
       setIsLoading(false);
     }
   };

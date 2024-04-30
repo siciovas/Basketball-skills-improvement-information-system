@@ -2,6 +2,7 @@ import { Box, Flex, Heading, Spinner, Center } from "@chakra-ui/react";
 import { useState, useCallback, useEffect } from "react";
 import toast from "react-hot-toast";
 import { useSearchParams } from "react-router-dom";
+import handleErrorMessage from "../Helpers/errorHandler";
 
 const PayseraSuccessfulPayment = () => {
   const token = localStorage.getItem("accessToken");
@@ -22,7 +23,8 @@ const PayseraSuccessfulPayment = () => {
     if (response.status === 200) {
       setIsLoading(false);
     } else {
-      toast.error("Netikėta klaida!");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   }, []);
 

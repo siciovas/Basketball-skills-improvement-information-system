@@ -21,6 +21,7 @@ import toast from "react-hot-toast";
 import moment from "moment";
 import OrderFilter from "../components/OrderFilter";
 import { useNavigate } from "react-router-dom";
+import handleErrorMessage from "../Helpers/errorHandler";
 
 interface FilterProps {
   from: Date | undefined;
@@ -61,7 +62,8 @@ const AllOrders = () => {
       setOrders(orders);
       setIsLoading(false);
     } else {
-      toast.error("Netikėta klaida!");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   }, []);
 

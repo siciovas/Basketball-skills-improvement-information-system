@@ -22,6 +22,7 @@ import { CoachHomePageDto } from "../../Types/types";
 import toast from "react-hot-toast";
 import { Unauthorized } from "../../Helpers/constants";
 import TrainingPlanForm from "../forms/TrainingPlanForm";
+import handleErrorMessage from "../../Helpers/errorHandler";
 
 const CoachHomePage = () => {
   const exerciseModal = useDisclosure();
@@ -48,7 +49,8 @@ const CoachHomePage = () => {
       setHomePageData(homePageData);
       setIsLoading(false);
     } else {
-      toast.error("Netikėta klaida!");
+      const err = await handleErrorMessage(response);
+      toast.error(err);
     }
   }, []);
 

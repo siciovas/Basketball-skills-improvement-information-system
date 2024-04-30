@@ -14,7 +14,7 @@ namespace Basketball.Core.Dtos
         public required string Surname { get; set; }
 
         [Required]
-        [RegularExpression(@"^\+?(\d{11}|\d{9})$", ErrorMessage = "Telefono numeris gali prasdėti arba + arba 8")]
+        [RegularExpression(@"^\+?(\d{11}|\d{9})$", ErrorMessage = "Neteisingas telefono numeris!")]
         public required string PhoneNumber { get; set; }
 
         [Required]
