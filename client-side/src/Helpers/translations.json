@@ -17,7 +17,7 @@
     "admin": "Administratorius",
     "coach": "Treneris",
     "higher": "Aukštasis išsilavinimas",
-    "higherUniversity": "Aukštasis universitetinis išsilavinimas",
-    "higherCollege": "Aukštasis koleginis išsilavinimas",
+    "higheruniversity": "Aukštasis universitetinis išsilavinimas",
+    "highercollege": "Aukštasis koleginis išsilavinimas",
     "secondary": "Vidurinis išsilavinimas"
 }
