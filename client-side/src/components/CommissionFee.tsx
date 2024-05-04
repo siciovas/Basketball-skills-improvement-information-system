@@ -108,6 +108,8 @@ const CommissionFee = ({ updateCommissionFee }: Props) => {
           </Heading>
           <Flex gap={5} mt={5}>
             <Input
+              border="solid"
+              borderWidth="1px"
               type="number"
               w="20%"
               min={0}

@@ -154,6 +154,7 @@ const ExercisesEvaluation = () => {
               <Flex gap={5} mt={5} mb={5}>
                 <Box alignSelf="center" h={60} w={60} ml={5}>
                   <Image
+                    borderRadius="xl"
                     w="100%"
                     h="100%"
                     src={"data:image/jpeg;base64," + submissions?.userAvatar}
