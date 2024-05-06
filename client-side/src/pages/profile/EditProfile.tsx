@@ -156,16 +156,16 @@ const EditProfile = () => {
         <>
           <Container>
             <form onSubmit={(e) => updateUser(e)}>
-              <FormControl>
-                <Flex
-                  p={5}
-                  gap={5}
-                  borderRadius="xl"
-                  border="solid"
-                  borderColor="#9e9d9d"
-                  borderWidth="2px"
-                >
-                  <Flex flexDir="column" align="center" mx="auto">
+              <Flex
+                p={5}
+                gap={5}
+                borderRadius="xl"
+                border="solid"
+                borderColor="#9e9d9d"
+                borderWidth="2px"
+              >
+                <Flex flexDir="column" align="center" mx="auto">
+                  <FormControl>
                     <Box mb={3}>
                       <FormLabel>Nuotrauka</FormLabel>
                       <Box h={60} w={80}>
@@ -259,8 +259,10 @@ const EditProfile = () => {
                       border="solid"
                       borderWidth="1px"
                     />
-                    {(role === STUDENT_ROLE && (
-                      <>
+                  </FormControl>
+                  {(role === STUDENT_ROLE && (
+                    <>
+                      <FormControl>
                         <FormLabel>Ūgis (cm.)</FormLabel>
                         <Input
                           type="number"
@@ -300,23 +302,24 @@ const EditProfile = () => {
                           border="solid"
                           borderWidth="1px"
                         />
-                        <FormLabel>Metabolinis amžius</FormLabel>
-                        <Input
-                          type="text"
-                          mb={5}
-                          name="metabolicAge"
-                          onChange={(e) => {
-                            handleFormInputChange(e, true);
-                          }}
-                          value={formState?.metabolicAge as number}
-                          isRequired
-                          border="solid"
-                          borderWidth="1px"
-                        />
-                      </>
-                    )) ||
-                      (role === COACH_ROLE && (
-                        <>
+                      </FormControl>
+                      <FormLabel>Metabolinis amžius</FormLabel>
+                      <Input
+                        type="text"
+                        mb={5}
+                        name="metabolicAge"
+                        onChange={(e) => {
+                          handleFormInputChange(e, true);
+                        }}
+                        value={formState?.metabolicAge as number}
+                        border="solid"
+                        borderWidth="1px"
+                      />
+                    </>
+                  )) ||
+                    (role === COACH_ROLE && (
+                      <>
+                        <FormControl>
                           <FormLabel>Aprašymas</FormLabel>
                           <Textarea
                             name="description"
@@ -378,22 +381,22 @@ const EditProfile = () => {
                             border="solid"
                             borderWidth="1px"
                           />
-                        </>
-                      ))}
-                    <Button
-                      type="submit"
-                      w="100%"
-                      textTransform="uppercase"
-                      background="#1E99D6"
-                      textColor="white"
-                      borderRadius="2xl"
-                      mt={5}
-                    >
-                      Atnaujinti
-                    </Button>
-                  </Flex>
+                        </FormControl>
+                      </>
+                    ))}
+                  <Button
+                    type="submit"
+                    w="100%"
+                    textTransform="uppercase"
+                    background="#1E99D6"
+                    textColor="white"
+                    borderRadius="2xl"
+                    mt={5}
+                  >
+                    Atnaujinti
+                  </Button>
                 </Flex>
-              </FormControl>
+              </Flex>
             </form>
           </Container>
         </>

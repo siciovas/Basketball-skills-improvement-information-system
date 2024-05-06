@@ -143,7 +143,12 @@ const ExercisesEvaluation = () => {
           </Center>
         ) : (
           <>
-            <Heading size="lg">{`Klientas ${submissions?.student}`}</Heading>
+            <Flex>
+              <Heading size="lg">Klientas:&nbsp;</Heading>
+              <Heading size="lg" fontWeight="none">
+                {submissions?.student}
+              </Heading>
+            </Flex>
             <Box
               m="auto"
               borderRadius="xl"

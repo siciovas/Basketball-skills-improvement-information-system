@@ -138,33 +138,33 @@ const Register = () => {
           </Box>
         </Flex>
         <form onSubmit={Registration}>
-          <FormControl isRequired>
-            {isInitWindow ? (
-              <>
-                <Flex gap={5}>
-                  <Button
-                    w={150}
-                    onClick={() => handleStateChange(true)}
-                    backgroundColor="#1E99D6"
-                    color="white"
-                    borderRadius="2xl"
-                    textTransform="uppercase"
-                  >
-                    Treneris
-                  </Button>
-                  <Button
-                    w={150}
-                    textTransform="uppercase"
-                    onClick={() => handleStateChange(false)}
-                    textColor="black"
-                    borderRadius="2xl"
-                  >
-                    Krepšininkas
-                  </Button>
-                </Flex>
-              </>
-            ) : (
-              <>
+          {isInitWindow ? (
+            <>
+              <Flex gap={5}>
+                <Button
+                  w={150}
+                  onClick={() => handleStateChange(true)}
+                  backgroundColor="#1E99D6"
+                  color="white"
+                  borderRadius="2xl"
+                  textTransform="uppercase"
+                >
+                  Treneris
+                </Button>
+                <Button
+                  w={150}
+                  textTransform="uppercase"
+                  onClick={() => handleStateChange(false)}
+                  textColor="black"
+                  borderRadius="2xl"
+                >
+                  Krepšininkas
+                </Button>
+              </Flex>
+            </>
+          ) : (
+            <>
+              <FormControl isRequired>
                 <FormLabel>Vardas</FormLabel>
                 <Input
                   border="solid"
@@ -260,8 +260,10 @@ const Register = () => {
                   }}
                   isRequired
                 />
-                {isCoach ? (
-                  <>
+              </FormControl>
+              {isCoach ? (
+                <>
+                  <FormControl isRequired>
                     <FormLabel>Aprašymas</FormLabel>
                     <Textarea
                       border="solid"
@@ -331,19 +333,21 @@ const Register = () => {
                       }}
                       isRequired
                     />
-                    <Button
-                      type="submit"
-                      w="100%"
-                      textTransform="uppercase"
-                      background="#1E99D6"
-                      textColor="white"
-                      borderRadius="2xl"
-                    >
-                      Registruotis
-                    </Button>
-                  </>
-                ) : (
-                  <>
+                  </FormControl>
+                  <Button
+                    type="submit"
+                    w="100%"
+                    textTransform="uppercase"
+                    background="#1E99D6"
+                    textColor="white"
+                    borderRadius="2xl"
+                  >
+                    Registruotis
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <FormControl isRequired>
                     <FormLabel>Ūgis (cm.)</FormLabel>
                     <Input
                       border="solid"
@@ -380,18 +384,20 @@ const Register = () => {
                       }}
                       isRequired
                     />
-                    <FormLabel>Metabolinis amžius</FormLabel>
-                    <Input
-                      border="solid"
-                      borderWidth="1px"
-                      type="text"
-                      mb={5}
-                      name="metabolicAge"
-                      onChange={(e) => {
-                        handleFormInputChange(e, true);
-                      }}
-                      isRequired
-                    />
+                  </FormControl>
+
+                  <FormLabel>Metabolinis amžius</FormLabel>
+                  <Input
+                    border="solid"
+                    borderWidth="1px"
+                    type="text"
+                    mb={5}
+                    name="metabolicAge"
+                    onChange={(e) => {
+                      handleFormInputChange(e, true);
+                    }}
+                  />
+                  <FormControl isRequired>
                     <FormLabel>Slaptažodis</FormLabel>
                     <Input
                       border="solid"
@@ -404,21 +410,21 @@ const Register = () => {
                       }}
                       isRequired
                     />
-                    <Button
-                      type="submit"
-                      w="100%"
-                      textTransform="uppercase"
-                      background="#1E99D6"
-                      textColor="white"
-                      borderRadius="2xl"
-                    >
-                      Registruotis
-                    </Button>
-                  </>
-                )}
-              </>
-            )}
-          </FormControl>
+                  </FormControl>
+                  <Button
+                    type="submit"
+                    w="100%"
+                    textTransform="uppercase"
+                    background="#1E99D6"
+                    textColor="white"
+                    borderRadius="2xl"
+                  >
+                    Registruotis
+                  </Button>
+                </>
+              )}
+            </>
+          )}
         </form>
         {!isInitWindow && (
           <Button

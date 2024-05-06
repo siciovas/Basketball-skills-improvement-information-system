@@ -131,14 +131,15 @@ const ManageCoach = () => {
             <Box w={1000} m="auto" mt={5}>
               <Box
                 boxShadow="dark-lg"
-                w={600}
+                w={700}
                 m="auto"
                 borderRadius="xl"
                 border="solid"
                 borderColor="#9e9d9d"
+                p={10}
               >
                 <Flex gap={5} mt={2}>
-                  <Box alignSelf="center" h={60} w={60} ml={5}>
+                  <Box alignSelf="center" h={60} w={60}>
                     <Image
                       w="100%"
                       h="100%"
@@ -240,7 +241,7 @@ const ManageCoach = () => {
                     </Flex>
                   </Flex>
                 </Flex>
-                <Box ml={5} my={5}>
+                <Box my={5}>
                   {coach?.description}
                 </Box>
               </Box>

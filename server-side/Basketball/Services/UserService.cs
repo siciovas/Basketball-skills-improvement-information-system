@@ -86,18 +86,21 @@ namespace Basketball.Services
 
             var createdUser = await _userRepository.Create(newUser);
 
-            var adminEmail = await _userRepository.GetAdminEmail();
-
-            var emailTemplate = EmailTemplates.Templates["CoachRegistration"];
-
-            var emailData = new EmailData
+            if (newUser.Role == Role.Coach)
             {
-                Subject = emailTemplate[0],
-                Recipients = ["ignasilin@gmail.com"],
-                Content = string.Format(emailTemplate[1], createdUser.Name, createdUser.Surname, $"{_configuration["AppUrl"]}/manageCoach/{createdUser.Id}")
-            };
+                var adminEmail = await _userRepository.GetAdminEmail();
 
-            _ = Task.Run(() => _emailService.SendEmail(emailData));
+                var emailTemplate = EmailTemplates.Templates["CoachRegistration"];
+
+                var emailData = new EmailData
+                {
+                    Subject = emailTemplate[0],
+                    Recipients = ["ignasilin@gmail.com"],
+                    Content = string.Format(emailTemplate[1], createdUser.Name, createdUser.Surname, $"{_configuration["AppUrl"]}/manageCoach/{createdUser.Id}")
+                };
+
+                _ = Task.Run(() => _emailService.SendEmail(emailData));
+            }
 
             return createdUser.Email;
         }
