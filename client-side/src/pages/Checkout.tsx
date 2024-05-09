@@ -163,7 +163,14 @@ const Checkout = () => {
               </Flex>
             </Box>
             {checkoutDetails?.isPersonal && (
-              <Box border="solid" p={5}>
+              <Box
+                borderRadius="xl"
+                border="solid"
+                borderColor="#9e9d9d"
+                borderWidth="2px"
+                p={5}
+                mt={5}
+              >
                 <Flex alignItems="center" gap={5}>
                   <Box className="fa-solid fa-cart-shopping fa-2xl" />
                   <Heading size="lg" mb={2}>
@@ -178,8 +185,11 @@ const Checkout = () => {
                   <Textarea
                     value={trainingPlanRequest as string}
                     onChange={handleTrainingPlanRequestChange}
+                    borderRadius="xl"
                     border="solid"
                     borderColor="#9e9d9d"
+                    borderWidth="2px"
+                    mt={5}
                   />
                 </Flex>
               </Box>

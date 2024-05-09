@@ -44,13 +44,14 @@ const ExercisesEvaluation = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isLoading, setIsLoading] = useState(true);
   const [submissions, setSubmissions] = useState<AllEvaluationDto>();
-  const { userId, trainingPlanId } = useParams();
+  const { userId } = useParams();
   const [grade, setGrade] = useState<number>();
   const [comment, setComment] = useState<string>("");
   const token = localStorage.getItem("accessToken");
   const gradeApproveExerciseModal = useDisclosure();
   const gradeDisapproveExerciseModal = useDisclosure();
   const [exerciseId, setExerciseId] = useState<string>();
+  const [trainingPlanId, setTrainingPlanId] = useState<string>();
 
   const handleGradingApproveModal = (exerciseId: string) => {
     setExerciseId(exerciseId);
@@ -60,6 +61,11 @@ const ExercisesEvaluation = () => {
   const handleGradingDisapproveModal = (exerciseId: string) => {
     setExerciseId(exerciseId);
     gradeDisapproveExerciseModal.onOpen();
+  };
+
+  const handleIndividualPlanEdition = (trainingPlanId: string) => {
+    setTrainingPlanId(trainingPlanId);
+    onOpen();
   };
 
   const handleCommentChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -209,7 +215,7 @@ const ExercisesEvaluation = () => {
                   >
                     {trainingPlanEvaluation?.isPersonal && (
                       <Flex justifyContent="space-between">
-                        <Flex flexDirection="column">
+                        <Flex flexDirection="column" ml={5}>
                           <Heading mt={5} size="md">
                             Krepšininko pageidavimai:
                           </Heading>
@@ -217,12 +223,16 @@ const ExercisesEvaluation = () => {
                             {trainingPlanEvaluation.trainingPlanRequest}
                           </Box>
                         </Flex>
-                        <Box mt={5}>
+                        <Box mt={5} mr={5}>
                           <Button
                             borderRadius="full"
                             backgroundColor="#1E99D6"
                             color="white"
-                            onClick={onOpen}
+                            onClick={() =>
+                              handleIndividualPlanEdition(
+                                trainingPlanEvaluation.trainingPlanId
+                              )
+                            }
                           >
                             Papildyti planą
                           </Button>

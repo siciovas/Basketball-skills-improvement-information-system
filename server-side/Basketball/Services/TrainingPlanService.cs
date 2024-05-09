@@ -267,7 +267,7 @@ namespace Basketball.Services
                 Coach = string.Format("{0} {1}", trainingPlan.Coach.Name, trainingPlan.Coach.Surname),
                 Title = trainingPlan.Title,
                 FinalMark = averages.Sum(x => x).ToString("F1"),
-                ProgressCounter = ((progressCounter.TryGetValue(trainingPlan.Id, out int count) ? count : 0) / (double)trainingPlan.Skills.SelectMany(x => x.Exercises).Count() * 100).ToString("F1"),
+                ProgressCounter = trainingPlan.Skills.Count == 0 ? "0" : ((progressCounter.TryGetValue(trainingPlan.Id, out int count) ? count : 0) / (double)trainingPlan.Skills.SelectMany(x => x.Exercises).Count() * 100).ToString("F1"),
                 Deadline = order.OrderDate.AddDays(trainingPlan.ExpirationDate),
                 Skills = trainingPlan.Skills.Select((skill, index) => new SkillExecutionDto
                 {
@@ -304,7 +304,7 @@ namespace Basketball.Services
                 CoachFullName = string.Format("{0} {1}", x.TrainingPlan.Coach.Name, x.TrainingPlan.Coach.Surname),
                 TrainingPlanId = x.TrainingPlanId,
                 ExpirationDate = x.OrderDate.AddDays(x.TrainingPlan.ExpirationDate),
-                ProgressCounter = ((progressCounter.TryGetValue(x.TrainingPlanId, out int count) ? count : 0) / (double)x.TrainingPlan.Skills.SelectMany(x => x.Exercises).Count() * 100).ToString("F1")
+                ProgressCounter = x.TrainingPlan.Skills.Count == 0 ? "0" : ((progressCounter.TryGetValue(x.TrainingPlanId, out int count) ? count : 0) / (double)x.TrainingPlan.Skills.SelectMany(x => x.Exercises).Count() * 100).ToString("F1")
             }).ToList();
         }
 

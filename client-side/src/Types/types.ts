@@ -237,6 +237,7 @@ export interface TrainingPlanEvaluationDto {
   trainingPlanRequest: string | null;
   finalMark: string;
   progressCounter: string;
+  trainingPlanId: string;
 }
 
 export interface AllEvaluationDto {

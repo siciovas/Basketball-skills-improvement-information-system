@@ -82,8 +82,9 @@ namespace Basketball.Services
                     Title = order.TrainingPlan.Title,
                     IsPersonal = order.TrainingPlan.IsPersonal,
                     FinalMark = averages.Sum(x => x).ToString("F1"),
-                    ProgressCounter = ((progressCounter.TryGetValue(order.TrainingPlanId, out int count) ? count : 0) / (double)order.TrainingPlan.Skills.SelectMany(x => x.Exercises).Count() * 100).ToString("F1"),
+                    ProgressCounter = order.TrainingPlan.Skills.Count == 0 ? "0" : ((progressCounter.TryGetValue(order.TrainingPlanId, out int count) ? count : 0) / (double)order.TrainingPlan.Skills.SelectMany(x => x.Exercises).Count() * 100).ToString("F1"),
                     TrainingPlanRequest = order.TrainingPlanRequest,
+                    TrainingPlanId = order.TrainingPlanId,
                     SubmittedExercises = userSubmissions.Select(submission => new SubmittedExercise
                     {
                         Id = submission.Id,

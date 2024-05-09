@@ -15,6 +15,7 @@ namespace Basketball.Core.Dtos
         public string? TrainingPlanRequest { get; set; }
         public required string FinalMark { get; set; }
         public required string ProgressCounter { get; set; }
+        public required Guid TrainingPlanId { get; set; }
 
     }
 
