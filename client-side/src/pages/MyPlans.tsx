@@ -62,6 +62,9 @@ const MyPlans = () => {
           </Center>
         ) : (
           <>
+            <Flex justify="center" align="center" mb={10} mt={5} gap={5}>
+              <Heading size="xl">Mano treniruotės</Heading>
+            </Flex>
             <SimpleGrid mt={5} columns={3} spacing={10}>
               {plans.map((plan) => (
                 <Box

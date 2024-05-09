@@ -99,9 +99,9 @@ const MyOrders = () => {
         </Center>
       ) : (
         <>
-          <Flex justify="center" align="center" mb={10} mt={10} gap={5}>
+          <Flex justify="center" align="center" mb={10} mt={5} gap={5}>
             <Box className="fa-solid fa-cart-shopping fa-2xl" />
-            <Heading size="xl">Užsakymų sąrašas</Heading>
+            <Heading size="xl">Užsakymai</Heading>
           </Flex>
           <Box overflowX="auto" maxWidth="100%" mt={5}>
             <OrderFilter

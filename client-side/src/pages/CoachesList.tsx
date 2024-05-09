@@ -109,7 +109,7 @@ const CoachesList = () => {
       ) : (
         <>
           <Flex justify="center" mb={10} mt={10}>
-            <Heading size="xl">Trenerių sąrašas</Heading>
+            <Heading size="xl">Treneriai</Heading>
           </Flex>
           <Box overflowX="auto" maxWidth="100%" mt={5}>
             <Flex justify="flex-end" mb={5}>
