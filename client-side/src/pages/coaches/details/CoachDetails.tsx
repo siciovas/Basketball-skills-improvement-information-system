@@ -202,7 +202,7 @@ const CoachDetails = () => {
                         mr={2}
                         style={{ color: "#1E99D6" }}
                       />
-                      {coach?.rating}
+                      {coach?.rating.toFixed(1)}
                     </Box>
                     {canUserFeedback && (
                       <Button

@@ -165,7 +165,7 @@ const CoachesList = () => {
                         <Text>{coach.specialization}</Text>
                       </Td>
                       <Td>
-                        <Text>{coach.rating == null ? 0 : coach.rating}</Text>
+                        <Text>{coach.rating == null ? 0 : coach.rating.toFixed(1)}</Text>
                       </Td>
                       <Td>
                         <Text>

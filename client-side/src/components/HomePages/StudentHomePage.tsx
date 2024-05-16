@@ -194,6 +194,7 @@ const StudentHomePage = () => {
                               w="100%"
                               h="100%"
                               src={"data:image/jpeg;base64," + coach.avatar}
+                              borderRadius="xl"
                             ></Image>
                           </Box>
                           <Flex flexDir="column" gap={2} w="100%">
@@ -218,7 +219,7 @@ const StudentHomePage = () => {
                               <Flex flexDir="column" alignItems="center">
                                 <Box>Reitingas</Box>
                                 <Box fontWeight="bold">
-                                  {coach.rating == null ? 0 : coach.rating}
+                                  {coach.rating == null ? 0 : coach.rating.toFixed(1)}
                                 </Box>
                               </Flex>
                             </Flex>

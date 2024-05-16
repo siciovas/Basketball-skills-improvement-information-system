@@ -201,7 +201,9 @@ const MainCoachesList = () => {
                           <Flex flexDir="column" alignItems="center">
                             <Box>Reitingas</Box>
                             <Box fontWeight="bold">
-                              {coach.rating == null ? 0 : coach.rating}
+                              {coach.rating == null
+                                ? 0
+                                : coach.rating.toFixed(1)}
                             </Box>
                           </Flex>
                         </Flex>
