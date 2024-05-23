@@ -188,7 +188,7 @@ const StudentHomePage = () => {
                         minH={60}
                         p={2}
                       >
-                        <Flex dir="column" pos="relative" gap={3}>
+                        <Flex dir="column" pos="relative" gap={3} h='100%'>
                           <Box alignSelf="center" h={60} w={60} ml={5}>
                             <Image
                               w="100%"
