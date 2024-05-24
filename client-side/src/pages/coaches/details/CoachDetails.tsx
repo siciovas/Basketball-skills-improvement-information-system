@@ -202,7 +202,7 @@ const CoachDetails = () => {
                         mr={2}
                         style={{ color: "#1E99D6" }}
                       />
-                      {coach?.rating.toFixed(1)}
+                      {coach?.rating == null ? 0 : coach.rating.toFixed(1)}
                     </Box>
                     {canUserFeedback && (
                       <Button
@@ -223,7 +223,7 @@ const CoachDetails = () => {
                         borderRadius="2xl"
                         onClick={() => navigate(`/complaint/${coach?.id}`)}
                       >
-                        PRANEŠTI
+                        Teikti skundą
                       </Button>
                     )}
                   </Flex>

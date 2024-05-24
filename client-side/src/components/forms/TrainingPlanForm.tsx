@@ -311,18 +311,24 @@ const TrainingPlanForm = ({ onClose, trainingPlanId }: Props) => {
                 border="solid"
                 borderWidth="1px"
               ></Textarea>
-              <FormLabel mt={5}>Plano įvykdymo terminas (dienomis)</FormLabel>
-              <Flex flexDir="column" w="53%">
-                <Input
-                  type="number"
-                  name="expirationDate"
-                  onChange={onFormChange}
-                  value={formState.expirationDate}
-                  isRequired
-                  border="solid"
-                  borderWidth="1px"
-                />
-              </Flex>
+              {(!formState.isPersonal || trainingPlanId !== undefined) && (
+                <>
+                  <FormLabel mt={5}>
+                    Rekomenduojamas plano įvykdymo terminas (dienomis)
+                  </FormLabel>
+                  <Flex flexDir="column" w="53%">
+                    <Input
+                      type="number"
+                      name="expirationDate"
+                      onChange={onFormChange}
+                      value={formState.expirationDate}
+                      isRequired
+                      border="solid"
+                      borderWidth="1px"
+                    />
+                  </Flex>
+                </>
+              )}
             </FormControl>
             <Flex justifyContent="space-between" alignItems="center" mt={2}>
               <Box>
