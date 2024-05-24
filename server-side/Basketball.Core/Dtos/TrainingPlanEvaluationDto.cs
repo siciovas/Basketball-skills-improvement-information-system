@@ -26,7 +26,7 @@ namespace Basketball.Core.Dtos
         public int Height { get; set; }
         public double Weight { get; set; }
         public double FootSize { get; set; }
-        public int MetabolicAge { get; set; }
+        public int? MetabolicAge { get; set; }
         public byte[]? UserAvatar { get; set; }
         public required List<TrainingPlanEvaluationDto> TrainingPlansEvaluations { get; set; }
     }

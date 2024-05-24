@@ -39,7 +39,7 @@ namespace Basketball.Controllers
             exercises.BirthDate = user.BirthDate;
             exercises.Height = (int)user.AdditionalInfo!.Height!;
             exercises.Weight = (int)user.AdditionalInfo!.Weight!;
-            exercises.MetabolicAge = (int)user.AdditionalInfo!.MetabolicAge!;
+            exercises.MetabolicAge = user.AdditionalInfo.MetabolicAge;
             exercises.FootSize = (int)user.AdditionalInfo!.FootSize!;
             exercises.UserAvatar = user.Avatar;
 
