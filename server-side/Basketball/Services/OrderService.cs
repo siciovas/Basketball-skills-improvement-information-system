@@ -140,5 +140,12 @@ namespace Basketball.Services
 
             await _orderRepository.Update(order);
         }
+
+        public async Task<bool> IsOrderExistsByUserIdAndTrainingPlanId(Guid trainingPlanId, Guid userId)
+        {
+            var orders = await _orderRepository.GetByUserId(userId);
+
+            return orders.Exists(x => x.TrainingPlanId == trainingPlanId);
+        }
     }
 }

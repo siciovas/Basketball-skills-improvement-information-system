@@ -18,6 +18,13 @@ namespace Basketball.Controllers
         {
             var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)!);
 
+            var exists = await _orderService.IsOrderExistsByUserIdAndTrainingPlanId(orderDto.TrainingPlanId, userId);
+
+            if (exists)
+            {
+                return BadRequest("Tokį planą jau turite užsisakęs");
+            }
+
             var createdOrder = await _orderService.Create(orderDto, userId);
 
             return CreatedAtAction(nameof(Create), createdOrder);

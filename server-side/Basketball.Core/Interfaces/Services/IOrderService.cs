@@ -15,5 +15,6 @@ namespace Basketball.Core.Interfaces.Services
         public Task<ViewOrderDto> GetOrderInfoById(Guid id);
         public Task<bool> HasUserTrainingPlanByCoachId(Guid coachId, Guid userId);
         public Task UpdateTrainingPlanRequest(Guid orderId, string trainingPlanRequest);
+        public Task<bool> IsOrderExistsByUserIdAndTrainingPlanId(Guid trainingPlanId, Guid userId);
     }
 }
